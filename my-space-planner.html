@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171615">
+<title>MY SPACE — Планировщик</title>
+<style>
+:root{--bg:#f3f0eb;--paper:#fffdfa;--ink:#211f1d;--muted:#817a73;--line:#e8e1d9;--accent:#806b59;--soft:#eee7df;--dark:#191817}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}
+.app{max-width:1050px;margin:auto;padding:24px 18px 100px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.brand{font-size:12px;letter-spacing:2px;font-weight:800}.date{font-size:12px;color:var(--muted)}
+h1{font-size:clamp(29px,5vw,42px);line-height:1.08;letter-spacing:-1.5px;margin:7px 0}.sub{color:var(--muted);margin:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}.stat,.panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:17px}.label{font-size:10px;letter-spacing:1.2px;color:var(--muted);font-weight:700}.number{font-size:25px;font-weight:700;margin-top:5px}
+.layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(250px,.8fr);gap:14px}.panel h2{font-size:17px;margin:0 0 14px}.task{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.task input{width:19px;height:19px;accent-color:var(--accent);flex:none}.task-main{min-width:0;flex:1}.task-title{font-size:14px}.task.done .task-title{text-decoration:line-through;color:#9a938c}.task-meta{font-size:11px;color:var(--muted);margin-top:3px}.chip{font-size:10px;padding:5px 8px;border-radius:20px;background:var(--soft);color:#625448;white-space:nowrap}
+.progress{height:6px;background:var(--soft);border-radius:8px;overflow:hidden;margin:12px 0 5px}.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:12px 0}.day{border:1px solid var(--line);background:#fffdfa;border-radius:10px;padding:8px 2px;text-align:center;font-size:10px;color:var(--muted)}.day b{display:block;color:var(--ink);font-size:14px;margin-top:3px}.day.today{background:var(--dark);color:#ddd}.day.today b{color:white}
+.habits{display:flex;flex-wrap:wrap;gap:7px}.habit{border:1px solid var(--line);background:#fffdfa;border-radius:20px;padding:7px 10px;font-size:12px}.habit:focus,.habit:hover{border-color:var(--accent)}
+.addrow{display:flex;gap:8px;margin-top:15px}.addrow input,.addrow select{min-width:0;border:1px solid var(--line);background:#fffdfa;border-radius:10px;padding:10px;font-size:13px}.addrow input{flex:1}.btn{border:0;border-radius:10px;background:var(--dark);color:white;padding:10px 14px;font-size:13px}
+.quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.quick button{border:1px solid var(--line);background:transparent;border-radius:20px;padding:8px 12px;font-size:12px;color:var(--muted)}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}.nav button{border:1px solid var(--line);background:var(--paper);padding:9px 13px;border-radius:20px;color:var(--muted);font-size:12px}.nav button.active{background:var(--dark);color:white;border-color:var(--dark)}
+.note{font-size:11px;color:var(--muted);margin-top:14px}
+@media(max-width:650px){.app{padding:18px 13px 80px}.layout{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:12px}.number{font-size:21px}.addrow{flex-wrap:wrap}.addrow input{flex-basis:100%}.addrow select{flex:1}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top"><div class="brand">MY SPACE <span style="color:var(--accent)">/ PLANNER</span></div><div class="date" id="dateLabel"></div></header>
+<section><div class="label">ТВОЁ ЛИЧНОЕ ПРОСТРАНСТВО</div><h1>Твой порядок.</h1><p class="sub">Все важное — на своём месте.</p></section>
+<section class="stats">
+<div class="stat"><div class="label">ЗАДАЧИ СЕГОДНЯ</div><div class="number" id="taskCount">0/0</div></div>
+<div class="stat"><div class="label">СОБЫТИЯ</div><div class="number" id="eventCount">0</div></div>
+<div class="stat"><div class="label">ПРИВЫЧКИ</div><div class="number" id="habitCount">0/4</div></div>
+</section>
+<nav class="nav" aria-label="Разделы"><button class="active" data-section="all">Обзор</button><button data-section="work">Работа</button><button data-section="sport">Спорт</button><button data-section="blog">Блог</button><button data-section="study">Обучение</button><button data-section="personal">Личное</button></nav>
+<div class="layout">
+<section class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2>План на сегодня</h2><span class="label" id="todayLabel"></span></div><div class="progress"><span id="progressBar"></span></div><div class="task-list" id="taskList"></div>
+<form class="addrow" id="taskForm"><input id="taskInput" maxlength="90" placeholder="Добавить задачу..." required><select id="category"><option value="personal">Личное</option><option value="work">Работа</option><option value="sport">Спорт</option><option value="blog">Блог</option><option value="study">Обучение</option></select><button class="btn">Добавить</button></form>
+<p class="note">Задачи сохраняются в памяти этого браузера на этом устройстве. Это демонстрационная версия.</p></section>
+<aside class="space-y-3">
+<section class="panel"><h2>Календарь</h2><div class="days" id="days"></div><div class="label">БЛИЖАЙШИЕ СОБЫТИЯ</div><p class="sub" style="font-size:13px;margin-top:8px">Пока событий нет.</p></section>
+<section class="panel" style="margin-top:14px"><h2>Привычки</h2><div class="habits" id="habits"></div></section>
+<section class="panel" style="margin-top:14px"><h2>Мои направления</h2><div class="task-meta" style="line-height:2">💼 Работа<br>🏃 Спорт и восстановление<br>🎬 Личный блог<br>📚 Обучение<br>🎯 Долгосрочные цели</div></section>
+</aside></div>
+<div class="quick"><button id="clearDone">Убрать выполненные задачи</button><button id="resetDemo">Сбросить демо-данные</button></div>
+</main>
+<script>
+const key='my-space-planner-v1';
+const initial=[
+ {id:1,title:'Утренняя растяжка',category:'sport',time:'Утро',done:false},
+ {id:2,title:'Работа с клиентами',category:'work',time:'По расписанию',done:false},
+ {id:3,title:'Обучение монтажу',category:'blog',time:'Вечер',done:false},
+ {id:4,title:'Почитать книгу',category:'study',time:'Вечер',done:false}
+];
+const habitNames=['Бег','Силовая','Растяжка','Чтение'];
+let data;try{data=JSON.parse(localStorage.getItem(key))||{tasks:initial,habits:[]}}catch(e){data={tasks:initial,habits:[]}}
+const labels={work:'Работа',sport:'Спорт',blog:'Блог',study:'Обучение',personal:'Личное'};
+const $=id=>document.getElementById(id);
+const now=new Date();
+$('dateLabel').textContent=now.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
+$('todayLabel').textContent=now.toLocaleDateString('ru-RU',{weekday:'long'}).toUpperCase();
+let filter='all';
+function save(){localStorage.setItem(key,JSON.stringify(data));render()}
+function render(){
+ const visible=data.tasks.filter(t=>filter==='all'||t.category===filter);
+ $('taskList').innerHTML=visible.length?visible.map(t=>`<label class="task ${t.done?'done':''}"><input type="checkbox" data-id="${t.id}" ${t.done?'checked':''}><span class="task-main"><span class="task-title">${escapeHtml(t.title)}</span><span class="task-meta">${escapeHtml(t.time||'Без времени')}</span></span><span class="chip">${labels[t.category]||'Личное'}</span></label>`).join(''):'<p class="sub" style="font-size:13px">Задач в этом разделе пока нет.</p>';
+ const done=data.tasks.filter(t=>t.done).length,total=data.tasks.length;
+ $('taskCount').textContent=done+'/'+total;$('eventCount').textContent='0';
+ $('progressBar').style.width=(total?done/total*100:0)+'%';
+ $('habits').innerHTML=habitNames.map((h,i)=>`<button class="habit" data-habit="${i}">${data.habits.includes(i)?'✓':'○'} ${h}</button>`).join('');
+ $('habitCount').textContent=data.habits.length+'/4';
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('taskList').addEventListener('change',e=>{if(e.target.matches('input[type=checkbox]')){let t=data.tasks.find(x=>x.id==e.target.dataset.id);if(t)t.done=e.target.checked;save()}});
+$('taskForm').addEventListener('submit',e=>{e.preventDefault();let title=$('taskInput').value.trim();if(!title)return;data.tasks.push({id:Date.now(),title,category:$('category').value,time:'Сегодня',done:false});$('taskInput').value='';save()});
+$('habits').addEventListener('click',e=>{let b=e.target.closest('[data-habit]');if(!b)return;let i=+b.dataset.habit;data.habits=data.habits.includes(i)?data.habits.filter(x=>x!==i):[...data.habits,i];save()});
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.section;document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));render()}));
+$('clearDone').addEventListener('click',()=>{data.tasks=data.tasks.filter(t=>!t.done);save()});
+$('resetDemo').addEventListener('click',()=>{if(confirm('Вернуть начальные демонстрационные задачи?')){data={tasks:initial.map(t=>({...t})),habits:[]};save()}});
+const days=$('days');const first=new Date(now.getFullYear(),now.getMonth(),1);const count=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();const offset=(first.getDay()+6)%7;
+for(let i=0;i<Math.min(35,offset+count);i++){if(i<offset){days.innerHTML+='<div></div>';continue}let d=i-offset+1;days.innerHTML+=`<div class="day ${d===now.getDate()?'today':''}">${['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'][(i)%7]}<b>${d}</b></div>`}
+render();
+</script>
+</body>
+</html>
