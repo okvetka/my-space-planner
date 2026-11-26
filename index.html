@@ -189,4 +189,99 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+ <style>
+body.dark {
+  --bg:#171a1f;
+  --card:#222831;
+  --text:#edf0f3;
+  --muted:#a5adb8;
+  --blue:#38566b;
+  --blue2:#293b49;
+  --line:#39414b;
+  --gold:#b69a62;
+}
+body.dark nav,
+body.dark .btn,
+body.dark input,
+body.dark textarea,
+body.dark select,
+body.dark .pill {
+  background:#222831;
+  color:#edf0f3;
+  border-color:#39414b;
+}
+body.dark nav {background:#20252c}
+body.dark .btn.primary,
+body.dark .pill.on {background:#38566b}
+body.dark .modalbox {background:#222831}
+.theme-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.theme-switch {
+  border:0;
+  border-radius:22px;
+  padding:10px 16px;
+  background:var(--blue);
+  color:var(--text);
+}
+</style>
+
+<script>
+(function(){
+
+const savedTheme = localStorage.getItem('myspace_theme') || 'light';
+
+function applyTheme(theme) {
+  document.body.classList.toggle('dark', theme === 'dark');
+  localStorage.setItem('myspace_theme', theme);
+
+  const button = document.getElementById('themeButton');
+  if (button) {
+    button.textContent = theme === 'dark'
+      ? 'Включить светлую тему'
+      : 'Включить тёмную тему';
+  }
+}
+
+function addThemeSettings() {
+  const settings = document.getElementById('settings');
+  if (!settings || document.getElementById('themeCard')) return;
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.id = 'themeCard';
+
+  card.innerHTML = `
+    <h3>Оформление</h3>
+    <div class="theme-row">
+      <span class="small">Тема приложения</span>
+      <button class="theme-switch" id="themeButton"></button>
+    </div>
+  `;
+
+  settings.insertBefore(card, settings.firstChild.nextSibling);
+
+  document.getElementById('themeButton').onclick = function() {
+    const next = document.body.classList.contains('dark')
+      ? 'light'
+      : 'dark';
+    applyTheme(next);
+  };
+
+  applyTheme(localStorage.getItem('myspace_theme') || 'light');
+}
+
+applyTheme(savedTheme);
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', addThemeSettings);
+} else {
+  addThemeSettings();
+}
+
+})();
+</script>
 </body></html>
