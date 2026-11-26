@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f6f2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MY SPACE">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-180.png">
 <title>MY SPACE</title>
 <style>
 :root{--bg:#f7f6f2;--card:#fffefa;--text:#25272b;--muted:#858990;--blue:#c9e2f1;--blue2:#edf5f9;--line:#e9e8e3;--gold:#b69a62;--shadow:0 7px 24px #30343a0a}
@@ -175,5 +181,12 @@ document.getElementById('restoreFile').addEventListener('change',e=>{let f=e.tar
 async function enableNotifications(){if(!('Notification'in window)){document.getElementById('notifyStatus').textContent='Этот браузер не поддерживает уведомления.';return}let p=await Notification.requestPermission();document.getElementById('notifyStatus').textContent=p==='granted'?'Разрешение получено. Уведомления зависят от работы браузера.':'Разрешение не предоставлено.'}
 function init(){let today=iso(new Date());selectedDay=today;monthCursor=new Date();document.getElementById('dDate').value=today;renderAll();if('Notification'in window)document.getElementById('notifyStatus').textContent=Notification.permission==='granted'?'Уведомления разрешены.':'Уведомления не включены.'}
 init();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
 </script>
 </body></html>
