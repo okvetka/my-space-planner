@@ -51,7 +51,7 @@ textarea{min-height:90px;resize:vertical}label{display:block;font-size:11px;colo
 </head>
 <body>
 <header><h1>MY SPACE</h1><div class="subtitle">MY PERSONAL SPACE</div></header>
-<main>
+<main id="main">
 <section id="home" class="tab active">
  <div class="row"><div><div class="eyebrow" id="todayLabel">袦袨袡 袛袝袧鞋</div><h2 id="homeDate">小械谐芯写薪褟</h2></div><button class="btn primary" onclick="openTaskForm()">锛� 袟邪写邪褔邪</button></div>
  <div class="grid2" id="stats"></div>
@@ -114,7 +114,7 @@ textarea{min-height:90px;resize:vertical}label{display:block;font-size:11px;colo
  <button class="active" onclick="go('home',this)"><span>鈱�</span>袚谢邪胁薪邪褟</button>
  <button onclick="go('calendar',this)"><span>鈻�</span>袣邪谢械薪写邪褉褜</button>
  <button onclick="go('tasks',this)"><span>鉁�</span>袟邪写邪褔懈</button>
- <button onclick="go('diary',this)"><span>鈾�</span>袛薪械胁薪懈泻</button>
+ <button onclick="go('diary',this)"><span>鈻�</span>袛薪械胁薪懈泻</button>
  <button onclick="go('inspiration',this)"><span>鉁�</span>袠写械懈</button>
  <button onclick="go('analytics',this)"><span>鈻�</span>袠褌芯谐懈</button>
  <button onclick="go('settings',this)"><span>鈿�</span>袝褖褢</button>
@@ -388,9 +388,9 @@ lightbox.innerHTML=`
   <div style="width:100%;max-width:700px;text-align:center">
     <img id="msBigPhoto">
     <div class="ms-gallery-controls">
-      <button id="msPrev">鈫�</button>
+      <button id="msPrev">鈥�</button>
       <button id="msClose">袟邪泻褉褘褌褜</button>
-      <button id="msNext">鈫�</button>
+      <button id="msNext">鈥�</button>
     </div>
     <div id="msPhotoCount" style="color:white;margin-top:10px"></div>
   </div>
