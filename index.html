@@ -53,88 +53,88 @@ textarea{min-height:90px;resize:vertical}label{display:block;font-size:11px;colo
 <header><h1>MY SPACE</h1><div class="subtitle">MY PERSONAL SPACE</div></header>
 <main id="main">
 <section id="home" class="tab active">
- <div class="row"><div><div class="eyebrow" id="todayLabel">袦袨袡 袛袝袧鞋</div><h2 id="homeDate">小械谐芯写薪褟</h2></div><button class="btn primary" onclick="openTaskForm()">锛� 袟邪写邪褔邪</button></div>
+ <div class="row"><div><div class="eyebrow" id="todayLabel">МОЙ ДЕНЬ</div><h2 id="homeDate">Сегодня</h2></div><button class="btn primary" onclick="openTaskForm()">＋ Задача</button></div>
  <div class="grid2" id="stats"></div>
- <div class="card"><div class="row"><h3>袩谢邪薪 薪邪 褋械谐芯写薪褟</h3><span class="small" id="todayCount"></span></div><div id="todayTasks"></div></div>
- <div class="card"><h3>袘谢懈卸邪泄褕懈械 褋芯斜褘褌懈褟</h3><div id="upcoming"></div></div>
- <div class="card"><h3>袘褘褋褌褉褘械 写械泄褋褌胁懈褟</h3><div class="btnrow"><button class="btn" onclick="openTaskForm()">锛� 袛芯斜邪胁懈褌褜 蟹邪写邪褔褍</button><button class="btn" onclick="go('diary')">锛� 袟邪锌懈褋褜 胁 写薪械胁薪懈泻</button><button class="btn" onclick="go('calendar')">袨褌泻褉褘褌褜 泻邪谢械薪写邪褉褜</button></div></div>
+ <div class="card"><div class="row"><h3>План на сегодня</h3><span class="small" id="todayCount"></span></div><div id="todayTasks"></div></div>
+ <div class="card"><h3>Ближайшие события</h3><div id="upcoming"></div></div>
+ <div class="card"><h3>Быстрые действия</h3><div class="btnrow"><button class="btn" onclick="openTaskForm()">＋ Добавить задачу</button><button class="btn" onclick="go('diary')">＋ Запись в дневник</button><button class="btn" onclick="go('calendar')">Открыть календарь</button></div></div>
 </section>
 
 <section id="calendar" class="tab">
- <h2>袣邪谢械薪写邪褉褜</h2>
- <div class="calendar"><div class="calhead"><button onclick="moveMonth(-1)">鈥�</button><strong id="monthName"></strong><button onclick="moveMonth(1)">鈥�</button></div><div class="week"><span>袩薪</span><span>袙褌</span><span>小褉</span><span>效褌</span><span>袩褌</span><span>小斜</span><span>袙褋</span></div><div class="days" id="calendarGrid"></div></div>
- <div class="row"><h3 id="calendarSelectedLabel">袙褘斜褉邪薪薪褘泄 写械薪褜</h3><button class="btn primary" onclick="openTaskForm(selectedDay)">锛� 袛芯斜邪胁懈褌褜</button></div>
+ <h2>Календарь</h2>
+ <div class="calendar"><div class="calhead"><button onclick="moveMonth(-1)">‹</button><strong id="monthName"></strong><button onclick="moveMonth(1)">›</button></div><div class="week"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div><div class="days" id="calendarGrid"></div></div>
+ <div class="row"><h3 id="calendarSelectedLabel">Выбранный день</h3><button class="btn primary" onclick="openTaskForm(selectedDay)">＋ Добавить</button></div>
  <div class="card"><div id="calendarItems"></div></div>
 </section>
 
 <section id="tasks" class="tab">
- <div class="row"><h2>袦芯懈 写械谢邪</h2><button class="btn primary" onclick="openTaskForm()">锛� 袟邪写邪褔邪</button></div>
- <input id="taskSearch" placeholder="袩芯懈褋泻 锌芯 蟹邪写邪褔邪屑..." oninput="renderTasks()">
- <div class="pills" style="margin:12px 0"><button class="pill on" data-filter="all" onclick="setFilter('all',this)">袙褋械</button><button class="pill" data-filter="active" onclick="setFilter('active',this)">袗泻褌懈胁薪褘械</button><button class="pill" data-filter="done" onclick="setFilter('done',this)">袙褘锌芯谢薪械薪薪褘械</button></div>
- <div class="pills" id="categoryFilters" style="margin-bottom:12px"><button class="pill on" onclick="setCategory('袙褋械',this)">袙褋械 泻邪褌械谐芯褉懈懈</button><button class="pill" onclick="setCategory('袪邪斜芯褌邪',this)">袪邪斜芯褌邪</button><button class="pill" onclick="setCategory('小锌芯褉褌',this)">小锌芯褉褌</button><button class="pill" onclick="setCategory('袥懈褔薪芯械',this)">袥懈褔薪芯械</button><button class="pill" onclick="setCategory('袨褌写褘褏',this)">袨褌写褘褏</button></div>
+ <div class="row"><h2>Мои дела</h2><button class="btn primary" onclick="openTaskForm()">＋ Задача</button></div>
+ <input id="taskSearch" placeholder="Поиск по задачам..." oninput="renderTasks()">
+ <div class="pills" style="margin:12px 0"><button class="pill on" data-filter="all" onclick="setFilter('all',this)">Все</button><button class="pill" data-filter="active" onclick="setFilter('active',this)">Активные</button><button class="pill" data-filter="done" onclick="setFilter('done',this)">Выполненные</button></div>
+ <div class="pills" id="categoryFilters" style="margin-bottom:12px"><button class="pill on" onclick="setCategory('Все',this)">Все категории</button><button class="pill" onclick="setCategory('Работа',this)">Работа</button><button class="pill" onclick="setCategory('Спорт',this)">Спорт</button><button class="pill" onclick="setCategory('Личное',this)">Личное</button><button class="pill" onclick="setCategory('Отдых',this)">Отдых</button></div>
  <div id="taskList"></div>
 </section>
 
 <section id="diary" class="tab">
- <div class="row"><h2>袛薪械胁薪懈泻</h2><button class="btn primary" onclick="openDiaryForm()">锛� 袟邪锌懈褋褜</button></div>
- <div class="form hidden" id="diaryForm"><h3 id="diaryFormTitle">袧芯胁邪褟 蟹邪锌懈褋褜</h3>
-  <label>袛邪褌邪</label><input type="date" id="dDate">
-  <label>袣邪褌械谐芯褉懈褟</label><select id="dCategory"><option>袦芯懈 屑褘褋谢懈</option><option>小芯斜褘褌懈褟</option><option>小锌芯褉褌</option><option>袩褍褌械褕械褋褌胁懈褟</option><option>袣褉邪褋芯褌邪</option><option>袛褉褍谐芯械</option></select>
-  <label>袧邪褋褌褉芯械薪懈械</label><div class="pills" id="moods"><button class="pill" onclick="pickMood(this,'馃槉')">馃槉</button><button class="pill" onclick="pickMood(this,'馃グ')">馃グ</button><button class="pill" onclick="pickMood(this,'馃槍')">馃槍</button><button class="pill" onclick="pickMood(this,'馃槓')">馃槓</button><button class="pill" onclick="pickMood(this,'馃様')">馃様</button><button class="pill" onclick="pickMood(this,'馃槨')">馃槨</button></div>
-  <label>孝械泻褋褌</label><textarea id="dText" placeholder="效褌芯 褏芯褔械褌褋褟 褋芯褏褉邪薪懈褌褜?"></textarea>
-  <label>肖芯褌芯谐褉邪褎懈懈</label><input type="file" id="dPhotos" accept="image/*" multiple><div class="thumbrow" id="dPreview"></div>
-  <div class="btnrow"><button class="btn primary" onclick="saveDiary()">小芯褏褉邪薪懈褌褜</button><button class="btn" onclick="closeDiaryForm()">袨褌屑械薪邪</button></div>
+ <div class="row"><h2>Дневник</h2><button class="btn primary" onclick="openDiaryForm()">＋ Запись</button></div>
+ <div class="form hidden" id="diaryForm"><h3 id="diaryFormTitle">Новая запись</h3>
+  <label>Дата</label><input type="date" id="dDate">
+  <label>Категория</label><select id="dCategory"><option>Мои мысли</option><option>События</option><option>Спорт</option><option>Путешествия</option><option>Красота</option><option>Другое</option></select>
+  <label>Настроение</label><div class="pills" id="moods"><button class="pill" onclick="pickMood(this,'😊')">😊</button><button class="pill" onclick="pickMood(this,'🥰')">🥰</button><button class="pill" onclick="pickMood(this,'😌')">😌</button><button class="pill" onclick="pickMood(this,'😐')">😐</button><button class="pill" onclick="pickMood(this,'😔')">😔</button><button class="pill" onclick="pickMood(this,'😡')">😡</button></div>
+  <label>Текст</label><textarea id="dText" placeholder="Что хочется сохранить?"></textarea>
+  <label>Фотографии</label><input type="file" id="dPhotos" accept="image/*" multiple><div class="thumbrow" id="dPreview"></div>
+  <div class="btnrow"><button class="btn primary" onclick="saveDiary()">Сохранить</button><button class="btn" onclick="closeDiaryForm()">Отмена</button></div>
  </div>
- <input id="diarySearch" placeholder="袧邪泄褌懈 蟹邪锌懈褋褜..." oninput="renderDiary()" style="margin-bottom:12px">
+ <input id="diarySearch" placeholder="Найти запись..." oninput="renderDiary()" style="margin-bottom:12px">
  <div id="diaryList"></div>
 </section>
 
 <section id="inspiration" class="tab">
- <div class="row"><h2>袙写芯褏薪芯胁械薪懈械</h2><button class="btn primary" onclick="toggle('boardForm')">锛� 袛芯斜邪胁懈褌褜</button></div>
- <div class="form hidden" id="boardForm"><label>袣芯谢谢械泻褑懈褟</label><select id="bCategory"><option>袠薪褌械褉褜械褉褘</option><option>袨斜褉邪蟹褘</option><option>小褗褢屑泻懈</option><option>袦邪泻懈褟卸</option><option>袦械褋褌邪</option><option>袠写械懈</option></select><label>袧邪蟹胁邪薪懈械 / 蟹邪屑械褌泻邪</label><input id="bTitle" placeholder="袠写械褟, 泻芯褌芯褉褍褞 褏芯褔械褌褋褟 褋芯褏褉邪薪懈褌褜"><label>肖芯褌芯</label><input type="file" id="bPhoto" accept="image/*"><button class="btn primary" onclick="addBoard()">小芯褏褉邪薪懈褌褜 薪邪 写芯褋泻褍</button></div>
- <div class="pills" id="boardFilters" style="margin-bottom:12px"><button class="pill on" onclick="filterBoard('袙褋械',this)">袙褋械</button><button class="pill" onclick="filterBoard('袠薪褌械褉褜械褉褘',this)">袠薪褌械褉褜械褉褘</button><button class="pill" onclick="filterBoard('袨斜褉邪蟹褘',this)">袨斜褉邪蟹褘</button><button class="pill" onclick="filterBoard('小褗褢屑泻懈',this)">小褗褢屑泻懈</button><button class="pill" onclick="filterBoard('袦邪泻懈褟卸',this)">袦邪泻懈褟卸</button><button class="pill" onclick="filterBoard('袦械褋褌邪',this)">袦械褋褌邪</button><button class="pill" onclick="filterBoard('袠写械懈',this)">袠写械懈</button></div><div id="boardList"></div>
+ <div class="row"><h2>Вдохновение</h2><button class="btn primary" onclick="toggle('boardForm')">＋ Добавить</button></div>
+ <div class="form hidden" id="boardForm"><label>Коллекция</label><select id="bCategory"><option>Интерьеры</option><option>Образы</option><option>Съёмки</option><option>Макияж</option><option>Места</option><option>Идеи</option></select><label>Название / заметка</label><input id="bTitle" placeholder="Идея, которую хочется сохранить"><label>Фото</label><input type="file" id="bPhoto" accept="image/*"><button class="btn primary" onclick="addBoard()">Сохранить на доску</button></div>
+ <div class="pills" id="boardFilters" style="margin-bottom:12px"><button class="pill on" onclick="filterBoard('Все',this)">Все</button><button class="pill" onclick="filterBoard('Интерьеры',this)">Интерьеры</button><button class="pill" onclick="filterBoard('Образы',this)">Образы</button><button class="pill" onclick="filterBoard('Съёмки',this)">Съёмки</button><button class="pill" onclick="filterBoard('Макияж',this)">Макияж</button><button class="pill" onclick="filterBoard('Места',this)">Места</button><button class="pill" onclick="filterBoard('Идеи',this)">Идеи</button></div><div id="boardList"></div>
 </section>
 
 <section id="analytics" class="tab">
- <h2>袦芯褟 褋褌邪褌懈褋褌懈泻邪</h2><div class="grid2" id="analyticsStats"></div>
- <div class="card"><h3>袟邪写邪褔懈 蟹邪 锌芯褋谢械写薪懈械 7 写薪械泄</h3><div id="weekStats"></div></div>
- <div class="card"><h3>袪邪褋锌褉械写械谢械薪懈械 锌芯 褋褎械褉邪屑</h3><div id="categoryStats"></div></div>
- <div class="small">小褌邪褌懈褋褌懈泻邪 褋褔懈褌邪械褌褋褟 锌芯 蟹邪写邪褔邪屑, 泻芯褌芯褉褘械 褌褘 写芯斜邪胁谢褟械褕褜 胁 MY SPACE.</div>
+ <h2>Моя статистика</h2><div class="grid2" id="analyticsStats"></div>
+ <div class="card"><h3>Задачи за последние 7 дней</h3><div id="weekStats"></div></div>
+ <div class="card"><h3>Распределение по сферам</h3><div id="categoryStats"></div></div>
+ <div class="small">Статистика считается по задачам, которые ты добавляешь в MY SPACE.</div>
 </section>
 
 <section id="settings" class="tab">
- <h2>袧邪褋褌褉芯泄泻懈 懈 写邪薪薪褘械</h2>
- <div class="card"><h3>袪械蟹械褉胁薪邪褟 泻芯锌懈褟</h3><p class="small">小芯褏褉邪薪懈 褎邪泄谢 褋 蟹邪写邪褔邪屑懈, 写薪械胁薪懈泻芯屑 懈 写芯褋泻芯泄 胁写芯褏薪芯胁械薪懈褟. 协褌芯 芯褋芯斜械薪薪芯 胁邪卸薪芯, 锌芯泻邪 写邪薪薪褘械 褏褉邪薪褟褌褋褟 胁 斜褉邪褍蟹械褉械 褌械谢械褎芯薪邪.</p><div class="btnrow"><button class="btn primary" onclick="backup()">小泻邪褔邪褌褜 褉械蟹械褉胁薪褍褞 泻芯锌懈褞</button><button class="btn" onclick="document.getElementById('restoreFile').click()">袙芯褋褋褌邪薪芯胁懈褌褜 懈蟹 褎邪泄谢邪</button><input id="restoreFile" type="file" accept="application/json" class="hidden"></div></div>
- <div class="card"><h3>袧邪锌芯屑懈薪邪薪懈褟</h3><p class="small">袦芯卸薪芯 褉邪蟹褉械褕懈褌褜 褍胁械写芯屑谢械薪懈褟 斜褉邪褍蟹械褉邪. 袠褏 褉邪斜芯褌邪 蟹邪胁懈褋懈褌 芯褌 斜褉邪褍蟹械褉邪, 褉邪蟹褉械褕械薪懈泄 懈 褌芯谐芯, 芯褌泻褉褘褌芯 谢懈 锌褉懈谢芯卸械薪懈械.</p><button class="btn" onclick="enableNotifications()">袪邪蟹褉械褕懈褌褜 褍胁械写芯屑谢械薪懈褟</button><div class="small" id="notifyStatus" style="margin-top:8px"></div></div>
- <div class="card"><h3>袨 锌褉懈谢芯卸械薪懈懈</h3><p class="small">MY SPACE 褋械泄褔邪褋 褋芯褏褉邪薪褟械褌 写邪薪薪褘械 谢芯泻邪谢褜薪芯 胁 斜褉邪褍蟹械褉械 褝褌芯谐芯 褍褋褌褉芯泄褋褌胁邪. 袛谢褟 芯斜谢邪褔薪芯泄 褋懈薪褏褉芯薪懈蟹邪褑懈懈, 蟹邪褖懈褖褢薪薪芯谐芯 胁褏芯写邪 懈 懈薪褌械谐褉邪褑懈泄 褋 DIKIDI / Google Calendar 锌芯薪邪写芯斜懈褌褋褟 芯褌写械谢褜薪芯 锌芯写泻谢褞褔懈褌褜 褋械褉胁械褉薪褍褞 斜邪蟹褍 懈 API. 协褌懈 懈薪褌械谐褉邪褑懈懈 锌芯泻邪 薪械 邪泻褌懈胁薪褘.</p><p class="small">袧械 芯褔懈褖邪泄 写邪薪薪褘械 褋邪泄褌邪 懈 泻褝褕 斜褉邪褍蟹械褉邪 斜械蟹 褉械蟹械褉胁薪芯泄 泻芯锌懈懈.</p></div>
+ <h2>Настройки и данные</h2>
+ <div class="card"><h3>Резервная копия</h3><p class="small">Сохрани файл с задачами, дневником и доской вдохновения. Это особенно важно, пока данные хранятся в браузере телефона.</p><div class="btnrow"><button class="btn primary" onclick="backup()">Скачать резервную копию</button><button class="btn" onclick="document.getElementById('restoreFile').click()">Восстановить из файла</button><input id="restoreFile" type="file" accept="application/json" class="hidden"></div></div>
+ <div class="card"><h3>Напоминания</h3><p class="small">Можно разрешить уведомления браузера. Их работа зависит от браузера, разрешений и того, открыто ли приложение.</p><button class="btn" onclick="enableNotifications()">Разрешить уведомления</button><div class="small" id="notifyStatus" style="margin-top:8px"></div></div>
+ <div class="card"><h3>О приложении</h3><p class="small">MY SPACE сейчас сохраняет данные локально в браузере этого устройства. Для облачной синхронизации, защищённого входа и интеграций с DIKIDI / Google Calendar понадобится отдельно подключить серверную базу и API. Эти интеграции пока не активны.</p><p class="small">Не очищай данные сайта и кэш браузера без резервной копии.</p></div>
 </section>
 </main>
 
 <nav>
- <button class="active" onclick="go('home',this)"><span>鈱�</span>袚谢邪胁薪邪褟</button>
- <button onclick="go('calendar',this)"><span>鈻�</span>袣邪谢械薪写邪褉褜</button>
- <button onclick="go('tasks',this)"><span>鉁�</span>袟邪写邪褔懈</button>
- <button onclick="go('diary',this)"><span>鈻�</span>袛薪械胁薪懈泻</button>
- <button onclick="go('inspiration',this)"><span>鉁�</span>袠写械懈</button>
- <button onclick="go('analytics',this)"><span>鈻�</span>袠褌芯谐懈</button>
- <button onclick="go('settings',this)"><span>鈿�</span>袝褖褢</button>
+ <button class="active" onclick="go('home',this)"><span>⌂</span>Главная</button>
+ <button onclick="go('calendar',this)"><span>▦</span>Календарь</button>
+ <button onclick="go('tasks',this)"><span>✓</span>Задачи</button>
+ <button onclick="go('diary',this)"><span>▤</span>Дневник</button>
+ <button onclick="go('inspiration',this)"><span>✓</span>Идеи</button>
+ <button onclick="go('analytics',this)"><span>▦</span>Итоги</button>
+ <button onclick="go('settings',this)"><span>⚙</span>Ещё</button>
 </nav>
-<div class="modal" id="taskModal"><div class="modalbox"><button class="close" onclick="closeTaskForm()">袟邪泻褉褘褌褜</button><h2 id="taskFormTitle">袧芯胁邪褟 蟹邪写邪褔邪</h2>
- <label>袧邪蟹胁邪薪懈械</label><input id="tTitle" placeholder="袧邪锌褉懈屑械褉, 褌褉械薪懈褉芯胁泻邪">
- <label>袛邪褌邪</label><input type="date" id="tDate">
- <label>袙褉械屑褟</label><input type="time" id="tTime">
- <label>袣邪褌械谐芯褉懈褟</label><select id="tCategory"><option>袥懈褔薪芯械</option><option>袪邪斜芯褌邪</option><option>小锌芯褉褌</option><option>袨褌写褘褏</option><option>袟写芯褉芯胁褜械</option><option>袛褉褍谐芯械</option></select>
- <label>袩褉懈芯褉懈褌械褌</label><select id="tPriority"><option>袨斜褘褔薪褘泄</option><option>袙邪卸薪褘泄</option><option>小褉芯褔薪褘泄</option></select>
- <label>袟邪屑械褌泻邪</label><textarea id="tNote" placeholder="袩芯写褉芯斜薪芯褋褌懈, 邪写褉械褋, 褔褌芯 胁蟹褟褌褜 褋 褋芯斜芯泄..."></textarea>
- <label><input type="checkbox" id="tReminder" style="width:auto"> 袧邪锌芯屑薪懈褌褜 胁 胁褘斜褉邪薪薪芯械 胁褉械屑褟 (械褋谢懈 锌芯写写械褉卸懈胁邪械褌褋褟 斜褉邪褍蟹械褉芯屑)</label>
- <div class="btnrow"><button class="btn primary" onclick="saveTask()">小芯褏褉邪薪懈褌褜 蟹邪写邪褔褍</button><button class="btn" onclick="closeTaskForm()">袨褌屑械薪邪</button></div>
+<div class="modal" id="taskModal"><div class="modalbox"><button class="close" onclick="closeTaskForm()">Закрыть</button><h2 id="taskFormTitle">Новая задача</h2>
+ <label>Название</label><input id="tTitle" placeholder="Например, тренировка">
+ <label>Дата</label><input type="date" id="tDate">
+ <label>Время</label><input type="time" id="tTime">
+ <label>Категория</label><select id="tCategory"><option>Личное</option><option>Работа</option><option>Спорт</option><option>Отдых</option><option>Здоровье</option><option>Другое</option></select>
+ <label>Приоритет</label><select id="tPriority"><option>Обычный</option><option>Важный</option><option>Срочный</option></select>
+ <label>Заметка</label><textarea id="tNote" placeholder="Подробности, адрес, что взять с собой..."></textarea>
+ <label><input type="checkbox" id="tReminder" style="width:auto"> Напомнить в выбранное время (если поддерживается браузером)</label>
+ <div class="btnrow"><button class="btn primary" onclick="saveTask()">Сохранить задачу</button><button class="btn" onclick="closeTaskForm()">Отмена</button></div>
  </div></div>
 <div class="toast" id="toast"></div>
 
 <script>
 const KEYS={entries:'myspace_entries',mood:'myspace_mood',board:'myspace_board',tasks:'myspace_tasks'};
 let entries=read(KEYS.entries,[]),board=read(KEYS.board,[]),tasks=read(KEYS.tasks,[]);
-let selectedDay=iso(new Date()),monthCursor=new Date(),taskEdit=null,diaryEdit=null,diaryMood='',diaryPhotos=[],taskFilter='all',taskCategory='袙褋械',boardCategory='袙褋械';
+let selectedDay=iso(new Date()),monthCursor=new Date(),taskEdit=null,diaryEdit=null,diaryMood='',diaryPhotos=[],taskFilter='all',taskCategory='Все',boardCategory='Все';
 function read(k,d){try{return JSON.parse(localStorage.getItem(k)||'null')??d}catch(e){return d}}
 function persist(){localStorage.setItem(KEYS.entries,JSON.stringify(entries));localStorage.setItem(KEYS.board,JSON.stringify(board));localStorage.setItem(KEYS.tasks,JSON.stringify(tasks))}
 function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
@@ -145,41 +145,41 @@ function toast(s){let x=document.getElementById('toast');x.textContent=s;x.style
 function go(id,btn){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');else{let b=[...document.querySelectorAll('nav button')].find(x=>x.getAttribute('onclick')?.includes("'"+id+"'"));if(b)b.classList.add('active')}renderAll()}
 function toggle(id){document.getElementById(id).classList.toggle('hidden')}
 function renderAll(){renderHome();renderCalendar();renderTasks();renderDiary();renderBoard();renderAnalytics()}
-function openTaskForm(date){taskEdit=null;document.getElementById('taskFormTitle').textContent='袧芯胁邪褟 蟹邪写邪褔邪';['tTitle','tTime','tNote'].forEach(id=>document.getElementById(id).value='');document.getElementById('tDate').value=date||selectedDay||iso(new Date());document.getElementById('tCategory').value='袥懈褔薪芯械';document.getElementById('tPriority').value='袨斜褘褔薪褘泄';document.getElementById('tReminder').checked=false;document.getElementById('taskModal').style.display='block'}
+function openTaskForm(date){taskEdit=null;document.getElementById('taskFormTitle').textContent='Новая задача';['tTitle','tTime','tNote'].forEach(id=>document.getElementById(id).value='');document.getElementById('tDate').value=date||selectedDay||iso(new Date());document.getElementById('tCategory').value='Личное';document.getElementById('tPriority').value='Обычный';document.getElementById('tReminder').checked=false;document.getElementById('taskModal').style.display='block'}
 function closeTaskForm(){document.getElementById('taskModal').style.display='none'}
-function saveTask(){let title=document.getElementById('tTitle').value.trim(),date=document.getElementById('tDate').value;if(!title||!date){toast('校泻邪卸懈 薪邪蟹胁邪薪懈械 懈 写邪褌褍');return}let item={id:taskEdit||Date.now(),title,date,time:document.getElementById('tTime').value,category:document.getElementById('tCategory').value,priority:document.getElementById('tPriority').value,note:document.getElementById('tNote').value.trim(),reminder:document.getElementById('tReminder').checked,done:taskEdit?(tasks.find(x=>x.id===taskEdit)?.done||false):false,created:taskEdit?(tasks.find(x=>x.id===taskEdit)?.created||Date.now()):Date.now()};if(taskEdit){let i=tasks.findIndex(x=>x.id===taskEdit);if(i>=0)tasks[i]=item}else tasks.push(item);persist();closeTaskForm();selectedDay=date;renderAll();toast('袟邪写邪褔邪 褋芯褏褉邪薪械薪邪')}
-function editTask(id){let t=tasks.find(x=>x.id===id);if(!t)return;taskEdit=id;document.getElementById('taskFormTitle').textContent='袠蟹屑械薪懈褌褜 蟹邪写邪褔褍';document.getElementById('tTitle').value=t.title;document.getElementById('tDate').value=t.date;document.getElementById('tTime').value=t.time||'';document.getElementById('tCategory').value=t.category;document.getElementById('tPriority').value=t.priority;document.getElementById('tNote').value=t.note||'';document.getElementById('tReminder').checked=!!t.reminder;document.getElementById('taskModal').style.display='block'}
+function saveTask(){let title=document.getElementById('tTitle').value.trim(),date=document.getElementById('tDate').value;if(!title||!date){toast('Укажи название и дату');return}let item={id:taskEdit||Date.now(),title,date,time:document.getElementById('tTime').value,category:document.getElementById('tCategory').value,priority:document.getElementById('tPriority').value,note:document.getElementById('tNote').value.trim(),reminder:document.getElementById('tReminder').checked,done:taskEdit?(tasks.find(x=>x.id===taskEdit)?.done||false):false,created:taskEdit?(tasks.find(x=>x.id===taskEdit)?.created||Date.now()):Date.now()};if(taskEdit){let i=tasks.findIndex(x=>x.id===taskEdit);if(i>=0)tasks[i]=item}else tasks.push(item);persist();closeTaskForm();selectedDay=date;renderAll();toast('Задача сохранена')}
+function editTask(id){let t=tasks.find(x=>x.id===id);if(!t)return;taskEdit=id;document.getElementById('taskFormTitle').textContent='Изменить задачу';document.getElementById('tTitle').value=t.title;document.getElementById('tDate').value=t.date;document.getElementById('tTime').value=t.time||'';document.getElementById('tCategory').value=t.category;document.getElementById('tPriority').value=t.priority;document.getElementById('tNote').value=t.note||'';document.getElementById('tReminder').checked=!!t.reminder;document.getElementById('taskModal').style.display='block'}
 function toggleTask(id){let t=tasks.find(x=>x.id===id);if(t){t.done=!t.done;persist();renderAll()}}
-function deleteTask(id){if(!confirm('校写邪谢懈褌褜 蟹邪写邪褔褍?'))return;tasks=tasks.filter(x=>x.id!==id);persist();renderAll()}
-function taskHtml(t){return `<div class="item ${t.done?'taskdone':''}"><div class="row" style="align-items:flex-start"><input class="check" type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><div style="flex:1"><div class="itemtitle">${safe(t.title)}</div><div class="small">${safe(t.date?fmt(t.date):'')} ${t.time?'路 '+safe(t.time):''} 路 ${safe(t.category)} 路 ${safe(t.priority)}</div>${t.note?`<div class="small" style="margin-top:5px">${safe(t.note)}</div>`:''}</div></div><div class="btnrow"><button class="btn" onclick="editTask(${t.id})">袠蟹屑械薪懈褌褜</button><button class="btn danger" onclick="deleteTask(${t.id})">校写邪谢懈褌褜</button></div></div>`}
-function renderHome(){let today=iso(new Date()),tod=tasks.filter(t=>t.date===today),active=tasks.filter(t=>!t.done),done=tasks.filter(t=>t.done);document.getElementById('homeDate').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});document.getElementById('stats').innerHTML=`<div class="stat"><strong>${tod.length}</strong><span class="small">写械谢 褋械谐芯写薪褟</span></div><div class="stat"><strong>${tod.filter(t=>t.done).length}</strong><span class="small">胁褘锌芯谢薪械薪芯</span></div><div class="stat"><strong>${active.length}</strong><span class="small">邪泻褌懈胁薪褘褏 蟹邪写邪褔</span></div><div class="stat"><strong>${entries.length}</strong><span class="small">蟹邪锌懈褋械泄 胁 写薪械胁薪懈泻械</span></div>`;document.getElementById('todayCount').textContent=tod.length+' 胁褋械谐芯';document.getElementById('todayTasks').innerHTML=tod.length?tod.sort(sortTask).map(taskHtml).join(''):'<div class="empty">袧邪 褋械谐芯写薪褟 锌芯泻邪 薪懈褔械谐芯 薪械 蟹邪锌谢邪薪懈褉芯胁邪薪芯.</div>';let future=tasks.filter(t=>!t.done&&t.date>=today).sort(sortTask).slice(0,5);document.getElementById('upcoming').innerHTML=future.length?future.map(t=>`<div class="item"><div class="itemtitle">${safe(t.title)}</div><div class="small">${fmt(t.date)} ${t.time?'路 '+safe(t.time):''} 路 ${safe(t.category)}</div></div>`).join(''):'<div class="empty">袘谢懈卸邪泄褕懈褏 蟹邪写邪褔 锌芯泻邪 薪械褌.</div>'}
+function deleteTask(id){if(!confirm('Удалить задачу?'))return;tasks=tasks.filter(x=>x.id!==id);persist();renderAll()}
+function taskHtml(t){return `<div class="item ${t.done?'taskdone':''}"><div class="row" style="align-items:flex-start"><input class="check" type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><div style="flex:1"><div class="itemtitle">${safe(t.title)}</div><div class="small">${safe(t.date?fmt(t.date):'')} ${t.time?'· '+safe(t.time):''} · ${safe(t.category)} · ${safe(t.priority)}</div>${t.note?`<div class="small" style="margin-top:5px">${safe(t.note)}</div>`:''}</div></div><div class="btnrow"><button class="btn" onclick="editTask(${t.id})">Изменить</button><button class="btn danger" onclick="deleteTask(${t.id})">Удалить</button></div></div>`}
+function renderHome(){let today=iso(new Date()),tod=tasks.filter(t=>t.date===today),active=tasks.filter(t=>!t.done),done=tasks.filter(t=>t.done);document.getElementById('homeDate').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});document.getElementById('stats').innerHTML=`<div class="stat"><strong>${tod.length}</strong><span class="small">дел сегодня</span></div><div class="stat"><strong>${tod.filter(t=>t.done).length}</strong><span class="small">выполнено</span></div><div class="stat"><strong>${active.length}</strong><span class="small">активных задач</span></div><div class="stat"><strong>${entries.length}</strong><span class="small">записей в дневнике</span></div>`;document.getElementById('todayCount').textContent=tod.length+' всего';document.getElementById('todayTasks').innerHTML=tod.length?tod.sort(sortTask).map(taskHtml).join(''):'<div class="empty">На сегодня пока ничего не запланировано.</div>';let future=tasks.filter(t=>!t.done&&t.date>=today).sort(sortTask).slice(0,5);document.getElementById('upcoming').innerHTML=future.length?future.map(t=>`<div class="item"><div class="itemtitle">${safe(t.title)}</div><div class="small">${fmt(t.date)} ${t.time?'· '+safe(t.time):''} · ${safe(t.category)}</div></div>`).join(''):'<div class="empty">Ближайших задач пока нет.</div>'}
 function sortTask(a,b){return a.date.localeCompare(b.date)||(a.time||'').localeCompare(b.time||'')}
 function setFilter(f,b){taskFilter=f;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('on',x===b));renderTasks()}
 function setCategory(c,b){taskCategory=c;document.querySelectorAll('#categoryFilters .pill').forEach(x=>x.classList.toggle('on',x===b));renderTasks()}
-function renderTasks(){let q=(document.getElementById('taskSearch')?.value||'').toLowerCase();let a=tasks.filter(t=>(taskFilter==='all'||(taskFilter==='active'?!t.done:t.done))&&(taskCategory==='袙褋械'||t.category===taskCategory)&&(`${t.title} ${t.note||''} ${t.category}`.toLowerCase().includes(q))).sort((a,b)=>sortTask(a,b));document.getElementById('taskList').innerHTML=a.length?a.map(taskHtml).join(''):'<div class="card empty">袟邪写邪褔 薪械 薪邪泄写械薪芯.</div>'}
+function renderTasks(){let q=(document.getElementById('taskSearch')?.value||'').toLowerCase();let a=tasks.filter(t=>(taskFilter==='all'||(taskFilter==='active'?!t.done:t.done))&&(taskCategory==='Все'||t.category===taskCategory)&&(`${t.title} ${t.note||''} ${t.category}`.toLowerCase().includes(q))).sort((a,b)=>sortTask(a,b));document.getElementById('taskList').innerHTML=a.length?a.map(taskHtml).join(''):'<div class="card empty">Задач не найдено.</div>'}
 function moveMonth(n){monthCursor.setMonth(monthCursor.getMonth()+n);renderCalendar()}
-function renderCalendar(){let y=monthCursor.getFullYear(),m=monthCursor.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,count=new Date(y,m+1,0).getDate();document.getElementById('monthName').textContent=new Date(y,m,1).toLocaleDateString('ru-RU',{month:'long',year:'numeric'});let marks=new Set([...tasks.map(t=>t.date),...entries.map(e=>e.date)]);let html='';for(let i=0;i<first;i++)html+='<span></span>';for(let d=1;d<=count;d++){let key=iso(new Date(y,m,d));html+=`<button class="day ${key===selectedDay?'selected':''} ${key===iso(new Date())?'today':''} ${marks.has(key)?'marked':''}" onclick="selectDate('${key}')">${d}</button>`}document.getElementById('calendarGrid').innerHTML=html;document.getElementById('calendarSelectedLabel').textContent=fmt(selectedDay);let ts=tasks.filter(t=>t.date===selectedDay).sort(sortTask),es=entries.filter(e=>e.date===selectedDay);document.getElementById('calendarItems').innerHTML=(ts.length?ts.map(taskHtml).join(''):'')+(es.length?es.map(entryCard).join(''):'')||'<div class="empty">袧邪 褝褌褍 写邪褌褍 锌芯泻邪 薪懈褔械谐芯 薪械褌.</div>'}
+function renderCalendar(){let y=monthCursor.getFullYear(),m=monthCursor.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,count=new Date(y,m+1,0).getDate();document.getElementById('monthName').textContent=new Date(y,m,1).toLocaleDateString('ru-RU',{month:'long',year:'numeric'});let marks=new Set([...tasks.map(t=>t.date),...entries.map(e=>e.date)]);let html='';for(let i=0;i<first;i++)html+='<span></span>';for(let d=1;d<=count;d++){let key=iso(new Date(y,m,d));html+=`<button class="day ${key===selectedDay?'selected':''} ${key===iso(new Date())?'today':''} ${marks.has(key)?'marked':''}" onclick="selectDate('${key}')">${d}</button>`}document.getElementById('calendarGrid').innerHTML=html;document.getElementById('calendarSelectedLabel').textContent=fmt(selectedDay);let ts=tasks.filter(t=>t.date===selectedDay).sort(sortTask),es=entries.filter(e=>e.date===selectedDay);document.getElementById('calendarItems').innerHTML=(ts.length?ts.map(taskHtml).join(''):'')+(es.length?es.map(entryCard).join(''):'')||'<div class="empty">На эту дату пока ничего нет.</div>'}
 function selectDate(d){selectedDay=d;renderCalendar()}
-function openDiaryForm(id){diaryEdit=id||null;diaryMood='';diaryPhotos=[];let e=id?entries.find(x=>x.id===id):null;document.getElementById('diaryForm').classList.remove('hidden');document.getElementById('diaryFormTitle').textContent=e?'袠蟹屑械薪懈褌褜 蟹邪锌懈褋褜':'袧芯胁邪褟 蟹邪锌懈褋褜';document.getElementById('dDate').value=e?.date||selectedDay||iso(new Date());document.getElementById('dCategory').value=e?.category||'袦芯懈 屑褘褋谢懈';document.getElementById('dText').value=e?.text||'';diaryMood=e?.mood||'';diaryPhotos=e?(e.photos|| (e.photo?[e.photo]:[])).slice():[];document.querySelectorAll('#moods .pill').forEach(b=>b.classList.toggle('on',b.textContent===diaryMood));renderDiaryPreview();document.getElementById('diaryForm').scrollIntoView({behavior:'smooth'})}
+function openDiaryForm(id){diaryEdit=id||null;diaryMood='';diaryPhotos=[];let e=id?entries.find(x=>x.id===id):null;document.getElementById('diaryForm').classList.remove('hidden');document.getElementById('diaryFormTitle').textContent=e?'Изменить запись':'Новая запись';document.getElementById('dDate').value=e?.date||selectedDay||iso(new Date());document.getElementById('dCategory').value=e?.category||'Мои мысли';document.getElementById('dText').value=e?.text||'';diaryMood=e?.mood||'';diaryPhotos=e?(e.photos|| (e.photo?[e.photo]:[])).slice():[];document.querySelectorAll('#moods .pill').forEach(b=>b.classList.toggle('on',b.textContent===diaryMood));renderDiaryPreview();document.getElementById('diaryForm').scrollIntoView({behavior:'smooth'})}
 function closeDiaryForm(){document.getElementById('diaryForm').classList.add('hidden');diaryEdit=null}
 function pickMood(b,m){diaryMood=m;document.querySelectorAll('#moods .pill').forEach(x=>x.classList.toggle('on',x===b))}
 document.getElementById('dPhotos').addEventListener('change',async e=>{for(let f of [...e.target.files])diaryPhotos.push(await compress(f));e.target.value='';renderDiaryPreview()});
 function renderDiaryPreview(){document.getElementById('dPreview').innerHTML=diaryPhotos.map((p,i)=>`<img src="${p}" onclick="removeDiaryPhoto(${i})">`).join('')}
 function removeDiaryPhoto(i){diaryPhotos.splice(i,1);renderDiaryPreview()}
-function saveDiary(){let date=document.getElementById('dDate').value,text=document.getElementById('dText').value.trim();if(!date||(!text&&!diaryPhotos.length)){toast('袛芯斜邪胁褜 写邪褌褍 懈 褌械泻褋褌 懈谢懈 褎芯褌芯');return}let e={id:diaryEdit||Date.now(),date,category:document.getElementById('dCategory').value,mood:diaryMood,text,photos:diaryPhotos};if(diaryEdit){let i=entries.findIndex(x=>x.id===diaryEdit);if(i>=0)entries[i]=e}else entries.push(e);localStorage.setItem(KEYS.entries,JSON.stringify(entries));selectedDay=date;closeDiaryForm();renderAll();toast('袟邪锌懈褋褜 褋芯褏褉邪薪械薪邪')}
-function entryCard(e){let ps=e.photos||(e.photo?[e.photo]:[]);return `<div class="card">${ps.length?`<img class="photo" src="${ps[0]}">`:''}<div class="small">${fmt(e.date)} ${e.mood||''}</div><div class="entrycat">${safe(e.category||'袦芯懈 屑褘褋谢懈')}</div><p>${safe(e.text||'')}</p><div class="btnrow"><button class="btn" onclick="openDiaryForm(${e.id})">袠蟹屑械薪懈褌褜</button><button class="btn danger" onclick="deleteDiary(${e.id})">校写邪谢懈褌褜</button></div></div>`}
-function renderDiary(){let q=(document.getElementById('diarySearch')?.value||'').toLowerCase();let a=entries.filter(e=>(e.text||'').toLowerCase().includes(q)||(e.category||'').toLowerCase().includes(q)).sort((a,b)=>b.date.localeCompare(a.date));document.getElementById('diaryList').innerHTML=a.length?a.map(entryCard).join(''):'<div class="card empty">袟邪锌懈褋械泄 锌芯泻邪 薪械褌.</div>'}
-function deleteDiary(id){if(!confirm('校写邪谢懈褌褜 蟹邪锌懈褋褜?'))return;entries=entries.filter(e=>e.id!==id);localStorage.setItem(KEYS.entries,JSON.stringify(entries));renderAll()}
+function saveDiary(){let date=document.getElementById('dDate').value,text=document.getElementById('dText').value.trim();if(!date||(!text&&!diaryPhotos.length)){toast('Добавь дату и текст или фото');return}let e={id:diaryEdit||Date.now(),date,category:document.getElementById('dCategory').value,mood:diaryMood,text,photos:diaryPhotos};if(diaryEdit){let i=entries.findIndex(x=>x.id===diaryEdit);if(i>=0)entries[i]=e}else entries.push(e);localStorage.setItem(KEYS.entries,JSON.stringify(entries));selectedDay=date;closeDiaryForm();renderAll();toast('Запись сохранена')}
+function entryCard(e){let ps=e.photos||(e.photo?[e.photo]:[]);return `<div class="card">${ps.length?`<img class="photo" src="${ps[0]}">`:''}<div class="small">${fmt(e.date)} ${e.mood||''}</div><div class="entrycat">${safe(e.category||'Мои мысли')}</div><p>${safe(e.text||'')}</p><div class="btnrow"><button class="btn" onclick="openDiaryForm(${e.id})">Изменить</button><button class="btn danger" onclick="deleteDiary(${e.id})">Удалить</button></div></div>`}
+function renderDiary(){let q=(document.getElementById('diarySearch')?.value||'').toLowerCase();let a=entries.filter(e=>(e.text||'').toLowerCase().includes(q)||(e.category||'').toLowerCase().includes(q)).sort((a,b)=>b.date.localeCompare(a.date));document.getElementById('diaryList').innerHTML=a.length?a.map(entryCard).join(''):'<div class="card empty">Записей пока нет.</div>'}
+function deleteDiary(id){if(!confirm('Удалить запись?'))return;entries=entries.filter(e=>e.id!==id);localStorage.setItem(KEYS.entries,JSON.stringify(entries));renderAll()}
 function compress(file){return new Promise(resolve=>{let r=new FileReader();r.onload=()=>{let im=new Image();im.onload=()=>{let c=document.createElement('canvas'),s=Math.min(1400/im.width,1400/im.height,1);c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',.78))};im.src=r.result};r.readAsDataURL(file)})}
-async function addBoard(){let f=document.getElementById('bPhoto').files[0],title=document.getElementById('bTitle').value.trim();if(!f&&!title){toast('袛芯斜邪胁褜 褌械泻褋褌 懈谢懈 褎芯褌芯');return}board.push({id:Date.now(),category:document.getElementById('bCategory').value,title,photo:f?await compress(f):''});localStorage.setItem(KEYS.board,JSON.stringify(board));document.getElementById('bTitle').value='';document.getElementById('bPhoto').value='';document.getElementById('boardForm').classList.add('hidden');renderBoard();toast('袛芯斜邪胁谢械薪芯')}
+async function addBoard(){let f=document.getElementById('bPhoto').files[0],title=document.getElementById('bTitle').value.trim();if(!f&&!title){toast('Добавь текст или фото');return}board.push({id:Date.now(),category:document.getElementById('bCategory').value,title,photo:f?await compress(f):''});localStorage.setItem(KEYS.board,JSON.stringify(board));document.getElementById('bTitle').value='';document.getElementById('bPhoto').value='';document.getElementById('boardForm').classList.add('hidden');renderBoard();toast('Добавлено')}
 function filterBoard(c,b){boardCategory=c;document.querySelectorAll('#boardFilters .pill').forEach(x=>x.classList.toggle('on',x===b));renderBoard()}
-function renderBoard(){let a=board.filter(x=>boardCategory==='袙褋械'||x.category===boardCategory).slice().reverse();document.getElementById('boardList').innerHTML=a.length?a.map(x=>`<div class="card">${x.photo?`<img class="photo" src="${x.photo}">`:''}<div class="entrycat">${safe(x.category)}</div><p>${safe(x.title||'')}</p><button class="btn danger" onclick="deleteBoard(${x.id})">校写邪谢懈褌褜</button></div>`).join(''):'<div class="card empty">袟写械褋褜 斜褍写褍褌 褌胁芯懈 懈写械懈 懈 胁写芯褏薪芯胁械薪懈械.</div>'}
-function deleteBoard(id){if(!confirm('校写邪谢懈褌褜 泻邪褉褌芯褔泻褍?'))return;board=board.filter(x=>x.id!==id);localStorage.setItem(KEYS.board,JSON.stringify(board));renderBoard()}
-function renderAnalytics(){let done=tasks.filter(t=>t.done).length,active=tasks.filter(t=>!t.done).length,rate=tasks.length?Math.round(done/tasks.length*100):0;document.getElementById('analyticsStats').innerHTML=`<div class="stat"><strong>${tasks.length}</strong><span class="small">胁褋械谐芯 蟹邪写邪褔</span></div><div class="stat"><strong>${done}</strong><span class="small">胁褘锌芯谢薪械薪芯</span></div><div class="stat"><strong>${active}</strong><span class="small">胁 锌褉芯褑械褋褋械</span></div><div class="stat"><strong>${rate}%</strong><span class="small">胁褘锌芯谢薪械薪懈械</span></div>`;let now=new Date(),days=[];for(let i=6;i>=0;i--){let d=new Date();d.setDate(now.getDate()-i);let k=iso(d),a=tasks.filter(t=>t.date===k),dn=a.filter(t=>t.done).length;days.push(`<div class="item"><div class="row"><span>${d.toLocaleDateString('ru-RU',{weekday:'short',day:'numeric'})}</span><span class="small">${dn}/${a.length} 胁褘锌芯谢薪械薪芯</span></div><div style="height:6px;background:var(--blue2);border-radius:8px;margin-top:7px;overflow:hidden"><div style="height:100%;width:${a.length?dn/a.length*100:0}%;background:#8dbbd4"></div></div></div>`)}document.getElementById('weekStats').innerHTML=days.join('');let cats=['袪邪斜芯褌邪','小锌芯褉褌','袥懈褔薪芯械','袨褌写褘褏','袟写芯褉芯胁褜械','袛褉褍谐芯械'];document.getElementById('categoryStats').innerHTML=cats.map(c=>{let n=tasks.filter(t=>t.category===c).length;return `<div class="item row"><span>${c}</span><strong>${n}</strong></div>`}).join('')}
-function backup(){let data={app:'MY SPACE',version:1,exportedAt:new Date().toISOString(),entries,board,tasks};let blob=new Blob([JSON.stringify(data)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='my-space-backup-'+iso(new Date())+'.json';a.click();URL.revokeObjectURL(url);toast('袪械蟹械褉胁薪邪褟 泻芯锌懈褟 锌芯写谐芯褌芯胁谢械薪邪')}
-document.getElementById('restoreFile').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!confirm('袠屑锌芯褉褌懈褉芯胁邪褌褜 写邪薪薪褘械? 孝械泻褍褖懈械 蟹邪锌懈褋懈 斜褍写褍褌 芯斜褗械写懈薪械薪褘 褋 泻芯锌懈械泄.'))return;entries=[...entries,...(d.entries||[])];board=[...board,...(d.board||[])];tasks=[...tasks,...(d.tasks||[])];persist();localStorage.setItem(KEYS.entries,JSON.stringify(entries));toast('袛邪薪薪褘械 胁芯褋褋褌邪薪芯胁谢械薪褘');renderAll()}catch(err){toast('袧械 褍写邪谢芯褋褜 锌褉芯褔懈褌邪褌褜 褎邪泄谢 泻芯锌懈懈')}};r.readAsText(f);e.target.value=''});
-async function enableNotifications(){if(!('Notification'in window)){document.getElementById('notifyStatus').textContent='协褌芯褌 斜褉邪褍蟹械褉 薪械 锌芯写写械褉卸懈胁邪械褌 褍胁械写芯屑谢械薪懈褟.';return}let p=await Notification.requestPermission();document.getElementById('notifyStatus').textContent=p==='granted'?'袪邪蟹褉械褕械薪懈械 锌芯谢褍褔械薪芯. 校胁械写芯屑谢械薪懈褟 蟹邪胁懈褋褟褌 芯褌 褉邪斜芯褌褘 斜褉邪褍蟹械褉邪.':'袪邪蟹褉械褕械薪懈械 薪械 锌褉械写芯褋褌邪胁谢械薪芯.'}
-function init(){let today=iso(new Date());selectedDay=today;monthCursor=new Date();document.getElementById('dDate').value=today;renderAll();if('Notification'in window)document.getElementById('notifyStatus').textContent=Notification.permission==='granted'?'校胁械写芯屑谢械薪懈褟 褉邪蟹褉械褕械薪褘.':'校胁械写芯屑谢械薪懈褟 薪械 胁泻谢褞褔械薪褘.'}
+function renderBoard(){let a=board.filter(x=>boardCategory==='Все'||x.category===boardCategory).slice().reverse();document.getElementById('boardList').innerHTML=a.length?a.map(x=>`<div class="card">${x.photo?`<img class="photo" src="${x.photo}">`:''}<div class="entrycat">${safe(x.category)}</div><p>${safe(x.title||'')}</p><button class="btn danger" onclick="deleteBoard(${x.id})">Удалить</button></div>`).join(''):'<div class="card empty">Здесь будут твои идеи и вдохновение.</div>'}
+function deleteBoard(id){if(!confirm('Удалить карточку?'))return;board=board.filter(x=>x.id!==id);localStorage.setItem(KEYS.board,JSON.stringify(board));renderBoard()}
+function renderAnalytics(){let done=tasks.filter(t=>t.done).length,active=tasks.filter(t=>!t.done).length,rate=tasks.length?Math.round(done/tasks.length*100):0;document.getElementById('analyticsStats').innerHTML=`<div class="stat"><strong>${tasks.length}</strong><span class="small">всего задач</span></div><div class="stat"><strong>${done}</strong><span class="small">выполнено</span></div><div class="stat"><strong>${active}</strong><span class="small">в процессе</span></div><div class="stat"><strong>${rate}%</strong><span class="small">выполнение</span></div>`;let now=new Date(),days=[];for(let i=6;i>=0;i--){let d=new Date();d.setDate(now.getDate()-i);let k=iso(d),a=tasks.filter(t=>t.date===k),dn=a.filter(t=>t.done).length;days.push(`<div class="item"><div class="row"><span>${d.toLocaleDateString('ru-RU',{weekday:'short',day:'numeric'})}</span><span class="small">${dn}/${a.length} выполнено</span></div><div style="height:6px;background:var(--blue2);border-radius:8px;margin-top:7px;overflow:hidden"><div style="height:100%;width:${a.length?dn/a.length*100:0}%;background:#8dbbd4"></div></div></div>`)}document.getElementById('weekStats').innerHTML=days.join('');let cats=['Работа','Спорт','Личное','Отдых','Здоровье','Другое'];document.getElementById('categoryStats').innerHTML=cats.map(c=>{let n=tasks.filter(t=>t.category===c).length;return `<div class="item row"><span>${c}</span><strong>${n}</strong></div>`}).join('')}
+function backup(){let data={app:'MY SPACE',version:1,exportedAt:new Date().toISOString(),entries,board,tasks};let blob=new Blob([JSON.stringify(data)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='my-space-backup-'+iso(new Date())+'.json';a.click();URL.revokeObjectURL(url);toast('Резервная копия подготовлена')}
+document.getElementById('restoreFile').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!confirm('Импортировать данные? Текущие записи будут объединены с копией.'))return;entries=[...entries,...(d.entries||[])];board=[...board,...(d.board||[])];tasks=[...tasks,...(d.tasks||[])];persist();localStorage.setItem(KEYS.entries,JSON.stringify(entries));toast('Данные восстановлены');renderAll()}catch(err){toast('Не удалось прочитать файл копии')}};r.readAsText(f);e.target.value=''});
+async function enableNotifications(){if(!('Notification'in window)){document.getElementById('notifyStatus').textContent='Этот браузер не поддерживает уведомления.';return}let p=await Notification.requestPermission();document.getElementById('notifyStatus').textContent=p==='granted'?'Разрешение получено. Уведомления зависят от работы браузера.':'Разрешение не предоставлено.'}
+function init(){let today=iso(new Date());selectedDay=today;monthCursor=new Date();document.getElementById('dDate').value=today;renderAll();if('Notification'in window)document.getElementById('notifyStatus').textContent=Notification.permission==='granted'?'Уведомления разрешены.':'Уведомления не включены.'}
 init();
 </script>
 <script>
@@ -241,8 +241,8 @@ function applyTheme(theme) {
   const button = document.getElementById('themeButton');
   if (button) {
     button.textContent = theme === 'dark'
-      ? '袙泻谢褞褔懈褌褜 褋胁械褌谢褍褞 褌械屑褍'
-      : '袙泻谢褞褔懈褌褜 褌褢屑薪褍褞 褌械屑褍';
+      ? 'Включить светлую тему'
+      : 'Включить тёмную тему';
   }
 }
 
@@ -255,9 +255,9 @@ function addThemeSettings() {
   card.id = 'themeCard';
 
   card.innerHTML = `
-    <h3>袨褎芯褉屑谢械薪懈械</h3>
+    <h3>Оформление</h3>
     <div class="theme-row">
-      <span class="small">孝械屑邪 锌褉懈谢芯卸械薪懈褟</span>
+      <span class="small">Тема приложения</span>
       <button class="theme-switch" id="themeButton"></button>
     </div>
   `;
@@ -308,7 +308,7 @@ const today = () => {
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 };
 
-/* 1. 小袨袪孝袠袪袨袙袣袗 袟袗袛袗效 */
+/* 1. СОРТИРОВКА ЗАДАЧ */
 
 const taskSearch = $('taskSearch');
 
@@ -316,10 +316,10 @@ if(taskSearch && ! $('taskSort')){
   const sort = document.createElement('select');
   sort.id='taskSort';
   sort.innerHTML=`
-    <option value="date">小薪邪褔邪谢邪 斜谢懈卸邪泄褕懈械</option>
-    <option value="priority">袩芯 锌褉懈芯褉懈褌械褌褍</option>
-    <option value="new">小薪邪褔邪谢邪 薪芯胁褘械</option>
-    <option value="old">小薪邪褔邪谢邪 褋褌邪褉褘械</option>
+    <option value="date">Сначала ближайшие</option>
+    <option value="priority">По приоритету</option>
+    <option value="new">Сначала новые</option>
+    <option value="old">Сначала старые</option>
   `;
   sort.style.margin='10px 0';
   taskSearch.after(sort);
@@ -334,11 +334,11 @@ renderTasks=function(){
 
   let a=tasks.filter(t=>
     (taskFilter==='all'||(taskFilter==='active'?!t.done:t.done)) &&
-    (taskCategory==='袙褋械'||t.category===taskCategory) &&
+    (taskCategory==='Все'||t.category===taskCategory) &&
     (`${t.title} ${t.note||''} ${t.category}`.toLowerCase().includes(q))
   );
 
-  const rank={'小褉芯褔薪褘泄':0,'袙邪卸薪褘泄':1,'袨斜褘褔薪褘泄':2};
+  const rank={'Срочный':0,'Важный':1,'Обычный':2};
 
   a.sort((x,y)=>{
     if(mode==='priority') return (rank[x.priority]??2)-(rank[y.priority]??2);
@@ -349,10 +349,10 @@ renderTasks=function(){
 
   $('taskList').innerHTML=a.length
     ?a.map(taskHtml).join('')
-    :'<div class="card empty">袟邪写邪褔 薪械 薪邪泄写械薪芯.</div>';
+    :'<div class="card empty">Задач не найдено.</div>';
 };
 
-/* 2. 袣袗袥袝袧袛袗袪鞋 */
+/* 2. КАЛЕНДАРЬ */
 
 const calhead=document.querySelector('.calhead');
 
@@ -360,7 +360,7 @@ if(calhead && !$('msToday')){
   const tools=document.createElement('div');
   tools.className='ms-tools';
   tools.innerHTML=`
-    <button class="btn" id="msToday">小械谐芯写薪褟</button>
+    <button class="btn" id="msToday">Сегодня</button>
     <input type="date" id="msDateJump">
   `;
   calhead.after(tools);
@@ -379,7 +379,7 @@ if(calhead && !$('msToday')){
   };
 }
 
-/* 3. 肖袨孝袨袚袗袥袝袪袝携 */
+/* 3. ФОТОГАЛЕРЕЯ */
 
 const lightbox=document.createElement('div');
 lightbox.className='ms-lightbox';
@@ -388,9 +388,9 @@ lightbox.innerHTML=`
   <div style="width:100%;max-width:700px;text-align:center">
     <img id="msBigPhoto">
     <div class="ms-gallery-controls">
-      <button id="msPrev">鈥�</button>
-      <button id="msClose">袟邪泻褉褘褌褜</button>
-      <button id="msNext">鈥�</button>
+      <button id="msPrev">‹</button>
+      <button id="msClose">Закрыть</button>
+      <button id="msNext">›</button>
     </div>
     <div id="msPhotoCount" style="color:white;margin-top:10px"></div>
   </div>
@@ -459,7 +459,7 @@ entryCard=function(e){
   return temp.innerHTML;
 };
 
-/* 4. 袪袗小楔袠袪袝袧袧袗携 小孝袗孝袠小孝袠袣袗 */
+/* 4. РАСШИРЕННАЯ СТАТИСТИКА */
 
 const originalAnalytics=renderAnalytics;
 
@@ -482,19 +482,19 @@ renderAnalytics=function(){
   box.id='msExtraStats';
   box.className='card';
   box.innerHTML=`
-    <h3>协褌芯褌 屑械褋褟褑</h3>
+    <h3>Этот месяц</h3>
     <div class="grid2">
-      <div class="stat"><strong>${monthTasks.length}</strong><span class="small">蟹邪写邪褔</span></div>
-      <div class="stat"><strong>${monthDone}</strong><span class="small">胁褘锌芯谢薪械薪芯</span></div>
-      <div class="stat"><strong>${monthEntries}</strong><span class="small">蟹邪锌懈褋械泄</span></div>
-      <div class="stat"><strong>${photoCount}</strong><span class="small">褎芯褌芯谐褉邪褎懈泄</span></div>
+      <div class="stat"><strong>${monthTasks.length}</strong><span class="small">задач</span></div>
+      <div class="stat"><strong>${monthDone}</strong><span class="small">выполнено</span></div>
+      <div class="stat"><strong>${monthEntries}</strong><span class="small">записей</span></div>
+      <div class="stat"><strong>${photoCount}</strong><span class="small">фотографий</span></div>
     </div>
   `;
 
   $('analyticsStats').after(box);
 };
 
-/* 5. 袧袗袩袨袦袠袧袗袧袠携 */
+/* 5. НАПОМИНАНИЯ */
 
 const notifiedKey='myspace_notified_v2';
 
@@ -520,7 +520,7 @@ function checkReminders(){
 
     try{
       new Notification('MY SPACE',{
-        body:'袧邪锌芯屑懈薪邪薪懈械: '+t.title
+        body:'Напоминание: '+t.title
       });
 
       notified[key]=true;
@@ -531,7 +531,7 @@ function checkReminders(){
 
 setInterval(checkReminders,15000);
 
-/* 6. 袟袗些袠孝袗 袠袦袩袨袪孝袗 */
+/* 6. ЗАЩИТА ИМПОРТА */
 
 const restore=$('restoreFile');
 
@@ -550,11 +550,11 @@ if(restore){
           !Array.isArray(data.entries)||
           !Array.isArray(data.tasks)||
           !Array.isArray(data.board)){
-          toast('肖邪泄谢 懈屑械械褌 薪械锌芯写褏芯写褟褖懈泄 褎芯褉屑邪褌');
+          toast('Файл имеет неподходящий формат');
           return;
         }
 
-        if(!confirm('袨斜褗械写懈薪懈褌褜 写邪薪薪褘械 褋 褌械泻褍褖懈屑懈?'))return;
+        if(!confirm('Объединить данные с текущими?'))return;
 
         const merge=(oldData,newData)=>{
           const map=new Map(oldData.map(x=>[String(x.id),x]));
@@ -572,9 +572,9 @@ if(restore){
 
         persist();
         renderAll();
-        toast('袛邪薪薪褘械 芯斜褗械写懈薪械薪褘');
+        toast('Данные объединены');
       }catch(err){
-        toast('袧械 褍写邪谢芯褋褜 锌褉芯褔懈褌邪褌褜 褎邪泄谢');
+        toast('Не удалось прочитать файл');
       }
     };
 
@@ -583,34 +583,34 @@ if(restore){
   };
 }
 
-/* 7. 袩袨袛袚袨孝袨袙袣袗 袣 袠袧孝袝袚袪袗笑袠携袦 */
+/* 7. ПОДГОТОВКА К ИНТЕГРАЦИЯМ */
 
 if(!$('msIntegrationInfo')){
   const card=document.createElement('div');
   card.className='card';
   card.id='msIntegrationInfo';
   card.innerHTML=`
-    <h3>袘褍写褍褖懈械 懈薪褌械谐褉邪褑懈懈</h3>
+    <h3>Будущие интеграции</h3>
     <div class="item">
       <strong>DIKIDI</strong>
-      <div class="small">袩芯写谐芯褌芯胁泻邪 锌芯写泻谢褞褔械薪懈褟 褉邪褋锌懈褋邪薪懈褟 懈 蟹邪锌懈褋械泄 泻谢懈械薪褌芯胁.</div>
-      <span class="ms-badge">袨卸懈写邪械褌 锌芯写泻谢褞褔械薪懈褟</span>
+      <div class="small">Подготовка подключения расписания и записей клиентов.</div>
+      <span class="ms-badge">Ожидает подключения</span>
     </div>
     <div class="item">
       <strong>Google Calendar</strong>
-      <div class="small">袩芯写谐芯褌芯胁泻邪 褋懈薪褏褉芯薪懈蟹邪褑懈懈 褋芯斜褘褌懈泄 懈 泻邪谢械薪写邪褉褟.</div>
-      <span class="ms-badge">袨卸懈写邪械褌 锌芯写泻谢褞褔械薪懈褟</span>
+      <div class="small">Подготовка синхронизации событий и календаря.</div>
+      <span class="ms-badge">Ожидает подключения</span>
     </div>
     <p class="small">
-      袛谢褟 懈薪褌械谐褉邪褑懈泄 锌芯褌褉械斜褍械褌褋褟 芯褌写械谢褜薪邪褟 邪胁褌芯褉懈蟹邪褑懈褟,
-      API 懈 褋械褉胁械褉薪邪褟 褔邪褋褌褜.
+      Для интеграций потребуется отдельная авторизация,
+      API и серверная часть.
     </p>
   `;
 
   $('settings').appendChild(card);
 }
 
-/* 8. 袨袘袧袨袙袥袝袧袠袝 袠袧孝袝袪肖袝袡小袗 */
+/* 8. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА */
 
 renderAll();
 
@@ -649,48 +649,48 @@ const money=n=>Number(n||0).toLocaleString('ru-RU',{minimumFractionDigits:2,maxi
 function persistPayments(){localStorage.setItem(STORAGE_KEY,JSON.stringify(payments));}
 function tell(s){if(typeof window.toast==='function')window.toast(s);else alert(s);}
 function forMonth(d){return payments.filter(p=>p.date&&p.date.slice(0,7)===monthId(d));}
-function paymentStatus(p){if(p.paid)return{text:'袨锌谢邪褔械薪芯',cls:'paid'};const delta=Math.round((new Date(p.date+'T12:00:00')-new Date(isoDate(new Date())+'T12:00:00'))/86400000);if(delta<0)return{text:'袩褉芯褋褉芯褔械薪芯',cls:'late'};if(delta<=3)return{text:'小泻芯褉芯 褋褉芯泻',cls:'soon'};return{text:'袨卸懈写邪械褌 芯锌谢邪褌褘',cls:''};}
+function paymentStatus(p){if(p.paid)return{text:'Оплачено',cls:'paid'};const delta=Math.round((new Date(p.date+'T12:00:00')-new Date(isoDate(new Date())+'T12:00:00'))/86400000);if(delta<0)return{text:'Просрочено',cls:'late'};if(delta<=3)return{text:'Скоро срок',cls:'soon'};return{text:'Ожидает оплаты',cls:''};}
 function totals(list){return{all:list.reduce((a,p)=>a+Number(p.amount||0),0),paid:list.filter(p=>p.paid).reduce((a,p)=>a+Number(p.amount||0),0),late:list.filter(p=>!p.paid&&p.date<isoDate(new Date())).reduce((a,p)=>a+Number(p.amount||0),0)}}
 function showFinance(){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));byId('finance').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));byId('finNav').classList.add('active');draw();window.scrollTo(0,0);}
 function build(){
  let section=byId('finance');
  if(!section){section=document.createElement('section');section.id='finance';section.className='tab';section.innerHTML=`
- <h2>肖懈薪邪薪褋褘</h2>
- <div class="finance-month"><button type="button" id="finPrev">鈥�</button><strong id="finMonthTitle"></strong><button type="button" id="finNext">鈥�</button></div>
+ <h2>Финансы</h2>
+ <div class="finance-month"><button type="button" id="finPrev">‹</button><strong id="finMonthTitle"></strong><button type="button" id="finNext">›</button></div>
  <div class="finance-summary" id="finSummary"></div>
- <div class="card"><div class="row"><h3>袨斜褟蟹邪褌械谢褜薪褘械 锌谢邪褌械卸懈</h3><button class="btn primary" id="finAdd">锛� 袛芯斜邪胁懈褌褜</button></div><div id="finList"></div></div>
- <div class="card"><h3>袠褋褌芯褉懈褟 懈 锌芯胁褌芯褉械薪懈械</h3><p class="small">小泻芯锌懈褉褍泄 锌谢邪褌械卸懈 锌褉芯褕谢芯谐芯 屑械褋褟褑邪. 袨褌屑械褌泻懈 芯斜 芯锌谢邪褌械 锌褉懈 泻芯锌懈褉芯胁邪薪懈懈 褋斜褉邪褋褘胁邪褞褌褋褟.</p><button class="btn" id="finCopy">小泻芯锌懈褉芯胁邪褌褜 锌褉芯褕谢褘泄 屑械褋褟褑</button></div>
- <div class="form hidden" id="financeForm"><h3 id="finFormTitle">袧芯胁褘泄 锌谢邪褌褢卸</h3>
- <label>袧邪蟹胁邪薪懈械 锌谢邪褌械卸邪</label><input id="finName" maxlength="100" placeholder="袧邪锌褉懈屑械褉, 邪褉械薪写邪">
- <label>小褍屑屑邪 (Br)</label><input id="finAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00">
- <label>袛邪褌邪 芯锌谢邪褌褘</label><input id="finDate" type="date">
- <label>袣邪褌械谐芯褉懈褟</label><select id="finCategory"><option>袞懈谢褜褢</option><option>袣芯屑屑褍薪邪谢褜薪褘械 褍褋谢褍谐懈</option><option>小胁褟蟹褜 懈 懈薪褌械褉薪械褌</option><option>袣褉械写懈褌褘 懈 写芯谢谐懈</option><option>袩芯写锌懈褋泻懈</option><option>袟写芯褉芯胁褜械</option><option>孝褉邪薪褋锌芯褉褌</option><option>袛褉褍谐芯械</option></select>
- <label>袣芯屑屑械薪褌邪褉懈泄</label><textarea id="finNote" placeholder="袛芯锌芯谢薪懈褌械谢褜薪邪褟 懈薪褎芯褉屑邪褑懈褟"></textarea>
- <div class="btnrow"><button class="btn primary" id="finSave">小芯褏褉邪薪懈褌褜</button><button class="btn" id="finCancel">袨褌屑械薪邪</button></div></div>`;byId('main').appendChild(section);}
- let nav=byId('finNav');if(!nav){nav=document.createElement('button');nav.id='finNav';nav.type='button';nav.setAttribute('aria-label','肖懈薪邪薪褋褘');nav.innerHTML='<span>$</span>';const n=document.querySelector('nav');n.insertBefore(nav,n.children[2]||null);}nav.onclick=showFinance;
- if(!byId('financeHome')){const card=document.createElement('div');card.className='card';card.id='financeHome';card.innerHTML='<div class="row"><h3>袨斜褟蟹邪褌械谢褜薪褘械 锌谢邪褌械卸懈</h3><button class="btn" id="finHomeOpen">袨褌泻褉褘褌褜</button></div><div id="finHomeContent" class="finance-widget"></div>';const home=byId('home');home.insertBefore(card,home.querySelector('.card'));byId('finHomeOpen').onclick=showFinance;}
+ <div class="card"><div class="row"><h3>Обязательные платежи</h3><button class="btn primary" id="finAdd">＋ Добавить</button></div><div id="finList"></div></div>
+ <div class="card"><h3>История и повторение</h3><p class="small">Скопируй платежи прошлого месяца. Отметки об оплате при копировании сбрасываются.</p><button class="btn" id="finCopy">Скопировать прошлый месяц</button></div>
+ <div class="form hidden" id="financeForm"><h3 id="finFormTitle">Новый платёж</h3>
+ <label>Название платежа</label><input id="finName" maxlength="100" placeholder="Например, аренда">
+ <label>Сумма (Br)</label><input id="finAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00">
+ <label>Дата оплаты</label><input id="finDate" type="date">
+ <label>Категория</label><select id="finCategory"><option>Жильё</option><option>Коммунальные услуги</option><option>Связь и интернет</option><option>Кредиты и долги</option><option>Подписки</option><option>Здоровье</option><option>Транспорт</option><option>Другое</option></select>
+ <label>Комментарий</label><textarea id="finNote" placeholder="Дополнительная информация"></textarea>
+ <div class="btnrow"><button class="btn primary" id="finSave">Сохранить</button><button class="btn" id="finCancel">Отмена</button></div></div>`;byId('main').appendChild(section);}
+ let nav=byId('finNav');if(!nav){nav=document.createElement('button');nav.id='finNav';nav.type='button';nav.setAttribute('aria-label','Финансы');nav.innerHTML='<span>$</span>';const n=document.querySelector('nav');n.insertBefore(nav,n.children[2]||null);}nav.onclick=showFinance;
+ if(!byId('financeHome')){const card=document.createElement('div');card.className='card';card.id='financeHome';card.innerHTML='<div class="row"><h3>Обязательные платежи</h3><button class="btn" id="finHomeOpen">Открыть</button></div><div id="finHomeContent" class="finance-widget"></div>';const home=byId('home');home.insertBefore(card,home.querySelector('.card'));byId('finHomeOpen').onclick=showFinance;}
  byId('finPrev').onclick=()=>{viewedMonth=new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()-1,1);draw();};
  byId('finNext').onclick=()=>{viewedMonth=new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()+1,1);draw();};
  byId('finAdd').onclick=()=>openForm();byId('finSave').onclick=saveForm;byId('finCancel').onclick=closeForm;byId('finCopy').onclick=copyPrevious;
  draw();
 }
-function openForm(id){editingId=id||null;const p=payments.find(x=>x.id===id);byId('finFormTitle').textContent=p?'袠蟹屑械薪懈褌褜 锌谢邪褌褢卸':'袧芯胁褘泄 锌谢邪褌褢卸';byId('finName').value=p?.name||'';byId('finAmount').value=p?.amount??'';byId('finDate').value=p?.date||isoDate(viewedMonth);byId('finCategory').value=p?.category||'袞懈谢褜褢';byId('finNote').value=p?.note||'';byId('financeForm').classList.remove('hidden');byId('financeForm').scrollIntoView({behavior:'smooth',block:'start'});}
+function openForm(id){editingId=id||null;const p=payments.find(x=>x.id===id);byId('finFormTitle').textContent=p?'Изменить платёж':'Новый платёж';byId('finName').value=p?.name||'';byId('finAmount').value=p?.amount??'';byId('finDate').value=p?.date||isoDate(viewedMonth);byId('finCategory').value=p?.category||'Жильё';byId('finNote').value=p?.note||'';byId('financeForm').classList.remove('hidden');byId('financeForm').scrollIntoView({behavior:'smooth',block:'start'});}
 function closeForm(){byId('financeForm').classList.add('hidden');editingId=null;}
-function saveForm(){const name=byId('finName').value.trim(),amount=Number(byId('finAmount').value),date=byId('finDate').value;if(!name||!date||!Number.isFinite(amount)||amount<=0){tell('袩褉芯胁械褉褜 薪邪蟹胁邪薪懈械, 褋褍屑屑褍 懈 写邪褌褍 锌谢邪褌械卸邪.');return;}const old=payments.find(x=>x.id===editingId);const item={id:editingId||('pay_'+Date.now()+'_'+Math.random().toString(36).slice(2,8)),name,amount:Math.round(amount*100)/100,date,category:byId('finCategory').value,note:byId('finNote').value.trim(),paid:old?!!old.paid:false,created:old?.created||Date.now()};if(old){const i=payments.findIndex(x=>x.id===editingId);payments[i]=item;}else payments.push(item);viewedMonth=new Date(date+'T12:00:00');persistPayments();closeForm();draw();tell('袩谢邪褌褢卸 褋芯褏褉邪薪褢薪.');}
+function saveForm(){const name=byId('finName').value.trim(),amount=Number(byId('finAmount').value),date=byId('finDate').value;if(!name||!date||!Number.isFinite(amount)||amount<=0){tell('Проверь название, сумму и дату платежа.');return;}const old=payments.find(x=>x.id===editingId);const item={id:editingId||('pay_'+Date.now()+'_'+Math.random().toString(36).slice(2,8)),name,amount:Math.round(amount*100)/100,date,category:byId('finCategory').value,note:byId('finNote').value.trim(),paid:old?!!old.paid:false,created:old?.created||Date.now()};if(old){const i=payments.findIndex(x=>x.id===editingId);payments[i]=item;}else payments.push(item);viewedMonth=new Date(date+'T12:00:00');persistPayments();closeForm();draw();tell('Платёж сохранён.');}
 function togglePaid(id){const p=payments.find(x=>x.id===id);if(!p)return;p.paid=!p.paid;persistPayments();draw();}
 function edit(id){openForm(id);}
-function remove(id){if(!confirm('校写邪谢懈褌褜 褝褌芯褌 锌谢邪褌褢卸?'))return;payments=payments.filter(p=>p.id!==id);persistPayments();draw();}
-function draw(){const list=forMonth(viewedMonth).slice().sort((a,b)=>a.date.localeCompare(b.date)||a.name.localeCompare(b.name));const t=totals(list);byId('finMonthTitle').textContent=monthLabel(viewedMonth);byId('finSummary').innerHTML=`<div class="stat"><strong>${money(t.all)}</strong><span class="small">袙褋械谐芯</span></div><div class="stat"><strong>${money(t.paid)}</strong><span class="small">袨锌谢邪褔械薪芯</span></div><div class="stat"><strong>${money(t.all-t.paid)}</strong><span class="small">袨褋褌邪谢芯褋褜</span></div><div class="stat"><strong>${money(t.late)}</strong><span class="small">袩褉芯褋褉芯褔械薪芯</span></div>`;
- byId('finList').innerHTML=list.length?list.map(p=>{const s=paymentStatus(p);return `<div class="finance-payment"><div class="row" style="align-items:flex-start"><div style="flex:1;min-width:0"><strong>${escapeHtml(p.name)}</strong><div class="small">${escapeHtml(p.date)} 路 ${escapeHtml(p.category||'袛褉褍谐芯械')}</div>${p.note?`<div class="small">${escapeHtml(p.note)}</div>`:''}<span class="finance-status ${s.cls}">${s.text}</span></div><div class="amount">${money(p.amount)}</div></div><div class="finance-actions"><label style="display:flex;align-items:center;gap:6px;margin:0"><input class="finance-check" type="checkbox" ${p.paid?'checked':''} onchange="window.mySpaceFinancePaid('${p.id}')"><span class="small">袨锌谢邪褔械薪芯</span></label><button class="btn" onclick="window.mySpaceFinanceEdit('${p.id}')">袠蟹屑械薪懈褌褜</button><button class="btn danger" onclick="window.mySpaceFinanceDelete('${p.id}')">校写邪谢懈褌褜</button></div></div>`;}).join(''):'<div class="empty">袙 褝褌芯屑 屑械褋褟褑械 锌谢邪褌械卸械泄 锌芯泻邪 薪械褌.</div>';
+function remove(id){if(!confirm('Удалить этот платёж?'))return;payments=payments.filter(p=>p.id!==id);persistPayments();draw();}
+function draw(){const list=forMonth(viewedMonth).slice().sort((a,b)=>a.date.localeCompare(b.date)||a.name.localeCompare(b.name));const t=totals(list);byId('finMonthTitle').textContent=monthLabel(viewedMonth);byId('finSummary').innerHTML=`<div class="stat"><strong>${money(t.all)}</strong><span class="small">Всего</span></div><div class="stat"><strong>${money(t.paid)}</strong><span class="small">Оплачено</span></div><div class="stat"><strong>${money(t.all-t.paid)}</strong><span class="small">Осталось</span></div><div class="stat"><strong>${money(t.late)}</strong><span class="small">Просрочено</span></div>`;
+ byId('finList').innerHTML=list.length?list.map(p=>{const s=paymentStatus(p);return `<div class="finance-payment"><div class="row" style="align-items:flex-start"><div style="flex:1;min-width:0"><strong>${escapeHtml(p.name)}</strong><div class="small">${escapeHtml(p.date)} · ${escapeHtml(p.category||'Другое')}</div>${p.note?`<div class="small">${escapeHtml(p.note)}</div>`:''}<span class="finance-status ${s.cls}">${s.text}</span></div><div class="amount">${money(p.amount)}</div></div><div class="finance-actions"><label style="display:flex;align-items:center;gap:6px;margin:0"><input class="finance-check" type="checkbox" ${p.paid?'checked':''} onchange="window.mySpaceFinancePaid('${p.id}')"><span class="small">Оплачено</span></label><button class="btn" onclick="window.mySpaceFinanceEdit('${p.id}')">Изменить</button><button class="btn danger" onclick="window.mySpaceFinanceDelete('${p.id}')">Удалить</button></div></div>`;}).join(''):'<div class="empty">В этом месяце платежей пока нет.</div>';
  renderHome();}
-function renderHome(){const list=forMonth(new Date()),t=totals(list),next=list.filter(p=>!p.paid&&p.date>=isoDate(new Date())).sort((a,b)=>a.date.localeCompare(b.date))[0];const target=byId('finHomeContent');if(!target)return;target.innerHTML=`<div class="finance-summary"><div><strong>${money(t.all)}</strong><div class="small">袙褋械谐芯</div></div><div><strong>${money(t.paid)}</strong><div class="small">袨锌谢邪褔械薪芯</div></div><div><strong>${money(t.all-t.paid)}</strong><div class="small">袨褋褌邪谢芯褋褜</div></div></div><div class="small">${next?'袘谢懈卸邪泄褕懈泄 锌谢邪褌褢卸: '+escapeHtml(next.name)+' 鈥� '+money(next.amount)+' 路 '+escapeHtml(next.date):'袧械褌 锌褉械写褋褌芯褟褖懈褏 锌谢邪褌械卸械泄'}</div>`;}
-function copyPrevious(){const prev=new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()-1,1),source=forMonth(prev);if(!source.length){tell('袙 锌褉芯褕谢芯屑 屑械褋褟褑械 薪械褌 锌谢邪褌械卸械泄 写谢褟 泻芯锌懈褉芯胁邪薪懈褟.');return;}const targetMonth=monthId(viewedMonth),existing=new Set(forMonth(viewedMonth).map(p=>p.name.toLowerCase()+'_'+p.date.slice(8)));const fresh=source.filter(p=>{const day=Math.min(Number(p.date.slice(8)),new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()+1,0).getDate());return !existing.has(p.name.toLowerCase()+'_'+String(day).padStart(2,'0'));});if(!fresh.length){tell('孝邪泻懈械 锌谢邪褌械卸懈 褍卸械 械褋褌褜 胁 胁褘斜褉邪薪薪芯屑 屑械褋褟褑械.');return;}if(!confirm('小泻芯锌懈褉芯胁邪褌褜 '+fresh.length+' 锌谢邪褌械卸(械泄) 胁 '+monthLabel(viewedMonth)+'?'))return;fresh.forEach(p=>{const day=Math.min(Number(p.date.slice(8)),new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()+1,0).getDate());payments.push({...p,id:'pay_'+Date.now()+'_'+Math.random().toString(36).slice(2,8),date:targetMonth+'-'+String(day).padStart(2,'0'),paid:false,created:Date.now()});});persistPayments();draw();tell('袩谢邪褌械卸懈 褋泻芯锌懈褉芯胁邪薪褘.');}
+function renderHome(){const list=forMonth(new Date()),t=totals(list),next=list.filter(p=>!p.paid&&p.date>=isoDate(new Date())).sort((a,b)=>a.date.localeCompare(b.date))[0];const target=byId('finHomeContent');if(!target)return;target.innerHTML=`<div class="finance-summary"><div><strong>${money(t.all)}</strong><div class="small">Всего</div></div><div><strong>${money(t.paid)}</strong><div class="small">Оплачено</div></div><div><strong>${money(t.all-t.paid)}</strong><div class="small">Осталось</div></div></div><div class="small">${next?'Ближайший платёж: '+escapeHtml(next.name)+' ‹ '+money(next.amount)+' · '+escapeHtml(next.date):'Нет предстоящих платежей'}</div>`;}
+function copyPrevious(){const prev=new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()-1,1),source=forMonth(prev);if(!source.length){tell('В прошлом месяце нет платежей для копирования.');return;}const targetMonth=monthId(viewedMonth),existing=new Set(forMonth(viewedMonth).map(p=>p.name.toLowerCase()+'_'+p.date.slice(8)));const fresh=source.filter(p=>{const day=Math.min(Number(p.date.slice(8)),new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()+1,0).getDate());return !existing.has(p.name.toLowerCase()+'_'+String(day).padStart(2,'0'));});if(!fresh.length){tell('Такие платежи уже есть в выбранном месяце.');return;}if(!confirm('Скопировать '+fresh.length+' платеж(ей) в '+monthLabel(viewedMonth)+'?'))return;fresh.forEach(p=>{const day=Math.min(Number(p.date.slice(8)),new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()+1,0).getDate());payments.push({...p,id:'pay_'+Date.now()+'_'+Math.random().toString(36).slice(2,8),date:targetMonth+'-'+String(day).padStart(2,'0'),paid:false,created:Date.now()});});persistPayments();draw();tell('Платежи скопированы.');}
 window.mySpaceFinancePaid=togglePaid;window.mySpaceFinanceEdit=edit;window.mySpaceFinanceDelete=remove;
 // Include payments in the existing JSON backup without changing other app data.
 const previousBackup=window.backup;
-window.backup=function(){const data={app:'MY SPACE',version:3,exportedAt:new Date().toISOString(),entries:typeof entries!=='undefined'?entries:[],board:typeof board!=='undefined'?board:[],tasks:typeof tasks!=='undefined'?tasks:[],payments};const blob=new Blob([JSON.stringify(data)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='my-space-backup-'+isoDate(new Date())+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);tell('袪械蟹械褉胁薪邪褟 泻芯锌懈褟 锌芯写谐芯褌芯胁谢械薪邪.');};
+window.backup=function(){const data={app:'MY SPACE',version:3,exportedAt:new Date().toISOString(),entries:typeof entries!=='undefined'?entries:[],board:typeof board!=='undefined'?board:[],tasks:typeof tasks!=='undefined'?tasks:[],payments};const blob=new Blob([JSON.stringify(data)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='my-space-backup-'+isoDate(new Date())+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);tell('Резервная копия подготовлена.');};
 // Preserve existing restore behaviour and additionally restore payment records.
-const restoreInput=byId('restoreFile');if(restoreInput){restoreInput.addEventListener('change',e=>{const file=e.target.files&&e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);if(Array.isArray(data.payments)){if(!confirm('袛芯斜邪胁懈褌褜 锌谢邪褌械卸懈 懈蟹 褉械蟹械褉胁薪芯泄 泻芯锌懈懈?'))return;const known=new Set(payments.map(p=>String(p.id)));data.payments.forEach(p=>{if(p&&p.id!==undefined&&!known.has(String(p.id)))payments.push(p);});persistPayments();draw();tell('袩谢邪褌械卸懈 胁芯褋褋褌邪薪芯胁谢械薪褘.');}}catch(err){} };reader.readAsText(file);});}
+const restoreInput=byId('restoreFile');if(restoreInput){restoreInput.addEventListener('change',e=>{const file=e.target.files&&e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);if(Array.isArray(data.payments)){if(!confirm('Добавить платежи из резервной копии?'))return;const known=new Set(payments.map(p=>String(p.id)));data.payments.forEach(p=>{if(p&&p.id!==undefined&&!known.has(String(p.id)))payments.push(p);});persistPayments();draw();tell('Платежи восстановлены.');}}catch(err){} };reader.readAsText(file);});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build,{once:true});else build();
 })();
 </script>
