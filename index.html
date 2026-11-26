@@ -1,394 +1,72 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MY SPACE</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#111311">
+<title>My Space — планер</title>
 <style>
-:root {
- --bg:#f7f6f2;--card:#fffefa;--text:#25272b;
- --muted:#858990;--blue:#c9e2f1;--line:#e9e8e3;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-.app{max-width:760px;margin:auto;padding:25px 18px 55px}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
-.logo{font-size:23px;letter-spacing:5px;font-weight:600}
-.subtitle{font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:7px}
-.date-label{font-size:12px;color:var(--muted)}
-h1{font-size:29px;font-weight:400;margin:0 0 8px}
-.intro{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:23px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.tab{border:1px solid var(--line);background:transparent;padding:11px 15px;border-radius:25px;color:var(--muted);cursor:pointer}
-.tab.active{background:var(--blue);color:#263744;border-color:var(--blue)}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:18px;margin-bottom:17px}
-.panel h2{font-size:17px;font-weight:500;margin:0 0 16px}
-.hidden{display:none!important}
-label{display:block;font-size:12px;color:var(--muted);margin:14px 0 7px}
-input,textarea,select{width:100%;border:1px solid var(--line);background:white;border-radius:10px;padding:12px;font:14px Arial;color:var(--text)}
-textarea{min-height:90px;resize:vertical}
-.primary{border:0;background:var(--blue);color:#263744;border-radius:11px;padding:14px;width:100%;margin-top:15px;cursor:pointer}
-.calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.calendar-header h2{margin:0;text-transform:capitalize}
-.arrow{border:0;background:var(--blue);border-radius:50%;width:37px;height:37px;font-size:22px;cursor:pointer}
-.calendar-week,.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:5px}
-.calendar-week{margin-bottom:10px;color:var(--muted);font-size:10px}
-.day{height:43px;border:0;border-radius:12px;background:transparent;position:relative;font-size:13px;color:var(--text);cursor:pointer}
-.day.today{border:1px solid #9bbbd0}
-.day.selected{background:var(--blue);font-weight:bold}
-.day.has-entry:after{content:"";position:absolute;width:5px;height:5px;background:#83abc4;border-radius:50%;bottom:4px;left:calc(50% - 2px)}
-.day.other{color:#c6c6c6}
-.selected-date{font-size:12px;color:var(--muted);margin-top:17px;text-align:center}
-.upload{display:block;text-align:center;padding:20px;border:1px dashed #b9cbd6;border-radius:13px;background:#f8fbfc;color:#627f91;cursor:pointer}
-.upload input{display:none}
-.preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.preview img{width:85px;height:85px;object-fit:cover;border-radius:10px}
-.entry{border-top:1px solid var(--line);padding:16px 0}
-.entry-date{font-size:11px;color:var(--muted);margin-bottom:7px}
-.entry-title{font-size:17px;margin-bottom:7px}
-.entry-note{font-size:13px;line-height:1.5;color:#656970;white-space:pre-wrap}
-.entry-images{display:flex;gap:8px;overflow-x:auto;margin-top:12px}
-.entry-images img{width:125px;height:125px;object-fit:cover;border-radius:12px}
-.tag{display:inline-block;background:#edf5f9;padding:5px 9px;border-radius:20px;font-size:11px;color:#58778b;margin-top:8px}
-.empty{text-align:center;color:var(--muted);font-size:13px;padding:24px 5px}
-.delete{border:1px solid var(--line);background:white;padding:8px 12px;border-radius:20px;color:var(--muted);margin-top:12px}
-footer{text-align:center;color:#a1a2a3;font-size:10px;letter-spacing:3px;margin-top:30px}
-</style>
-</head>
-<body>
-<div class="app">
-<header>
-<div>
-<div class="logo">MY SPACE</div>
-<div class="subtitle">YOUR PERSONAL UNIVERSE</div>
-</div>
-<div class="date-label" id="todayLabel"></div>
-</header>
-
-<h1>Моё пространство.</h1>
-<div class="intro">Моменты, мысли, планы и всё, что хочется сохранить.</div>
-
-<nav class="tabs">
-<button class="tab active" data-tab="diary">Дневник</button>
-<button class="tab" data-tab="inspiration">Вдохновение</button>
-<button class="tab" data-tab="new">Новая запись +</button>
-</nav>
-
-<section id="diary">
-<div class="panel">
-<div class="calendar-header">
-<button class="arrow" id="prevMonth">‹</button>
-<h2 id="calendarMonth"></h2>
-<button class="arrow" id="nextMonth">›</button>
-</div>
-<div class="calendar-week">
-<span>ПН</span><span>ВТ</span><span>СР</span>
-<span>ЧТ</span><span>ПТ</span><span>СБ</span><span>ВС</span>
-</div>
-<div class="calendar-grid" id="calendarGrid"></div>
-<div class="selected-date" id="selectedDateLabel"></div>
-</div>
-
-<div class="panel">
-<h2>Мои моменты</h2>
-<div id="entries"></div>
-</div>
-</section>
-
-<section id="new" class="hidden">
-<div class="panel">
-<h2>Сохранить момент</h2>
-<form id="entryForm">
-<label>Дата</label>
-<input type="date" id="entryDate" required>
-
-<label>Название момента</label>
-<input type="text" id="entryTitle" placeholder="Например, утренняя пробежка" required>
-
-<label>Категория</label>
-<select id="entryCategory">
-<option>Моя жизнь</option><option>Спорт</option>
-<option>Работа</option><option>Путешествия</option>
-<option>Образы</option><option>Красота</option>
-<option>Мои мысли</option><option>Другое</option>
-</select>
-
-<label>Настроение</label>
-<select id="entryMood">
-<option>✨ Вдохновение</option><option>☀️ Радость</option>
-<option>🌿 Спокойствие</option><option>🌧 Задумчивость</option>
-<option>⚡ Энергия</option><option>🤍 Просто мой день</option>
-</select>
-
-<label>Мои мысли</label>
-<textarea id="entryNote" placeholder="Что хочется запомнить?"></textarea>
-
-<label>Фотографии</label>
-<label class="upload">
-+ Добавить фотографии с телефона
-<input type="file" id="entryPhotos" accept="image/*" multiple>
-</label>
-<div class="preview" id="photoPreview"></div>
-<button class="primary" type="submit">Сохранить момент</button>
-</form>
-</div>
-</section>
-
-<section id="inspiration" class="hidden">
-<div class="panel">
-<h2>Моя доска вдохновения</h2>
-<p class="intro">Идеи, образы, интерьеры, места и визуальные референсы.</p>
-<label>Коллекция</label>
-<select id="moodCategory">
-<option>Интерьеры</option><option>Образы</option>
-<option>Съёмки</option><option>Макияж</option>
-<option>Места</option><option>Идеи</option>
-</select>
-<label class="upload">
-+ Добавить изображения
-<input type="file" id="moodPhotos" accept="image/*" multiple>
-</label>
-<div class="preview" id="moodPreview"></div>
-<button class="primary" id="saveMood">Сохранить коллекцию</button>
-</div>
-<div class="panel" id="moodEntries"></div>
-</section>
-
-<footer>MY SPACE · MADE FOR YOU</footer>
-</div>
-
+:root{--bg:#111311;--panel:#1a1d1a;--panel2:#222622;--line:#303630;--text:#f1f3ed;--muted:#929b91;--green:#b8d6a1;--green-dark:#263526;--radius:18px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:760px;margin:auto;padding:22px 16px 44px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
+.brand{font-size:12px;letter-spacing:3px;color:var(--green);font-weight:700}.date,.small{font-size:12px;color:var(--muted)}
+h1{font-size:30px;line-height:1.1;margin:0 0 8px;font-weight:650;letter-spacing:-.8px}.subtitle{color:var(--muted);font-size:14px;margin-bottom:22px}
+.top-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:12px;margin-bottom:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:17px}
+.focus{background:linear-gradient(140deg,#263326,#1a211a);border-color:#3b4a39}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:1.8px;color:var(--muted);margin-bottom:12px}
+.focus .eyebrow{color:#b6c9ad}.focus strong{display:block;font-size:23px;margin-bottom:7px}.focus p{font-size:12px;color:#c0c9bb;margin:0;line-height:1.5}
+.stat{display:flex;flex-direction:column;justify-content:space-between}.stat strong{font-size:31px;color:var(--green);font-weight:600}.stat span{font-size:12px;color:var(--muted)}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:24px 2px 12px}h2{font-size:17px;margin:0;font-weight:600}
+.categories{display:flex;gap:8px;overflow-x:auto;padding:2px 0 7px;scrollbar-width:none}.categories::-webkit-scrollbar{display:none}
+.chip{border:1px solid var(--line);background:transparent;color:var(--muted);padding:9px 13px;border-radius:99px;white-space:nowrap;font-size:12px;cursor:pointer}.chip.active{background:var(--green-dark);border-color:#50644b;color:var(--green)}
+.task-list{display:flex;flex-direction:column;gap:8px}.task{display:flex;align-items:center;gap:11px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px}
+.check{width:20px;height:20px;border:1.5px solid #64705f;border-radius:7px;flex:none;background:transparent;color:#172017;cursor:pointer}.task.done .check{background:var(--green);border-color:var(--green)}.task.done .task-title{text-decoration:line-through;color:#788077}
+.task-main{min-width:0;flex:1}.task-title{font-size:13px;line-height:1.35}.task-meta{font-size:10px;color:var(--muted);margin-top:5px}
+.tag{font-size:10px;color:var(--green);background:#263326;padding:5px 8px;border-radius:99px;white-space:nowrap}.delete{border:0;background:none;color:#707970;font-size:18px;padding:2px 4px;cursor:pointer}
+.add-row{display:flex;gap:8px;margin-top:10px}.field{min-width:0;flex:1;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:12px}.field::placeholder{color:#737c72}
+.select{max-width:132px;font-size:12px}.add-btn{background:var(--green);color:#172017;border:0;border-radius:12px;padding:0 17px;font-weight:700;cursor:pointer}
+.habit-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.habit{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px;display:flex;align-items:center;gap:10px;cursor:pointer;text-align:left;color:var(--text)}
+.habit-icon{width:34px;height:34px;border-radius:11px;background:var(--panel2);display:grid;place-items:center;font-size:16px}.habit-name{font-size:12px;flex:1}.habit-mark{width:18px;height:18px;border:1px solid #64705f;border-radius:6px;display:grid;place-items:center;color:#172017;font-size:12px}
+.habit.done{border-color:#536b4d;background:#1b241b}.habit.done .habit-mark{background:var(--green);border-color:var(--green)}
+.calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.month-nav{display:flex;gap:7px}.month-nav button{width:34px;height:34px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font-size:18px}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.weekday{text-align:center;color:var(--muted);font-size:10px;padding:5px 0}.day{min-height:39px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#cbd0c8;font-size:12px;background:var(--panel);border:1px solid transparent;cursor:pointer}.day.today{border-color:var(--green);color:var(--green)}.day.selected{background:var(--green-dark);border-color:var(--green);color:var(--green)}.day.empty{background:transparent;cursor:default}.day-dot{width:4px;height:4px;border-radius:50%;background:var(--green)}.selected-date{margin-top:14px;color:var(--green);font-size:12px;font-weight:600}.date-field{color-scheme:dark}.task-time{font-size:10px;color:var(--green);margin-top:3px}
+.bottom-note{color:#778076;font-size:10px;line-height:1.5;text-align:center;margin-top:28px}.empty{padding:22px;text-align:center;color:var(--muted);font-size:12px;background:var(--panel);border-radius:14px}
+@media(max-width:440px){.app{padding:18px 13px 36px}.top-grid{grid-template-columns:1.2fr .8fr}.card{padding:14px}.focus strong{font-size:20px}.add-row{flex-wrap:wrap}.add-row .field:first-child{flex-basis:100%}.select{flex:1;max-width:none}.add-btn{height:42px}}
+</style></head>
+<body><main class="app">
+<header><div class="brand">MY SPACE</div><div class="date" id="todayLabel"></div></header>
+<h1>Твоё пространство.<br>Твои правила.</h1><div class="subtitle">Планируй спокойно. Делай своё. Замечай прогресс.</div>
+<div class="top-grid"><section class="card focus"><div class="eyebrow">Фокус дня</div><strong>Меньше хаоса.<br>Больше движения.</strong><p>Выбери главное и двигайся шаг за шагом.</p></section>
+<section class="card stat"><div class="eyebrow">Сегодня выполнено</div><strong id="doneCount">0/0</strong><span>задач закрыто</span></section></div>
+<div class="section-head"><h2>Задачи</h2><span class="small" id="taskDate"></span></div>
+<nav class="categories" id="filters"><button class="chip active" data-filter="Все">Все</button><button class="chip" data-filter="Работа">Работа</button><button class="chip" data-filter="Спорт">Спорт</button><button class="chip" data-filter="Блог">Блог</button><button class="chip" data-filter="Обучение">Обучение</button><button class="chip" data-filter="Личное">Личное</button><button class="chip" data-filter="Дом">Дом</button></nav>
+<div class="task-list" id="taskList"></div>
+<form class="add-row" id="taskForm"><input class="field" id="taskInput" maxlength="90" placeholder="Добавить задачу..." required><select class="field select" id="taskCategory" aria-label="Категория"><option>Работа</option><option>Спорт</option><option>Блог</option><option>Обучение</option><option>Личное</option><option>Дом</option></select><button class="add-btn" type="submit">Добавить</button></form>
+<div class="section-head"><h2>Привычки</h2><span class="small">Отметь, что сделано</span></div>
+<div class="habit-grid" id="habitGrid"><button class="habit" data-habit="run"><span class="habit-icon">🏃‍♀️</span><span class="habit-name">Бег / движение</span><span class="habit-mark"></span></button><button class="habit" data-habit="strength"><span class="habit-icon">🏋️‍♀️</span><span class="habit-name">Силовая</span><span class="habit-mark"></span></button><button class="habit" data-habit="stretch"><span class="habit-icon">🧘‍♀️</span><span class="habit-name">Растяжка</span><span class="habit-mark"></span></button><button class="habit" data-habit="learn"><span class="habit-icon">📚</span><span class="habit-name">Обучение</span><span class="habit-mark"></span></button></div>
+<div class="section-head"><h2>Календарь</h2><span class="small">Выбери день</span></div><section class="card"><div class="calendar-head"><strong id="monthLabel"></strong><div class="month-nav"><button type="button" id="prevMonth" aria-label="Предыдущий месяц">‹</button><button type="button" id="nextMonth" aria-label="Следующий месяц">›</button></div></div><div class="calendar" id="calendar"></div><div class="selected-date" id="selectedDateLabel"></div><div class="small" style="margin-top:6px">Задачи отображаются для выбранной даты.</div></section>
+<div class="bottom-note">Данные сохраняются в этом браузере на этом устройстве.<br>Для синхронизации между устройствами понадобится отдельная база данных.</div>
+</main>
 <script>
-const $=id=>document.getElementById(id);
+const KEY='my-space-planner-v3';
 const today=new Date();
-const dateString=d=>[
-d.getFullYear(),
-String(d.getMonth()+1).padStart(2,'0'),
-String(d.getDate()).padStart(2,'0')
-].join('-');
-
-$('todayLabel').textContent=today.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
-$('entryDate').value=dateString(today);
-
-let entries=JSON.parse(localStorage.getItem('myspace_entries')||'[]');
-let moodEntries=JSON.parse(localStorage.getItem('myspace_mood')||'[]');
-let entryFiles=[];
-let moodFiles=[];
-let selectedDate=dateString(today);
-let shownMonth=new Date(today.getFullYear(),today.getMonth(),1);
-
-function saveData(){
-localStorage.setItem('myspace_entries',JSON.stringify(entries));
-localStorage.setItem('myspace_mood',JSON.stringify(moodEntries));
-}
-
-document.querySelectorAll('.tab[data-tab]').forEach(button=>{
-button.addEventListener('click',()=>{
-document.querySelectorAll('.tab[data-tab]').forEach(b=>b.classList.remove('active'));
-button.classList.add('active');
-['diary','new','inspiration'].forEach(id=>{
-$(id).classList.toggle('hidden',id!==button.dataset.tab);
-});
-if(button.dataset.tab==='diary'){renderCalendar();renderEntries();}
-if(button.dataset.tab==='inspiration')renderMood();
-});
-});
-
-function renderCalendar(){
-const year=shownMonth.getFullYear();
-const month=shownMonth.getMonth();
-$('calendarMonth').textContent=shownMonth.toLocaleDateString('ru-RU',{month:'long',year:'numeric'});
-const first=new Date(year,month,1);
-const offset=(first.getDay()+6)%7;
-const days=new Date(year,month+1,0).getDate();
-const previousDays=new Date(year,month,0).getDate();
-const grid=$('calendarGrid');
-grid.innerHTML='';
-
-for(let i=0;i<42;i++){
-let dayNumber,dayDate,other=false;
-if(i<offset){
-dayNumber=previousDays-offset+i+1;
-dayDate=new Date(year,month-1,dayNumber);
-other=true;
-}else if(i>=offset+days){
-dayNumber=i-offset-days+1;
-dayDate=new Date(year,month+1,dayNumber);
-other=true;
-}else{
-dayNumber=i-offset+1;
-dayDate=new Date(year,month,dayNumber);
-}
-const key=dateString(dayDate);
-const button=document.createElement('button');
-button.className='day';
-button.textContent=dayNumber;
-if(other)button.classList.add('other');
-if(key===dateString(today))button.classList.add('today');
-if(key===selectedDate)button.classList.add('selected');
-if(entries.some(e=>e.date===key))button.classList.add('has-entry');
-button.addEventListener('click',()=>{
-selectedDate=key;
-renderCalendar();
-renderEntries();
-});
-grid.appendChild(button);
-}
-$('selectedDateLabel').textContent=new Date(selectedDate+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
-}
-
-$('prevMonth').addEventListener('click',()=>{
-shownMonth.setMonth(shownMonth.getMonth()-1);
-renderCalendar();
-});
-$('nextMonth').addEventListener('click',()=>{
-shownMonth.setMonth(shownMonth.getMonth()+1);
-renderCalendar();
-});
-
-function renderEntries(){
-const list=entries.filter(e=>e.date===selectedDate);
-const container=$('entries');
-container.innerHTML='';
-if(!list.length){
-container.innerHTML='<div class="empty">В этот день пока нет записей.</div>';
-return;
-}
-list.forEach(e=>{
-const item=document.createElement('article');
-item.className='entry';
-const date=document.createElement('div');
-date.className='entry-date';
-date.textContent=new Date(e.date+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
-const title=document.createElement('div');
-title.className='entry-title';
-title.textContent=e.title;
-const tag=document.createElement('span');
-tag.className='tag';
-tag.textContent=e.category+' · '+e.mood;
-const note=document.createElement('div');
-note.className='entry-note';
-note.textContent=e.note||'';
-const images=document.createElement('div');
-images.className='entry-images';
-(e.photos||[]).forEach(src=>{
-const img=document.createElement('img');
-img.src=src;
-img.alt='Фотография из дневника';
-images.appendChild(img);
-});
-const del=document.createElement('button');
-del.className='delete';
-del.textContent='Удалить запись';
-del.addEventListener('click',()=>{
-if(confirm('Удалить эту запись?')){
-entries=entries.filter(x=>x.id!==e.id);
-saveData();
-renderCalendar();
-renderEntries();
-}
-});
-item.append(date,title,tag,note,images,del);
-container.appendChild(item);
-});
-}
-
-function readFiles(input,preview,target){
-input.addEventListener('change',()=>{
-target.length=0;
-preview.innerHTML='';
-[...input.files].forEach(file=>{
-if(!file.type.startsWith('image/'))return;
-const reader=new FileReader();
-reader.onload=()=>{
-target.push(reader.result);
-const img=document.createElement('img');
-img.src=reader.result;
-preview.appendChild(img);
-};
-reader.readAsDataURL(file);
-});
-});
-}
-
-readFiles($('entryPhotos'),$('photoPreview'),entryFiles);
-readFiles($('moodPhotos'),$('moodPreview'),moodFiles);
-
-$('entryForm').addEventListener('submit',event=>{
-event.preventDefault();
-const entry={
-id:Date.now(),
-date:$('entryDate').value,
-title:$('entryTitle').value.trim(),
-category:$('entryCategory').value,
-mood:$('entryMood').value,
-note:$('entryNote').value.trim(),
-photos:[...entryFiles]
-};
-entries.unshift(entry);
-try{saveData();}
-catch(error){
-entries.shift();
-alert('Не удалось сохранить данные. Попробуй добавить меньше фотографий.');
-return;
-}
-selectedDate=entry.date;
-shownMonth=new Date(entry.date+'T12:00:00');
-event.target.reset();
-$('entryDate').value=dateString(today);
-$('entryPhotos').value='';
-$('photoPreview').innerHTML='';
-entryFiles=[];
-renderCalendar();
-renderEntries();
-document.querySelector('[data-tab="diary"]').click();
-});
-
-$('saveMood').addEventListener('click',()=>{
-if(!moodFiles.length){
-alert('Сначала добавь изображение.');
-return;
-}
-moodEntries.push({
-category:$('moodCategory').value,
-photos:[...moodFiles]
-});
-try{saveData();}
-catch(error){
-moodEntries.pop();
-alert('Не удалось сохранить изображения. Попробуй добавить меньше фотографий.');
-return;
-}
-moodFiles=[];
-$('moodPhotos').value='';
-$('moodPreview').innerHTML='';
-renderMood();
-});
-
-function renderMood(){
-const container=$('moodEntries');
-container.innerHTML='';
-if(!moodEntries.length){
-container.innerHTML='<div class="empty">Твоя коллекция пока пуста.</div>';
-return;
-}
-moodEntries.forEach(group=>{
-const title=document.createElement('h2');
-title.textContent=group.category;
-container.appendChild(title);
-const images=document.createElement('div');
-images.className='entry-images';
-group.photos.forEach(src=>{
-const img=document.createElement('img');
-img.src=src;
-images.appendChild(img);
-});
-container.appendChild(images);
-});
-}
-
-renderCalendar();
-renderEntries();
-renderMood();
-</script>
-</body>
-</html>
+const dateKey=(d)=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const todayKey=dateKey(today);
+const starter={tasks:[{id:1,title:'Запланировать неделю',category:'Личное',done:false,date:todayKey,time:''},{id:2,title:'Тренировка или пробежка',category:'Спорт',done:false,date:todayKey,time:''},{id:3,title:'Один шаг для личного блога',category:'Блог',done:false,date:todayKey,time:''}],habits:{}};
+let data;try{data=JSON.parse(localStorage.getItem(KEY))||JSON.parse(localStorage.getItem('my-space-planner-v2'))||starter}catch(e){data=starter}
+data.habits=data.habits||{};data.tasks=(data.tasks||[]).map(t=>({...t,date:t.date||todayKey,time:t.time||''}));
+let filter='Все',selectedDate=todayKey,viewYear=today.getFullYear(),viewMonth=today.getMonth();
+const $=id=>document.getElementById(id);
+const save=()=>localStorage.setItem(KEY,JSON.stringify(data));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+$('todayLabel').textContent=today.toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});
+function prettyDate(k){let [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+function renderTasks(){let visible=data.tasks.filter(t=>t.date===selectedDate&&(filter==='Все'||t.category===filter));$('doneCount').textContent=data.tasks.filter(t=>t.date===selectedDate&&t.done).length+'/'+data.tasks.filter(t=>t.date===selectedDate).length;$('taskDate').textContent=prettyDate(selectedDate);$('taskList').innerHTML=visible.length?visible.map(t=>`<div class="task ${t.done?'done':''}"><button class="check" data-toggle="${t.id}" aria-label="Отметить задачу">${t.done?'✓':''}</button><div class="task-main"><div class="task-title">${esc(t.title)}</div><div class="task-meta">${esc(t.category)}</div>${t.time?`<div class="task-time">${esc(t.time)}</div>`:''}</div><span class="tag">${esc(t.category)}</span><button class="delete" data-delete="${t.id}" aria-label="Удалить задачу">×</button></div>`).join(''):'<div class="empty">На этот день задач пока нет. Добавь первую ниже.</div>';}
+function renderHabits(){data.habits[selectedDate]=data.habits[selectedDate]||{};document.querySelectorAll('.habit').forEach(b=>{let yes=!!data.habits[selectedDate][b.dataset.habit];b.classList.toggle('done',yes);b.querySelector('.habit-mark').textContent=yes?'✓':''})}
+function renderCalendar(){let first=new Date(viewYear,viewMonth,1),count=new Date(viewYear,viewMonth+1,0).getDate(),offset=(first.getDay()+6)%7;let out=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(n=>`<div class="weekday">${n}</div>`).join('');for(let i=0;i<offset;i++)out+='<div class="day empty"></div>';for(let d=1;d<=count;d++){let k=dateKey(new Date(viewYear,viewMonth,d)),has=data.tasks.some(t=>t.date===k);out+=`<button type="button" class="day ${k===todayKey?'today':''} ${k===selectedDate?'selected':''}" data-date="${k}">${d}${has?'<span class="day-dot"></span>':''}</button>`}$('calendar').innerHTML=out;$('monthLabel').textContent=new Date(viewYear,viewMonth,1).toLocaleDateString('ru-RU',{month:'long',year:'numeric'});$('selectedDateLabel').textContent='Выбрано: '+prettyDate(selectedDate)}
+function render(){renderTasks();renderHabits();renderCalendar()}
+$('filters').onclick=e=>{let b=e.target.closest('[data-filter]');if(!b)return;filter=b.dataset.filter;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===b));renderTasks()};
+$('taskList').onclick=e=>{let a=e.target.closest('[data-toggle]'),d=e.target.closest('[data-delete]');if(a){let t=data.tasks.find(x=>x.id===Number(a.dataset.toggle));if(t)t.done=!t.done}if(d)data.tasks=data.tasks.filter(x=>x.id!==Number(d.dataset.delete));save();render()};
+$('taskForm').onsubmit=e=>{e.preventDefault();let input=$('taskInput'),title=input.value.trim();if(!title)return;data.tasks.push({id:Date.now(),title,category:$('taskCategory').value,done:false,date:selectedDate,time:''});input.value='';save();render()};
+$('habitGrid').onclick=e=>{let b=e.target.closest('[data-habit]');if(!b)return;let k=b.dataset.habit;data.habits[selectedDate]=data.habits[selectedDate]||{};data.habits[selectedDate][k]=!data.habits[selectedDate][k];save();renderHabits()};
+$('calendar').onclick=e=>{let b=e.target.closest('[data-date]');if(!b)return;selectedDate=b.dataset.date;let [y,m]=selectedDate.split('-').map(Number);viewYear=y;viewMonth=m-1;render()};
+$('prevMonth').onclick=()=>{viewMonth--;if(viewMonth<0){viewMonth=11;viewYear--}renderCalendar()};
+$('nextMonth').onclick=()=>{viewMonth++;if(viewMonth>11){viewMonth=0;viewYear++}renderCalendar()};
+render();
+</script></body></html>
