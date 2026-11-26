@@ -284,4 +284,336 @@ if (document.readyState === 'loading') {
 
 })();
 </script>
+ <style>
+/* MY SPACE 2.0 */
+.ms-tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.ms-tools input,.ms-tools select{flex:1;min-width:130px}
+.ms-lightbox{position:fixed;inset:0;background:#111e;z-index:1000;
+display:none;align-items:center;justify-content:center;padding:15px}
+.ms-lightbox img{max-width:100%;max-height:80vh;object-fit:contain;border-radius:12px}
+.ms-lightbox button{background:#fff;border:0;border-radius:20px;padding:10px 15px}
+.ms-gallery-controls{display:flex;justify-content:center;gap:12px;margin-top:12px}
+.ms-badge{display:inline-block;padding:4px 8px;border-radius:12px;
+background:var(--blue2);font-size:10px;margin:3px}
+.ms-progress{height:7px;background:var(--blue2);border-radius:8px;overflow:hidden}
+.ms-progress div{height:100%;background:#83b8d5}
+</style>
+
+<script>
+(function(){
+
+const $ = id => document.getElementById(id);
+const today = () => {
+  const d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+};
+
+/* 1. СОРТИРОВКА ЗАДАЧ */
+
+const taskSearch = $('taskSearch');
+
+if(taskSearch && ! $('taskSort')){
+  const sort = document.createElement('select');
+  sort.id='taskSort';
+  sort.innerHTML=`
+    <option value="date">Сначала ближайшие</option>
+    <option value="priority">По приоритету</option>
+    <option value="new">Сначала новые</option>
+    <option value="old">Сначала старые</option>
+  `;
+  sort.style.margin='10px 0';
+  taskSearch.after(sort);
+  sort.onchange=renderTasks;
+}
+
+const originalRenderTasks=renderTasks;
+
+renderTasks=function(){
+  const q=(taskSearch?.value||'').toLowerCase();
+  const mode=$('taskSort')?.value||'date';
+
+  let a=tasks.filter(t=>
+    (taskFilter==='all'||(taskFilter==='active'?!t.done:t.done)) &&
+    (taskCategory==='Все'||t.category===taskCategory) &&
+    (`${t.title} ${t.note||''} ${t.category}`.toLowerCase().includes(q))
+  );
+
+  const rank={'Срочный':0,'Важный':1,'Обычный':2};
+
+  a.sort((x,y)=>{
+    if(mode==='priority') return (rank[x.priority]??2)-(rank[y.priority]??2);
+    if(mode==='new') return (y.created||y.id)-(x.created||x.id);
+    if(mode==='old') return (x.created||x.id)-(y.created||y.id);
+    return sortTask(x,y);
+  });
+
+  $('taskList').innerHTML=a.length
+    ?a.map(taskHtml).join('')
+    :'<div class="card empty">Задач не найдено.</div>';
+};
+
+/* 2. КАЛЕНДАРЬ */
+
+const calhead=document.querySelector('.calhead');
+
+if(calhead && !$('msToday')){
+  const tools=document.createElement('div');
+  tools.className='ms-tools';
+  tools.innerHTML=`
+    <button class="btn" id="msToday">Сегодня</button>
+    <input type="date" id="msDateJump">
+  `;
+  calhead.after(tools);
+
+  $('msToday').onclick=()=>{
+    selectedDay=today();
+    monthCursor=new Date();
+    renderCalendar();
+  };
+
+  $('msDateJump').onchange=e=>{
+    if(!e.target.value)return;
+    selectedDay=e.target.value;
+    monthCursor=parseDate(selectedDay);
+    renderCalendar();
+  };
+}
+
+/* 3. ФОТОГАЛЕРЕЯ */
+
+const lightbox=document.createElement('div');
+lightbox.className='ms-lightbox';
+lightbox.id='msLightbox';
+lightbox.innerHTML=`
+  <div style="width:100%;max-width:700px;text-align:center">
+    <img id="msBigPhoto">
+    <div class="ms-gallery-controls">
+      <button id="msPrev">←</button>
+      <button id="msClose">Закрыть</button>
+      <button id="msNext">→</button>
+    </div>
+    <div id="msPhotoCount" style="color:white;margin-top:10px"></div>
+  </div>
+`;
+document.body.appendChild(lightbox);
+
+let gallery=[],galleryIndex=0;
+
+function showPhoto(){
+  if(!gallery.length)return;
+  $('msBigPhoto').src=gallery[galleryIndex];
+  $('msPhotoCount').textContent=(galleryIndex+1)+' / '+gallery.length;
+}
+
+function openGallery(arr,index){
+  gallery=arr;
+  galleryIndex=index;
+  showPhoto();
+  lightbox.style.display='flex';
+}
+
+$('msClose').onclick=()=>lightbox.style.display='none';
+$('msPrev').onclick=()=>{
+  galleryIndex=(galleryIndex-1+gallery.length)%gallery.length;
+  showPhoto();
+};
+$('msNext').onclick=()=>{
+  galleryIndex=(galleryIndex+1)%gallery.length;
+  showPhoto();
+};
+
+lightbox.onclick=e=>{
+  if(e.target===lightbox)lightbox.style.display='none';
+};
+
+const originalEntryCard=entryCard;
+
+entryCard=function(e){
+  const ps=e.photos||(e.photo?[e.photo]:[]);
+  const html=originalEntryCard(e);
+  const temp=document.createElement('div');
+  temp.innerHTML=html;
+
+  const img=temp.querySelector('.photo');
+
+  if(img){
+    img.style.cursor='zoom-in';
+    img.onclick=()=>openGallery(ps,0);
+  }
+
+  if(ps.length>1){
+    const row=document.createElement('div');
+    row.className='thumbrow';
+
+    ps.forEach((p,i)=>{
+      const im=document.createElement('img');
+      im.src=p;
+      im.style.cursor='pointer';
+      im.onclick=()=>openGallery(ps,i);
+      row.appendChild(im);
+    });
+
+    temp.querySelector('.card').appendChild(row);
+  }
+
+  return temp.innerHTML;
+};
+
+/* 4. РАСШИРЕННАЯ СТАТИСТИКА */
+
+const originalAnalytics=renderAnalytics;
+
+renderAnalytics=function(){
+  originalAnalytics();
+
+  const month=today().slice(0,7);
+  const monthTasks=tasks.filter(t=>t.date?.startsWith(month));
+  const monthDone=monthTasks.filter(t=>t.done).length;
+  const monthEntries=entries.filter(e=>e.date?.startsWith(month)).length;
+  const photoCount=entries.reduce((n,e)=>
+    n+(e.photos?.length||(e.photo?1:0)),0
+  );
+
+  const extra=document.getElementById('msExtraStats');
+
+  if(extra)extra.remove();
+
+  const box=document.createElement('div');
+  box.id='msExtraStats';
+  box.className='card';
+  box.innerHTML=`
+    <h3>Этот месяц</h3>
+    <div class="grid2">
+      <div class="stat"><strong>${monthTasks.length}</strong><span class="small">задач</span></div>
+      <div class="stat"><strong>${monthDone}</strong><span class="small">выполнено</span></div>
+      <div class="stat"><strong>${monthEntries}</strong><span class="small">записей</span></div>
+      <div class="stat"><strong>${photoCount}</strong><span class="small">фотографий</span></div>
+    </div>
+  `;
+
+  $('analyticsStats').after(box);
+};
+
+/* 5. НАПОМИНАНИЯ */
+
+const notifiedKey='myspace_notified_v2';
+
+function checkReminders(){
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+
+  const now=new Date();
+  const date=today();
+  const time=String(now.getHours()).padStart(2,'0')+':'+
+             String(now.getMinutes()).padStart(2,'0');
+
+  let notified={};
+
+  try{
+    notified=JSON.parse(localStorage.getItem(notifiedKey)||'{}');
+  }catch(e){}
+
+  tasks.forEach(t=>{
+    if(!t.reminder||t.done||t.date!==date||t.time!==time)return;
+
+    const key=t.id+'_'+date+'_'+time;
+    if(notified[key])return;
+
+    try{
+      new Notification('MY SPACE',{
+        body:'Напоминание: '+t.title
+      });
+
+      notified[key]=true;
+      localStorage.setItem(notifiedKey,JSON.stringify(notified));
+    }catch(e){}
+  });
+}
+
+setInterval(checkReminders,15000);
+
+/* 6. ЗАЩИТА ИМПОРТА */
+
+const restore=$('restoreFile');
+
+if(restore){
+  restore.onchange=e=>{
+    const file=e.target.files[0];
+    if(!file)return;
+
+    const reader=new FileReader();
+
+    reader.onload=()=>{
+      try{
+        const data=JSON.parse(reader.result);
+
+        if(!data||typeof data!=='object'||
+          !Array.isArray(data.entries)||
+          !Array.isArray(data.tasks)||
+          !Array.isArray(data.board)){
+          toast('Файл имеет неподходящий формат');
+          return;
+        }
+
+        if(!confirm('Объединить данные с текущими?'))return;
+
+        const merge=(oldData,newData)=>{
+          const map=new Map(oldData.map(x=>[String(x.id),x]));
+          newData.forEach(x=>{
+            if(x&&x.id!==undefined&&!map.has(String(x.id))){
+              map.set(String(x.id),x);
+            }
+          });
+          return [...map.values()];
+        };
+
+        entries=merge(entries,data.entries);
+        tasks=merge(tasks,data.tasks);
+        board=merge(board,data.board);
+
+        persist();
+        renderAll();
+        toast('Данные объединены');
+      }catch(err){
+        toast('Не удалось прочитать файл');
+      }
+    };
+
+    reader.readAsText(file);
+    e.target.value='';
+  };
+}
+
+/* 7. ПОДГОТОВКА К ИНТЕГРАЦИЯМ */
+
+if(!$('msIntegrationInfo')){
+  const card=document.createElement('div');
+  card.className='card';
+  card.id='msIntegrationInfo';
+  card.innerHTML=`
+    <h3>Будущие интеграции</h3>
+    <div class="item">
+      <strong>DIKIDI</strong>
+      <div class="small">Подготовка подключения расписания и записей клиентов.</div>
+      <span class="ms-badge">Ожидает подключения</span>
+    </div>
+    <div class="item">
+      <strong>Google Calendar</strong>
+      <div class="small">Подготовка синхронизации событий и календаря.</div>
+      <span class="ms-badge">Ожидает подключения</span>
+    </div>
+    <p class="small">
+      Для интеграций потребуется отдельная авторизация,
+      API и серверная часть.
+    </p>
+  `;
+
+  $('settings').appendChild(card);
+}
+
+/* 8. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА */
+
+renderAll();
+
+})();
+</script>
 </body></html>
