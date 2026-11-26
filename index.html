@@ -616,4 +616,482 @@ renderAll();
 
 })();
 </script>
+ <!-- MY SPACE FINANCE MODULE -->
+<style>
+.finance-month{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0}
+.finance-month button{border:1px solid var(--line);background:var(--blue2);border-radius:12px;padding:9px 14px}
+.finance-summary{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.finance-summary .stat{min-width:0}
+.finance-summary strong{font-size:20px;overflow-wrap:anywhere}
+.finance-status{display:inline-block;padding:5px 9px;border-radius:14px;background:var(--blue2);font-size:10px;margin-top:7px}
+.finance-status.paid{background:#dceee4;color:#326348}
+.finance-status.late{background:#f5dfdf;color:#984747}
+.finance-status.soon{background:#f5ecd8;color:#8c6a2d}
+.finance-payment{padding:13px 0;border-bottom:1px solid var(--line)}
+.finance-payment:last-child{border-bottom:0}
+.finance-payment .amount{font-size:17px;font-weight:600;white-space:nowrap}
+.finance-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.finance-actions button{font-size:11px}
+.finance-check{width:19px;height:19px;accent-color:#83b8d5}
+.finance-widget{border-left:3px solid var(--blue);padding-left:12px}
+#financeForm input,#financeForm select,#financeForm textarea{margin-bottom:4px}
+@media(min-width:600px){.finance-summary{grid-template-columns:repeat(4,1fr)}}
+</style>
+
+<script>
+(function(){
+
+if(window.mySpaceFinanceLoaded)return;
+window.mySpaceFinanceLoaded=true;
+
+const $=id=>document.getElementById(id);
+const KEY='myspace_payments';
+
+let payments=[];
+try{
+ payments=JSON.parse(localStorage.getItem(KEY)||'[]');
+ if(!Array.isArray(payments))payments=[];
+}catch(e){payments=[]}
+
+let financeMonth=new Date();
+let editingPayment=null;
+
+const money=n=>Number(n||0).toLocaleString('ru-RU',{
+ minimumFractionDigits:2,
+ maximumFractionDigits:2
+})+' Br';
+
+const dateKey=d=>d.getFullYear()+'-'+
+ String(d.getMonth()+1).padStart(2,'0')+'-'+
+ String(d.getDate()).padStart(2,'0');
+
+const monthKey=d=>dateKey(d).slice(0,7);
+
+const monthName=d=>d.toLocaleDateString('ru-RU',{
+ month:'long',year:'numeric'
+});
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+
+function save(){
+ localStorage.setItem(KEY,JSON.stringify(payments));
+}
+
+function currentMonthPayments(){
+ return payments.filter(p=>p.date?.startsWith(monthKey(financeMonth)));
+}
+
+function status(p){
+ if(p.paid)return {text:'Оплачено',cls:'paid'};
+ const today=dateKey(new Date());
+ const diff=Math.round((new Date(p.date+'T12:00:00')-
+ new Date(today+'T12:00:00'))/86400000);
+ if(diff<0)return {text:'Просрочено',cls:'late'};
+ if(diff<=3)return {text:'Скоро срок',cls:'soon'};
+ return {text:'Ожидает оплаты',cls:''};
+}
+
+function totals(list){
+ return {
+  all:list.reduce((s,p)=>s+Number(p.amount||0),0),
+  paid:list.filter(p=>p.paid).reduce((s,p)=>s+Number(p.amount||0),0),
+  late:list.filter(p=>!p.paid&&p.date<dateKey(new Date()))
+      .reduce((s,p)=>s+Number(p.amount||0),0)
+ };
+}
+
+function notify(message){
+ if(typeof toast==='function')toast(message);
+ else alert(message);
+}
+
+function addInterface(){
+
+ if(!$('finance')){
+  const section=document.createElement('section');
+  section.id='finance';
+  section.className='tab';
+  section.innerHTML=`
+   <h2>Финансы</h2>
+
+   <div class="finance-month">
+    <button type="button" id="finPrev">‹</button>
+    <strong id="finMonthTitle"></strong>
+    <button type="button" id="finNext">›</button>
+   </div>
+
+   <div class="finance-summary" id="finSummary"></div>
+
+   <div class="card">
+    <div class="row">
+     <h3>Обязательные платежи</h3>
+     <button class="btn primary" id="finAdd">＋ Добавить</button>
+    </div>
+    <div id="finList"></div>
+   </div>
+
+   <div class="card">
+    <h3>История и повторение</h3>
+    <p class="small">Можно перенести платежи прошлого месяца в текущий. Оплата при копировании сбрасывается.</p>
+    <button class="btn" id="finCopy">Скопировать прошлый месяц</button>
+   </div>
+
+   <div class="form hidden" id="financeForm">
+    <h3 id="finFormTitle">Новый платёж</h3>
+
+    <label>Название платежа</label>
+    <input id="finName" maxlength="100" placeholder="Например, аренда">
+
+    <label>Сумма (Br)</label>
+    <input id="finAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00">
+
+    <label>Дата оплаты</label>
+    <input id="finDate" type="date">
+
+    <label>Категория</label>
+    <select id="finCategory">
+     <option>Жильё</option>
+     <option>Коммунальные услуги</option>
+     <option>Связь и интернет</option>
+     <option>Кредиты и долги</option>
+     <option>Подписки</option>
+     <option>Здоровье</option>
+     <option>Транспорт</option>
+     <option>Другое</option>
+    </select>
+
+    <label>Комментарий</label>
+    <textarea id="finNote" placeholder="Дополнительная информация"></textarea>
+
+    <div class="btnrow">
+     <button class="btn primary" id="finSave">Сохранить</button>
+     <button class="btn" id="finCancel">Отмена</button>
+    </div>
+   </div>
+  `;
+  $('main')?.appendChild(section);
+ }
+
+ if(!$('finNav')){
+  const b=document.createElement('button');
+  b.id='finNav';
+  b.innerHTML='<span>₽</span>Финансы';
+  b.onclick=()=>go('finance',b);
+  document.querySelector('nav')?.appendChild(b);
+ }
+
+ if(!$('financeHome')){
+  const card=document.createElement('div');
+  card.className='card';
+  card.id='financeHome';
+  card.innerHTML=`
+   <div class="row">
+    <h3>Обязательные платежи</h3>
+    <button class="btn" id="finHomeOpen">Открыть</button>
+   </div>
+   <div id="finHomeContent" class="finance-widget"></div>
+  `;
+  $('home')?.insertBefore(card,$('home').querySelector('.card'));
+  $('finHomeOpen').onclick=()=>go('finance');
+ }
+
+ $('finPrev').onclick=()=>{
+  financeMonth.setMonth(financeMonth.getMonth()-1);
+  render();
+ };
+
+ $('finNext').onclick=()=>{
+  financeMonth.setMonth(financeMonth.getMonth()+1);
+  render();
+ };
+
+ $('finAdd').onclick=()=>openForm();
+ $('finCancel').onclick=closeForm;
+ $('finSave').onclick=saveForm;
+
+ $('finCopy').onclick=copyPrevious;
+
+ render();
+}
+
+function openForm(id){
+ editingPayment=id||null;
+ const p=payments.find(x=>x.id===id);
+
+ $('finFormTitle').textContent=p?'Изменить платёж':'Новый платёж';
+ $('finName').value=p?.name||'';
+ $('finAmount').value=p?.amount??'';
+ $('finDate').value=p?.date||(
+  monthKey(financeMonth)+'-'+
+  String(new Date(financeMonth.getFullYear(),financeMonth.getMonth(),1).getDate()).padStart(2,'0')
+ );
+ $('finCategory').value=p?.category||'Жильё';
+ $('finNote').value=p?.note||'';
+
+ $('financeForm').classList.remove('hidden');
+ $('financeForm').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function closeForm(){
+ $('financeForm').classList.add('hidden');
+ editingPayment=null;
+}
+
+function saveForm(){
+ const name=$('finName').value.trim();
+ const amount=Number($('finAmount').value);
+ const date=$('finDate').value;
+
+ if(!name||!date||!Number.isFinite(amount)||amount<=0){
+  notify('Проверь название, сумму и дату платежа');
+  return;
+ }
+
+ const p={
+  id:editingPayment||('pay_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)),
+  name,
+  amount:Math.round(amount*100)/100,
+  date,
+  category:$('finCategory').value,
+  note:$('finNote').value.trim(),
+  paid:editingPayment?(payments.find(x=>x.id===editingPayment)?.paid||false):false,
+  created:editingPayment?(payments.find(x=>x.id===editingPayment)?.created||Date.now()):Date.now()
+ };
+
+ if(editingPayment){
+  const i=payments.findIndex(x=>x.id===editingPayment);
+  if(i>=0)payments[i]=p;
+ }else{
+  payments.push(p);
+ }
+
+ financeMonth=new Date(date+'T12:00:00');
+ save();
+ closeForm();
+ render();
+ notify('Платёж сохранён');
+}
+
+function togglePaid(id){
+ const p=payments.find(x=>x.id===id);
+ if(!p)return;
+ p.paid=!p.paid;
+ save();
+ render();
+}
+
+function editPayment(id){
+ openForm(id);
+}
+
+function deletePayment(id){
+ if(!confirm('Удалить этот платёж?'))return;
+ payments=payments.filter(p=>p.id!==id);
+ save();
+ render();
+}
+
+function render(){
+ const list=currentMonthPayments().sort((a,b)=>
+  a.date.localeCompare(b.date)||a.name.localeCompare(b.name)
+ );
+
+ const t=totals(list);
+ const remaining=t.all-t.paid;
+
+ $('finMonthTitle').textContent=monthName(financeMonth);
+
+ $('finSummary').innerHTML=`
+  <div class="stat"><strong>${money(t.all)}</strong><span class="small">Всего</span></div>
+  <div class="stat"><strong>${money(t.paid)}</strong><span class="small">Оплачено</span></div>
+  <div class="stat"><strong>${money(remaining)}</strong><span class="small">Осталось</span></div>
+  <div class="stat"><strong>${money(t.late)}</strong><span class="small">Просрочено</span></div>
+ `;
+
+ $('finList').innerHTML=list.length?list.map(p=>{
+  const s=status(p);
+  return `
+   <div class="finance-payment">
+    <div class="row" style="align-items:flex-start">
+     <div style="flex:1;min-width:0">
+      <strong>${esc(p.name)}</strong>
+      <div class="small">${esc(p.date)} · ${esc(p.category)}</div>
+      ${p.note?`<div class="small">${esc(p.note)}</div>`:''}
+      <span class="finance-status ${s.cls}">${s.text}</span>
+     </div>
+     <div class="amount">${money(p.amount)}</div>
+    </div>
+    <div class="finance-actions">
+     <label style="display:flex;align-items:center;gap:6px;margin:0">
+      <input class="finance-check" type="checkbox" ${p.paid?'checked':''}
+       onchange="mySpaceFinancePaid('${p.id}')">
+      <span class="small">Оплачено</span>
+     </label>
+     <button class="btn" onclick="mySpaceFinanceEdit('${p.id}')">Изменить</button>
+     <button class="btn danger" onclick="mySpaceFinanceDelete('${p.id}')">Удалить</button>
+    </div>
+   </div>
+  `;
+ }).join(''):'<div class="empty">В этом месяце платежей пока нет.</div>';
+
+ renderHomeWidget();
+}
+
+function renderHomeWidget(){
+ const list=payments.filter(p=>p.date?.startsWith(monthKey(new Date())));
+ const t=totals(list);
+ const remaining=t.all-t.paid;
+
+ const next=list.filter(p=>!p.paid&&p.date>=dateKey(new Date()))
+  .sort((a,b)=>a.date.localeCompare(b.date))[0];
+
+ $('finHomeContent').innerHTML=`
+  <div class="finance-summary">
+   <div><strong>${money(t.all)}</strong><div class="small">Всего</div></div>
+   <div><strong>${money(t.paid)}</strong><div class="small">Оплачено</div></div>
+   <div><strong>${money(remaining)}</strong><div class="small">Осталось</div></div>
+  </div>
+  <div class="small">${next?
+   'Ближайший платёж: '+esc(next.name)+' — '+money(next.amount)+' · '+esc(next.date):
+   'Нет предстоящих платежей'}
+  </div>
+ `;
+}
+
+function copyPrevious(){
+ const target=new Date(financeMonth.getFullYear(),financeMonth.getMonth()-1,1);
+ const source=payments.filter(p=>p.date?.startsWith(monthKey(target)));
+
+ if(!source.length){
+  notify('В прошлом месяце нет платежей для копирования');
+  return;
+ }
+
+ const exists=payments.filter(p=>p.date?.startsWith(monthKey(financeMonth)));
+ const names=new Set(exists.map(p=>p.name.toLowerCase()+'_'+p.date.slice(8)));
+
+ const fresh=source.filter(p=>{
+  const day=Math.min(
+   Number(p.date.slice(8)),
+   new Date(financeMonth.getFullYear(),financeMonth.getMonth()+1,0).getDate()
+  );
+  return !names.has(p.name.toLowerCase()+'_'+String(day).padStart(2,'0'));
+ });
+
+ if(!fresh.length){
+  notify('Похожие платежи уже есть в этом месяце');
+  return;
+ }
+
+ if(!confirm('Скопировать '+fresh.length+' платеж(ей) в '+monthName(financeMonth)+'?'))return;
+
+ fresh.forEach(p=>{
+  const day=Math.min(
+   Number(p.date.slice(8)),
+   new Date(financeMonth.getFullYear(),financeMonth.getMonth()+1,0).getDate()
+  );
+  payments.push({
+   ...p,
+   id:'pay_'+Date.now()+'_'+Math.random().toString(36).slice(2,8),
+   date:monthKey(financeMonth)+'-'+String(day).padStart(2,'0'),
+   paid:false,
+   created:Date.now()
+  });
+ });
+
+ save();
+ render();
+ notify('Платежи скопированы');
+}
+
+/* Совместимость с резервным копированием */
+
+const oldBackup=window.backup;
+
+window.backup=function(){
+ const data={
+  app:'MY SPACE',
+  version:2,
+  exportedAt:new Date().toISOString(),
+  entries,board,tasks,payments
+ };
+ const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement('a');
+ a.href=url;
+ a.download='my-space-backup-'+dateKey(new Date())+'.json';
+ a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ notify('Резервная копия подготовлена');
+};
+
+const restore=$('restoreFile');
+
+if(restore){
+ restore.onchange=e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+
+  reader.onload=()=>{
+   try{
+    const data=JSON.parse(reader.result);
+    if(!data||!Array.isArray(data.entries)||
+       !Array.isArray(data.tasks)||!Array.isArray(data.board)){
+     notify('Файл имеет неподходящий формат');
+     return;
+    }
+
+    if(!confirm('Объединить данные из копии с текущими?'))return;
+
+    const merge=(oldData,newData)=>{
+     const map=new Map(oldData.map(x=>[String(x.id),x]));
+     newData.forEach(x=>{
+      if(x&&x.id!==undefined&&!map.has(String(x.id)))
+       map.set(String(x.id),x);
+     });
+     return [...map.values()];
+    };
+
+    entries=merge(entries,data.entries);
+    tasks=merge(tasks,data.tasks);
+    board=merge(board,data.board);
+
+    if(Array.isArray(data.payments))
+     payments=merge(payments,data.payments);
+
+    persist();
+    localStorage.setItem(KEY,JSON.stringify(payments));
+    renderAll();
+    render();
+    notify('Данные восстановлены');
+   }catch(err){
+    notify('Не удалось прочитать резервную копию');
+   }
+  };
+
+  reader.readAsText(file);
+  e.target.value='';
+ };
+}
+
+window.mySpaceFinancePaid=togglePaid;
+window.mySpaceFinanceEdit=editPayment;
+window.mySpaceFinanceDelete=deletePayment;
+
+const oldRenderHome=window.renderHome;
+if(typeof oldRenderHome==='function'){
+ window.renderHome=function(){
+  oldRenderHome();
+  renderHomeWidget();
+ };
+}
+
+addInterface();
+
+})();
+</script>
+<!-- END MY SPACE FINANCE MODULE -->
 </body></html>
