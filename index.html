@@ -1013,85 +1013,67 @@ const oldBackup=window.backup;
 window.backup=function(){
  const data={
   app:'MY SPACE',
-  version:2,
-  exportedAt:new Date().toISOString(),
-  entries,board,tasks,payments
- };
- const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
- const url=URL.createObjectURL(blob);
- const a=document.createElement('a');
- a.href=url;
- a.download='my-space-backup-'+dateKey(new Date())+'.json';
- a.click();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
- notify('Резервная копия подготовлена');
-};
 
-const restore=$('restoreFile');
+   <div class="card">
+    <h3>История и повторение</h3>
+    <p class="small">Можно перенести платежи прошлого месяца в текущий. Оплата при копировании сбрасывается.</p>
+    <button class="btn" id="finCopy">Скопировать прошлый месяц</button>
+   </div>
 
-if(restore){
- restore.onchange=e=>{
-  const file=e.target.files[0];
-  if(!file)return;
-  const reader=new FileReader();
+   <div class="form hidden" id="financeForm">
+    <h3 id="finFormTitle">Новый платёж</h3>
 
-  reader.onload=()=>{
-   try{
-    const data=JSON.parse(reader.result);
-    if(!data||!Array.isArray(data.entries)||
-       !Array.isArray(data.tasks)||!Array.isArray(data.board)){
-     notify('Файл имеет неподходящий формат');
-     return;
-    }
+    <label>Название платежа</label>
+    <input id="finName" maxlength="100" placeholder="Например, аренда">
 
-    if(!confirm('Объединить данные из копии с текущими?'))return;
+    <label>Сумма (Br)</label>
+    <input id="finAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00">
 
-    const merge=(oldData,newData)=>{
-     const map=new Map(oldData.map(x=>[String(x.id),x]));
-     newData.forEach(x=>{
-      if(x&&x.id!==undefined&&!map.has(String(x.id)))
-       map.set(String(x.id),x);
-     });
-     return [...map.values()];
-    };
+    <label>Дата оплаты</label>
+    <input id="finDate" type="date">
 
-    entries=merge(entries,data.entries);
-    tasks=merge(tasks,data.tasks);
-    board=merge(board,data.board);
+    <label>Категория</label>
+    <select id="finCategory">
+     <option>Жильё</option>
+     <option>Коммунальные услуги</option>
+     <option>Связь и интернет</option>
+     <option>Кредиты и долги</option>
+     <option>Подписки</option>
+     <option>Здоровье</option>
+     <option>Транспорт</option>
+     <option>Другое</option>
+    </select>
 
-    if(Array.isArray(data.payments))
-     payments=merge(payments,data.payments);
+    <label>Комментарий</label>
+    <textarea id="finNote" placeholder="Дополнительная информация"></textarea>
 
-    persist();
-    localStorage.setItem(KEY,JSON.stringify(payments));
-    renderAll();
-    render();
-    notify('Данные восстановлены');
-   }catch(err){
-    notify('Не удалось прочитать резервную копию');
-   }
-  };
+    <div class="btnrow">
+     <button class="btn primary" id="finSave">Сохранить</button>
+     <button class="btn" id="finCancel">Отмена</button>
+    </div>
+   </div>
+  `;
+  $('main')?.appendChild(section);
+ }
 
-  reader.readAsText(file);
-  e.target.value='';
- };
-}
+ if(!$('finNav')){
+  const b=document.createElement('button');
+  b.id='finNav';
+  b.innerHTML='<span>₽</span>Финансы';
+  b.onclick=()=>go('finance',b);
+  document.querySelector('nav')?.appendChild(b);
+ }
 
-window.mySpaceFinancePaid=togglePaid;
-window.mySpaceFinanceEdit=editPayment;
-window.mySpaceFinanceDelete=deletePayment;
+ if(!$('financeHome')){
+  const card=document.createElement('div');
+  card.className='card';
+  card.id='financeHome';
+  card.innerHTML=`
+   <div class="row">
+    <h3>Обязательные платежи</h3>
+    <button class="btn" id="finHomeOpen">Открыть</button>
+   </div>
+   <div id="finHomeContent" class="finance-widget"></div>
+  `;
 
-const oldRenderHome=window.renderHome;
-if(typeof oldRenderHome==='function'){
- window.renderHome=function(){
-  oldRenderHome();
-  renderHomeWidget();
- };
-}
-
-addInterface();
-
-})();
-</script>
-<!-- END MY SPACE FINANCE MODULE -->
 </body></html>
