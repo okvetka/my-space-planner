@@ -6,127 +6,376 @@
 <meta name="theme-color" content="#f7f6f2">
 <title>MY SPACE</title>
 <style>
-:root{--bg:#f7f6f2;--card:#fffefa;--text:#25272b;--muted:#858990;--blue:#c9e2f1;--blue2:#edf5f9;--line:#e9e8e3;--gold:#b69a62}
+:root{
+ --bg:#f7f6f2;--card:#fffefa;--text:#25272b;
+ --muted:#858990;--blue:#c9e2f1;--blue2:#edf5f9;
+ --line:#e9e8e3;--gold:#b69a62;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-.app{max-width:760px;margin:auto;padding:25px 18px 55px}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
-.logo{font-size:23px;letter-spacing:5px;font-weight:600}.subtitle{font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:7px}.date-label{font-size:12px;color:var(--muted)}
-h1{font-size:29px;font-weight:400;margin:0 0 8px}.intro{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:23px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.tab{border:1px solid var(--line);background:transparent;padding:11px 15px;border-radius:25px;color:var(--muted);cursor:pointer;font-size:13px}.tab.active{background:var(--blue);color:#263744;border-color:var(--blue)}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:18px;margin-bottom:17px}.panel h2{font-size:17px;font-weight:500;margin:0 0 16px}.hidden{display:none!important}
-label{display:block;font-size:12px;color:var(--muted);margin:14px 0 7px}input,textarea,select{width:100%;border:1px solid var(--line);background:white;border-radius:10px;padding:12px;font:14px Arial;color:var(--text)}textarea{min-height:90px;resize:vertical}
-.primary{border:0;background:var(--blue);color:#263744;border-radius:11px;padding:14px;width:100%;margin-top:15px;cursor:pointer;font-size:14px}
-.upload{display:block;text-align:center;padding:20px;border:1px dashed #b9cbd6;border-radius:13px;background:#f8fbfc;color:#627f91;cursor:pointer}.upload input{display:none}
-.preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.preview img{width:85px;height:85px;object-fit:cover;border-radius:10px}
-.calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.calendar-header h2{margin:0;text-transform:capitalize}.arrow{border:0;background:var(--blue);border-radius:50%;width:37px;height:37px;font-size:22px;cursor:pointer}
-.calendar-week,.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:5px}.calendar-week{margin-bottom:10px;color:var(--muted);font-size:10px}
-.day{height:43px;border:0;border-radius:12px;background:transparent;position:relative;font-size:13px;color:var(--text);cursor:pointer}.day.today{border:1px solid #9bbbd0}.day.selected{background:var(--blue);font-weight:bold}.day.has-entry:after{content:"";position:absolute;width:5px;height:5px;background:#83abc4;border-radius:50%;bottom:4px;left:calc(50% - 2px)}.day.other{color:#c6c6c6}.selected-date{font-size:12px;color:var(--muted);margin-top:17px;text-align:center}
-.memory-card{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:14px 0;background:#fff}.memory-cover{width:100%;max-height:360px;object-fit:cover;display:block;background:var(--blue2)}.memory-no-photo{height:105px;background:linear-gradient(135deg,#edf5f9,#f8f6f0);display:flex;align-items:center;justify-content:center;color:#7895a7;font-size:28px}.memory-body{padding:15px}.memory-date{font-size:11px;color:var(--muted);margin-bottom:7px}.memory-title{font-size:18px;margin-bottom:8px}.memory-note{font-size:13px;line-height:1.55;color:#656970;white-space:pre-wrap}.tag{display:inline-block;background:var(--blue2);padding:6px 9px;border-radius:20px;font-size:11px;color:#58778b;margin:0 5px 8px 0}.card-actions{display:flex;gap:8px;margin-top:13px}.small-btn{border:1px solid var(--line);background:#fff;border-radius:20px;padding:8px 12px;color:#62676e;font-size:12px;cursor:pointer}
-.empty{text-align:center;color:var(--muted);font-size:13px;padding:24px 5px}.entry-images{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}.entry-images img{width:100%;height:100px;object-fit:cover;border-radius:9px}
-.mood-group{margin-bottom:22px}.mood-group h3{font-size:14px;font-weight:500}.mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.mood-grid img{width:100%;height:115px;object-fit:cover;border-radius:10px}
-.modal{position:fixed;inset:0;background:#17191d99;display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}.modal-box{background:var(--card);border-radius:20px;padding:20px;width:min(100%,520px);max-height:90vh;overflow:auto}.modal-top{display:flex;justify-content:space-between;align-items:center}.close{border:0;background:var(--blue2);border-radius:50%;width:35px;height:35px;font-size:20px}
-footer{text-align:center;color:#a1a2a3;font-size:10px;letter-spacing:3px;margin-top:30px}
-@media(min-width:600px){.memory-card.with-photo{display:grid;grid-template-columns:42% 1fr}.memory-card.with-photo .memory-cover{height:100%;min-height:220px;max-height:none}.memory-card.with-photo .memory-no-photo{height:100%}}
+body{margin:0;background:var(--bg);color:var(--text);
+ font-family:Arial,sans-serif}
+header{padding:27px 20px 17px;text-align:center}
+h1{font-size:25px;letter-spacing:5px;margin:0;font-weight:500}
+.subtitle{font-size:10px;letter-spacing:3px;color:var(--muted);margin-top:8px}
+nav{display:flex;justify-content:center;gap:9px;padding:8px 12px 20px}
+nav button,.btn{border:1px solid var(--line);background:var(--card);
+ padding:11px 16px;border-radius:22px;color:var(--text);font-size:13px}
+nav button.active,.primary{background:var(--blue);border-color:var(--blue)}
+main{max-width:720px;margin:auto;padding:0 15px 40px}
+.panel{display:none}.panel.active{display:block}
+.section-title{font-size:19px;font-weight:500;margin:12px 0 16px}
+.calendar{background:var(--card);border:1px solid var(--line);
+ border-radius:18px;padding:16px;margin-bottom:18px}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.cal-head button{border:0;background:var(--blue2);border-radius:50%;
+ width:34px;height:34px;font-size:18px}
+#monthTitle{font-size:15px}
+.week,.days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:5px}
+.week span{font-size:11px;color:var(--muted);padding:7px 0}
+.day{border:0;background:transparent;min-height:39px;border-radius:12px;
+ position:relative;font-size:13px;color:var(--text)}
+.day.selected{background:var(--blue)}
+.day.today{outline:1px solid var(--gold)}
+.day.has-entry:after{content:"";position:absolute;bottom:4px;left:calc(50% - 3px);
+ width:6px;height:6px;border-radius:50%;background:#91c7e4}
+.selected-date{font-size:13px;color:var(--muted);margin:14px 0}
+.card{background:var(--card);border:1px solid var(--line);
+ border-radius:18px;padding:15px;margin-bottom:14px}
+.entry-photo{width:100%;max-height:300px;object-fit:cover;
+ border-radius:13px;margin-bottom:12px}
+.entry-date{font-size:11px;color:var(--muted);margin-bottom:8px}
+.entry-category{font-size:11px;color:#7299ae;letter-spacing:1px;text-transform:uppercase}
+.entry-text{font-size:14px;line-height:1.55;white-space:pre-wrap;margin:10px 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.actions button{font-size:12px;padding:9px 13px;border-radius:18px;
+ border:1px solid var(--line);background:white}
+.form{background:var(--card);border:1px solid var(--line);
+ border-radius:18px;padding:17px;margin-bottom:18px}
+label{display:block;font-size:12px;color:var(--muted);margin:13px 0 6px}
+input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);
+ border-radius:11px;background:#fffefa;font:14px Arial;color:var(--text)}
+textarea{min-height:110px;resize:vertical}
+.form button{margin-top:15px}
+button{cursor:pointer}
+.empty{text-align:center;color:var(--muted);font-size:13px;padding:25px 10px}
+.photo-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.photo-preview img{width:75px;height:75px;object-fit:cover;border-radius:10px}
+.mood-options{display:flex;gap:8px;flex-wrap:wrap}
+.mood-options button{border:1px solid var(--line);background:white;
+ border-radius:20px;padding:8px 12px}
+.mood-options button.chosen{background:var(--blue);border-color:var(--blue)}
+#modal{display:none;position:fixed;inset:0;background:#0008;
+ z-index:10;padding:18px;overflow:auto}
+.modal-box{max-width:600px;margin:35px auto;background:var(--card);
+ border-radius:18px;padding:18px}
+.modal-box img{width:100%;border-radius:12px;margin:7px 0;object-fit:cover}
+.close{float:right;border:0;background:var(--blue2);padding:9px 13px;border-radius:20px}
+.small{font-size:11px;color:var(--muted)}
 </style>
 </head>
 <body>
-<div class="app">
-<header><div><div class="logo">MY SPACE</div><div class="subtitle">YOUR PERSONAL UNIVERSE</div></div><div class="date-label" id="todayLabel"></div></header>
-<h1>Моё пространство.</h1><div class="intro">Моменты, мысли, планы и всё, что хочется сохранить.</div>
-<nav class="tabs">
-<button class="tab active" data-tab="diary">Дневник</button><button class="tab" data-tab="inspiration">Вдохновение</button><button class="tab" data-tab="new">Новая запись +</button>
+
+<header>
+<h1>MY SPACE</h1>
+<div class="subtitle">MY PERSONAL SPACE</div>
+</header>
+
+<nav>
+<button class="active" onclick="showTab('diary',this)">Дневник</button>
+<button onclick="showTab('inspiration',this)">Вдохновение</button>
+<button onclick="showTab('new',this)">Новая запись +</button>
 </nav>
-<section id="diary">
-<div class="panel">
-<div class="calendar-header"><button class="arrow" id="prevMonth">‹</button><h2 id="calendarMonth"></h2><button class="arrow" id="nextMonth">›</button></div>
-<div class="calendar-week"><span>ПН</span><span>ВТ</span><span>СР</span><span>ЧТ</span><span>ПТ</span><span>СБ</span><span>ВС</span></div>
-<div class="calendar-grid" id="calendarGrid"></div><div class="selected-date" id="selectedDateLabel"></div>
+
+<main>
+<section id="diary" class="panel active">
+<div class="section-title">Мой дневник</div>
+<div class="calendar">
+ <div class="cal-head">
+  <button onclick="changeMonth(-1)">‹</button>
+  <span id="monthTitle"></span>
+  <button onclick="changeMonth(1)">›</button>
+ </div>
+ <div class="week">
+  <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span>
+  <span>Пт</span><span>Сб</span><span>Вс</span>
+ </div>
+ <div class="days" id="calendarDays"></div>
 </div>
-<div class="panel"><h2>Мои моменты</h2><div id="entries"></div></div>
+<div class="selected-date" id="selectedDate"></div>
+<div id="entriesList"></div>
 </section>
-<section id="new" class="hidden"><div class="panel"><h2 id="formHeading">Сохранить момент</h2>
-<form id="entryForm">
-<label>Дата</label><input type="date" id="entryDate" required>
-<label>Название момента</label><input type="text" id="entryTitle" placeholder="Например, утренняя пробежка" required>
-<label>Категория</label><select id="entryCategory"><option>Моя жизнь</option><option>Спорт</option><option>Работа</option><option>Путешествия</option><option>Образы</option><option>Красота</option><option>Мои мысли</option><option>Другое</option></select>
-<label>Настроение</label><select id="entryMood"><option>✨ Вдохновение</option><option>☀️ Радость</option><option>🌿 Спокойствие</option><option>🌧 Задумчивость</option><option>⚡ Энергия</option><option>🤍 Просто мой день</option></select>
-<label>Мои мысли</label><textarea id="entryNote" placeholder="Что хочется запомнить?"></textarea>
-<label>Фотографии</label><label class="upload">+ Добавить фотографии с телефона<input type="file" id="entryPhotos" accept="image/*" multiple></label><div class="preview" id="photoPreview"></div>
-<button class="primary" type="submit" id="submitEntry">Сохранить момент</button><button class="tab hidden" type="button" id="cancelEdit" style="width:100%;margin-top:8px">Отменить редактирование</button>
-</form></div></section>
-<section id="inspiration" class="hidden"><div class="panel"><h2>Моя доска вдохновения</h2><p class="intro">Идеи, образы, интерьеры, места и визуальные референсы.</p>
-<label>Коллекция</label><select id="moodCategory"><option>Интерьеры</option><option>Образы</option><option>Съёмки</option><option>Макияж</option><option>Места</option><option>Идеи</option></select>
-<label class="upload">+ Добавить изображения<input type="file" id="moodPhotos" accept="image/*" multiple></label><div class="preview" id="moodPreview"></div><button class="primary" id="saveMood" type="button">Сохранить коллекцию</button></div><div class="panel" id="moodEntries"></div></section>
-<footer>MY SPACE · MADE FOR YOU</footer>
+
+<section id="new" class="panel">
+<div class="section-title" id="formTitle">Новая запись</div>
+<div class="form">
+ <label>Дата</label>
+ <input type="date" id="entryDate">
+ <label>Категория</label>
+ <select id="entryCategory">
+  <option>Мои мысли</option><option>События</option>
+  <option>Спорт</option><option>Путешествия</option>
+  <option>Красота</option><option>Другое</option>
+ </select>
+ <label>Настроение</label>
+ <div class="mood-options" id="moodOptions">
+  <button type="button" onclick="chooseMood(this,'😊')">😊</button>
+  <button type="button" onclick="chooseMood(this,'🥰')">🥰</button>
+  <button type="button" onclick="chooseMood(this,'😌')">😌</button>
+  <button type="button" onclick="chooseMood(this,'😐')">😐</button>
+  <button type="button" onclick="chooseMood(this,'😔')">😔</button>
+  <button type="button" onclick="chooseMood(this,'😡')">😡</button>
+ </div>
+ <label>Мои мысли и воспоминания</label>
+ <textarea id="entryText" placeholder="Запиши всё, что хочется сохранить..."></textarea>
+ <label>Фотографии</label>
+ <input type="file" id="entryPhotos" accept="image/*" multiple>
+ <div class="photo-preview" id="photoPreview"></div>
+ <button class="btn primary" onclick="saveEntry()">Сохранить запись</button>
+ <button class="btn" onclick="cancelEdit()">Отмена</button>
 </div>
-<div id="viewModal" class="modal hidden"><div class="modal-box"><div class="modal-top"><h2>Моё воспоминание</h2><button class="close" id="closeModal">×</button></div><div id="modalContent"></div></div></div>
+</section>
+
+<section id="inspiration" class="panel">
+<div class="section-title">Доска вдохновения</div>
+<div class="form">
+ <label>Коллекция</label>
+ <select id="boardCategory">
+  <option>Интерьеры</option><option>Образы</option>
+  <option>Съёмки</option><option>Макияж</option>
+  <option>Места</option><option>Идеи</option>
+ </select>
+ <label>Название или заметка</label>
+ <input id="boardText" placeholder="Например, идея для съёмки">
+ <label>Фотография</label>
+ <input type="file" id="boardPhoto" accept="image/*">
+ <button class="btn primary" onclick="addBoard()">Добавить на доску</button>
+</div>
+<div id="boardList"></div>
+</section>
+</main>
+
+<div id="modal">
+ <div class="modal-box">
+  <button class="close" onclick="closeModal()">Закрыть</button>
+  <div id="modalContent"></div>
+ </div>
+</div>
+
 <script>
-const $=id=>document.getElementById(id);
-const today=new Date();
-const dateString=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
-const prettyDate=s=>new Date(s+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
-$('todayLabel').textContent=today.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
-$('entryDate').value=dateString(today);
-let entries=JSON.parse(localStorage.getItem('myspace_entries')||'[]');
-let moodEntries=JSON.parse(localStorage.getItem('myspace_mood')||'[]');
-let entryFiles=[],moodFiles=[],editingId=null;
-let selectedDate=dateString(today),shownMonth=new Date(today.getFullYear(),today.getMonth(),1);
-function saveData(){localStorage.setItem('myspace_entries',JSON.stringify(entries));localStorage.setItem('myspace_mood',JSON.stringify(moodEntries));}
-function showTab(id){document.querySelectorAll('.tab[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));['diary','new','inspiration'].forEach(x=>$(x).classList.toggle('hidden',x!==id));if(id==='diary'){renderCalendar();renderEntries()}if(id==='inspiration')renderMood()}
-document.querySelectorAll('.tab[data-tab]').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+const ENTRY_KEY='myspace_entries';
+const MOOD_KEY='myspace_mood';
+const BOARD_KEY='myspace_board';
+
+let entries=JSON.parse(localStorage.getItem(ENTRY_KEY)||'[]');
+let board=JSON.parse(localStorage.getItem(BOARD_KEY)||'[]');
+let selectedMood='';
+let selectedPhotos=[];
+let editingId=null;
+let currentDate=new Date();
+let chosenDate=new Date();
+
+function saveData(){
+ localStorage.setItem(ENTRY_KEY,JSON.stringify(entries));
+}
+function showTab(id,button){
+ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ if(button)button.classList.add('active');
+ if(id==='diary'){renderCalendar();renderEntries()}
+ if(id==='inspiration')renderBoard();
+}
+function dateKey(d){
+ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function changeMonth(n){
+ currentDate.setMonth(currentDate.getMonth()+n);
+ renderCalendar();
+}
 function renderCalendar(){
-let y=shownMonth.getFullYear(),m=shownMonth.getMonth(),first=new Date(y,m,1),offset=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate(),prevDays=new Date(y,m,0).getDate();
-$('calendarMonth').textContent=shownMonth.toLocaleDateString('ru-RU',{month:'long',year:'numeric'});let grid=$('calendarGrid');grid.innerHTML='';
-for(let i=0;i<42;i++){let n,d,other=false;if(i<offset){n=prevDays-offset+i+1;d=new Date(y,m-1,n);other=true}else if(i>=offset+days){n=i-offset-days+1;d=new Date(y,m+1,n);other=true}else{n=i-offset+1;d=new Date(y,m,n)}
-let key=dateString(d),b=document.createElement('button');b.className='day';b.textContent=n;if(other)b.classList.add('other');if(key===dateString(today))b.classList.add('today');if(key===selectedDate)b.classList.add('selected');if(entries.some(e=>e.date===key))b.classList.add('has-entry');b.addEventListener('click',()=>{selectedDate=key;shownMonth=new Date(d.getFullYear(),d.getMonth(),1);renderCalendar();renderEntries()});grid.appendChild(b)}
-$('selectedDateLabel').textContent=prettyDate(selectedDate);
+ const y=currentDate.getFullYear(),m=currentDate.getMonth();
+ document.getElementById('monthTitle').textContent=
+ new Date(y,m,1).toLocaleDateString('ru-RU',{month:'long',year:'numeric'});
+ const first=(new Date(y,m,1).getDay()+6)%7;
+ const count=new Date(y,m+1,0).getDate();
+ const today=dateKey(new Date()),selected=dateKey(chosenDate);
+ let html='';
+ for(let i=0;i<first;i++)html+='<span></span>';
+ for(let d=1;d<=count;d++){
+  const key=dateKey(new Date(y,m,d));
+  const has=entries.some(e=>e.date===key);
+  html+=`<button class="day ${key===selected?'selected':''} ${key===today?'today':''} ${has?'has-entry':''}" onclick="selectDay('${key}')">${d}</button>`;
+ }
+ document.getElementById('calendarDays').innerHTML=html;
 }
-$('prevMonth').onclick=()=>{shownMonth.setMonth(shownMonth.getMonth()-1);renderCalendar()};
-$('nextMonth').onclick=()=>{shownMonth.setMonth(shownMonth.getMonth()+1);renderCalendar()};
-function openView(e){
-let box=$('modalContent');box.innerHTML='';let wrap=document.createElement('div');
-let date=document.createElement('div');date.className='memory-date';date.textContent=prettyDate(e.date);
-let title=document.createElement('div');title.className='memory-title';title.textContent=e.title;
-let tag=document.createElement('span');tag.className='tag';tag.textContent=e.category;
-let mood=document.createElement('span');mood.className='tag';mood.textContent=e.mood;
-let note=document.createElement('p');note.className='memory-note';note.textContent=e.note||'';
-wrap.append(date,title,tag,mood,note);
-(e.photos||[]).forEach(src=>{let img=document.createElement('img');img.src=src;img.style.cssText='width:100%;border-radius:12px;margin-top:9px';wrap.appendChild(img)});
-box.appendChild(wrap);$('viewModal').classList.remove('hidden');
+function selectDay(key){
+ chosenDate=new Date(key+'T12:00:00');
+ renderCalendar();renderEntries();
 }
-$('closeModal').onclick=()=>$('viewModal').classList.add('hidden');
-$('viewModal').addEventListener('click',e=>{if(e.target===$('viewModal'))$('viewModal').classList.add('hidden')});
 function renderEntries(){
-let list=entries.filter(e=>e.date===selectedDate),c=$('entries');c.innerHTML='';
-if(!list.length){c.innerHTML='<div class="empty">В этот день пока нет записей.</div>';return}
-list.forEach(e=>{
-let card=document.createElement('article');card.className='memory-card'+(e.photos&&e.photos.length?' with-photo':'');
-if(e.photos&&e.photos.length){let img=document.createElement('img');img.className='memory-cover';img.src=e.photos[0];img.alt='Фотография воспоминания';card.appendChild(img)}else{let blank=document.createElement('div');blank.className='memory-no-photo';blank.textContent='✧';card.appendChild(blank)}
-let body=document.createElement('div');body.className='memory-body';
-let date=document.createElement('div');date.className='memory-date';date.textContent=prettyDate(e.date);
-let title=document.createElement('div');title.className='memory-title';title.textContent=e.title;
-let tag=document.createElement('span');tag.className='tag';tag.textContent=e.category;
-let mood=document.createElement('span');mood.className='tag';mood.textContent=e.mood;
-let note=document.createElement('div');note.className='memory-note';note.textContent=e.note||'';
-let actions=document.createElement('div');actions.className='card-actions';
-let view=document.createElement('button');view.className='small-btn';view.textContent='Открыть';view.onclick=()=>openView(e);
-let edit=document.createElement('button');edit.className='small-btn';edit.textContent='Изменить';edit.onclick=()=>startEdit(e.id);
-let del=document.createElement('button');del.className='small-btn';del.textContent='Удалить';del.onclick=()=>{if(confirm('Удалить эту запись?')){entries=entries.filter(x=>x.id!==e.id);saveData();renderCalendar();renderEntries()}};
-actions.append(view,edit,del);body.append(date,title,tag,mood,note);
-if(e.photos&&e.photos.length>1){let grid=document.createElement('div');grid.className='entry-images';e.photos.slice(1).forEach(src=>{let im=document.createElement('img');im.src=src;grid.appendChild(im)});body.appendChild(grid)}
-body.appendChild(actions);card.appendChild(body);c.appendChild(card);
-});
+ const key=dateKey(chosenDate);
+ document.getElementById('selectedDate').textContent=
+ chosenDate.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
+ const list=entries.filter(e=>e.date===key).sort((a,b)=>(b.id||0)-(a.id||0));
+ const box=document.getElementById('entriesList');
+ if(!list.length){box.innerHTML='<div class="empty">На эту дату записей пока нет.</div>';return}
+ box.innerHTML=list.map(e=>{
+  const photos=e.photos|| (e.photo?[e.photo]:[]);
+  return `<div class="card">
+   ${photos.length?`<img class="entry-photo" src="${photos[0]}">`:''}
+   <div class="entry-date">${formatDate(e.date)} ${e.mood||''}</div>
+   <div class="entry-category">${escapeHtml(e.category||'Мои мысли')}</div>
+   <div class="entry-text">${escapeHtml(e.text||'')}</div>
+   <div class="actions">
+    <button onclick="openEntry(${e.id})">Открыть</button>
+    <button onclick="editEntry(${e.id})">Изменить</button>
+    <button onclick="deleteEntry(${e.id})">Удалить</button>
+   </div>
+  </div>`;
+ }).join('');
 }
-function startEdit(id){let e=entries.find(x=>x.id===id);if(!e)return;editingId=id;entryFiles=[...(e.photos||[])];$('entryDate').value=e.date;$('entryTitle').value=e.title;$('entryCategory').value=e.category;$('entryMood').value=e.mood;$('entryNote').value=e.note||'';$('formHeading').textContent='Редактировать момент';$('submitEntry').textContent='Сохранить изменения';$('cancelEdit').classList.remove('hidden');$('photoPreview').innerHTML='';entryFiles.forEach(src=>{let im=document.createElement('img');im.src=src;$('photoPreview').appendChild(im)});showTab('new')}
-function resetForm(){editingId=null;entryFiles=[];$('entryForm').reset();$('entryDate').value=dateString(today);$('entryPhotos').value='';$('photoPreview').innerHTML='';$('formHeading').textContent='Сохранить момент';$('submitEntry').textContent='Сохранить момент';$('cancelEdit').classList.add('hidden')}
-$('cancelEdit').onclick=()=>{resetForm();showTab('diary')};
-function readFiles(input,preview,target){input.addEventListener('change',()=>{target.length=0;preview.innerHTML='';[...input.files].forEach(file=>{if(!file.type.startsWith('image/'))return;let reader=new FileReader();reader.onload=()=>{target.push(reader.result);let im=document.createElement('img');im.src=reader.result;preview.appendChild(im)};reader.readAsDataURL(file)})})}
-readFiles($('entryPhotos'),$('photoPreview'),entryFiles);readFiles($('moodPhotos'),$('moodPreview'),moodFiles);
-$('entryForm').addEventListener('submit',ev=>{ev.preventDefault();let data={id:editingId||Date.now(),date:$('entryDate').value,title:$('entryTitle').value.trim(),category:$('entryCategory').value,mood:$('entryMood').value,note:$('entryNote').value.trim(),photos:[...entryFiles]};let old=entries;entries=editingId?entries.map(e=>e.id===editingId?data:e):[data,...entries];try{saveData()}catch(err){entries=old;alert('Не удалось сохранить данные: возможно, фотографии слишком большие.');return}selectedDate=data.date;shownMonth=new Date(data.date+'T12:00:00');resetForm();renderCalendar();renderEntries();showTab('diary')});
-$('saveMood').onclick=()=>{if(!moodFiles.length){alert('Сначала добавь изображение.');return}moodEntries.push({category:$('moodCategory').value,photos:[...moodFiles]});try{saveData()}catch(e){moodEntries.pop();alert('Не удалось сохранить изображения. Попробуй добавить меньше фотографий.');return}moodFiles=[];$('moodPhotos').value='';$('moodPreview').innerHTML='';renderMood()};
-function renderMood(){let c=$('moodEntries');c.innerHTML='';if(!moodEntries.length){c.innerHTML='<div class="empty">Твоя коллекция пока пуста.</div>';return}moodEntries.forEach(g=>{let group=document.createElement('div');group.className='mood-group';let h=document.createElement('h3');h.textContent=g.category;let grid=document.createElement('div');grid.className='mood-grid';(g.photos||[]).forEach(src=>{let im=document.createElement('img');im.src=src;grid.appendChild(im)});group.append(h,grid);c.appendChild(group)})}
-renderCalendar();renderEntries();renderMood();
+function formatDate(s){
+ if(!s)return '';
+ const d=new Date(s+'T12:00:00');
+ return d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
+}
+function escapeHtml(s){
+ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function chooseMood(btn,mood){
+ selectedMood=mood;
+ document.querySelectorAll('.mood-options button').forEach(b=>b.classList.remove('chosen'));
+ btn.classList.add('chosen');
+}
+document.getElementById('entryPhotos').addEventListener('change',async function(){
+ const files=Array.from(this.files);
+ for(const file of files){
+  const data=await compressImage(file);
+  selectedPhotos.push(data);
+ }
+ renderPhotoPreview();
+ this.value='';
+});
+function compressImage(file){
+ return new Promise(resolve=>{
+  const reader=new FileReader();
+  reader.onload=()=>{
+   const img=new Image();
+   img.onload=()=>{
+    const canvas=document.createElement('canvas');
+    const scale=Math.min(1200/img.width,1200/img.height,1);
+    canvas.width=img.width*scale;canvas.height=img.height*scale;
+    canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+    resolve(canvas.toDataURL('image/jpeg',0.75));
+   };
+   img.src=reader.result;
+  };
+  reader.readAsDataURL(file);
+ });
+}
+function renderPhotoPreview(){
+ document.getElementById('photoPreview').innerHTML=
+ selectedPhotos.map((p,i)=>`<img src="${p}" onclick="removePhoto(${i})">`).join('');
+}
+function removePhoto(i){
+ selectedPhotos.splice(i,1);renderPhotoPreview();
+}
+function saveEntry(){
+ const date=document.getElementById('entryDate').value;
+ const text=document.getElementById('entryText').value.trim();
+ if(!date){alert('Выбери дату записи');return}
+ if(!text&&!selectedPhotos.length){alert('Добавь текст или фотографию');return}
+ const item={
+  id:editingId||Date.now(),
+  date,
+  category:document.getElementById('entryCategory').value,
+  mood:selectedMood,
+  text,
+  photos:selectedPhotos
+ };
+ if(editingId){
+  const index=entries.findIndex(e=>e.id===editingId);
+  if(index!==-1)entries[index]=item;
+ }else entries.push(item);
+ saveData();
+ chosenDate=new Date(date+'T12:00:00');
+ currentDate=new Date(chosenDate);
+ resetForm();
+ showTab('diary',document.querySelector('nav button'));
+}
+function resetForm(){
+ editingId=null;selectedMood='';selectedPhotos=[];
+ document.getElementById('entryDate').value=dateKey(new Date());
+ document.getElementById('entryText').value='';
+ document.getElementById('entryCategory').selectedIndex=0;
+ document.getElementById('entryPhotos').value='';
+ document.getElementById('photoPreview').innerHTML='';
+ document.querySelectorAll('.mood-options button').forEach(b=>b.classList.remove('chosen'));
+ document.getElementById('formTitle').textContent='Новая запись';
+}
+function cancelEdit(){resetForm();showTab('diary',document.querySelector('nav button'))}
+function editEntry(id){
+ const e=entries.find(x=>x.id===id);if(!e)return;
+ editingId=id;
+ document.getElementById('entryDate').value=e.date||dateKey(new Date());
+ document.getElementById('entryCategory').value=e.category||'Мои мысли';
+ document.getElementById('entryText').value=e.text||'';
+ selectedMood=e.mood||'';
+ selectedPhotos=e.photos|| (e.photo?[e.photo]:[]);
+ document.querySelectorAll('.mood-options button').forEach(b=>{
+  b.classList.toggle('chosen',b.textContent===selectedMood);
+ });
+ renderPhotoPreview();
+ document.getElementById('formTitle').textContent='Изменить запись';
+ showTab('new',document.querySelectorAll('nav button')[2]);
+}
+function deleteEntry(id){
+ if(!confirm('Удалить эту запись?'))return;
+ entries=entries.filter(e=>e.id!==id);
+ saveData();renderCalendar();renderEntries();
+}
+function openEntry(id){
+ const e=entries.find(x=>x.id===id);if(!e)return;
+ const photos=e.photos|| (e.photo?[e.photo]:[]);
+ document.getElementById('modalContent').innerHTML=
+ `<h2>${formatDate(e.date)}</h2>
+ <p class="small">${escapeHtml(e.category||'')} ${e.mood||''}</p>
+ <p class="entry-text">${escapeHtml(e.text||'')}</p>
+ ${photos.map(p=>`<img src="${p}">`).join('')}`;
+ document.getElementById('modal').style.display='block';
+}
+function closeModal(){document.getElementById('modal').style.display='none'}
+async function addBoard(){
+ const file=document.getElementById('boardPhoto').files[0];
+ const title=document.getElementById('boardText').value.trim();
+ if(!file&&!title){alert('Добавь фотографию или заметку');return}
+ const photo=file?await compressImage(file):'';
+ board.push({id:Date.now(),category:document.getElementById('boardCategory').value,title,photo});
+ localStorage.setItem(BOARD_KEY,JSON.stringify(board));
+ document.getElementById('boardText').value='';
+ document.getElementById('boardPhoto').value='';
+ renderBoard();
+}
+function renderBoard(){
+ const box=document.getElementById('boardList');
+ if(!board.length){box.innerHTML='<div class="empty">Здесь будут твои идеи и вдохновение.</div>';return}
+ box.innerHTML=board.slice().reverse().map(e=>
+ `<div class="card">
+ ${e.photo?`<img class="entry-photo" src="${e.photo}">`:''}
+ <div class="entry-category">${escapeHtml(e.category||'')}</div>
+ <div class="entry-text">${escapeHtml(e.title||'')}</div>
+ <div class="actions"><button onclick="deleteBoard(${e.id})">Удалить</button></div>
+ </div>`).join('');
+}
+function deleteBoard(id){
+ if(!confirm('Удалить эту карточку?'))return;
+ board=board.filter(e=>e.id!==id);
+ localStorage.setItem(BOARD_KEY,JSON.stringify(board));renderBoard();
+}
+document.getElementById('entryDate').value=dateKey(new Date());
+renderCalendar();
+renderEntries();
+renderBoard();
 </script>
 </body>
 </html>
