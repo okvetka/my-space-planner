@@ -1,414 +1,699 @@
-<!-- MY SPACE FINANCE MODULE -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f6f2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MY SPACE">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<title>MY SPACE</title>
 <style>
-.finance-month{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0}
-.finance-month button{border:1px solid var(--line);background:var(--blue2);border-radius:12px;padding:9px 14px}
-.finance-summary{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
-.finance-summary .stat{min-width:0}
-.finance-summary strong{font-size:20px;overflow-wrap:anywhere}
-.finance-status{display:inline-block;padding:5px 9px;border-radius:14px;background:var(--blue2);font-size:10px;margin-top:7px}
-.finance-status.paid{background:#dceee4;color:#326348}
-.finance-status.late{background:#f5dfdf;color:#984747}
-.finance-status.soon{background:#f5ecd8;color:#8c6a2d}
-.finance-payment{padding:13px 0;border-bottom:1px solid var(--line)}
-.finance-payment:last-child{border-bottom:0}
-.finance-payment .amount{font-size:17px;font-weight:600;white-space:nowrap}
-.finance-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
-.finance-actions button{font-size:11px}
-.finance-check{width:19px;height:19px;accent-color:#83b8d5}
-.finance-widget{border-left:3px solid var(--blue);padding-left:12px}
-#financeForm input,#financeForm select,#financeForm textarea{margin-bottom:4px}
-@media(min-width:600px){.finance-summary{grid-template-columns:repeat(4,1fr)}}
+:root{--bg:#f7f6f2;--card:#fffefa;--text:#25272b;--muted:#858990;--blue:#c9e2f1;--blue2:#edf5f9;--line:#e9e8e3;--gold:#b69a62;--shadow:0 7px 24px #30343a0a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;font-size:14px;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+button,input,textarea,select{font:inherit}button{cursor:pointer;color:inherit}
+header{padding:24px 18px 14px;text-align:center}h1{font-size:23px;letter-spacing:5px;font-weight:500;margin:0}.subtitle{font-size:9px;letter-spacing:3px;color:var(--muted);margin-top:7px}
+main{max-width:760px;margin:auto;padding:0 14px 28px}.tab{display:none}.tab.active{display:block}
+nav{position:fixed;z-index:5;bottom:0;left:0;right:0;background:#fffefaed;backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom))}
+nav button{border:0;background:transparent;color:var(--muted);font-size:10px;padding:5px 3px;min-width:0;flex:1}
+nav button span{display:block;font-size:19px;margin-bottom:3px}nav button.active{color:#4f829f}
+h2{font-size:20px;font-weight:500;margin:12px 0 15px}h3{font-size:15px;font-weight:500;margin:0 0 12px}
+.card,.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px;box-shadow:var(--shadow)}
+.muted,.small{color:var(--muted)}.small{font-size:11px}.eyebrow{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#7299ae}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--blue2);border-radius:15px;padding:13px}.stat strong{font-size:23px;font-weight:500;display:block;margin-bottom:4px}
+.btn{border:1px solid var(--line);background:#fffefa;border-radius:22px;padding:10px 14px;font-size:12px}
+.btn.primary{background:var(--blue);border-color:var(--blue)}.btn.danger{color:#a34c4c}
+.btnrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+input,textarea,select{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px;background:#fffefa;color:var(--text);outline:none}
+textarea{min-height:90px;resize:vertical}label{display:block;font-size:11px;color:var(--muted);margin:13px 0 6px}
+.form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:15px}
+.form .btn{margin-top:14px}.hidden{display:none!important}
+.pills{display:flex;gap:7px;flex-wrap:wrap}.pill{border:1px solid var(--line);background:white;border-radius:18px;padding:8px 11px;font-size:11px}.pill.on{background:var(--blue);border-color:var(--blue)}
+.calendar{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:14px}
+.calhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.calhead button{border:0;background:var(--blue2);border-radius:50%;width:34px;height:34px;font-size:18px}
+.week,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}.week span{font-size:10px;color:var(--muted);padding:6px 0}
+.day{border:0;background:transparent;border-radius:11px;min-height:39px;position:relative;font-size:12px}.day.selected{background:var(--blue)}.day.today{outline:1px solid var(--gold)}.day.marked:after{content:"";position:absolute;bottom:3px;left:calc(50% - 3px);width:6px;height:6px;background:#80b8d7;border-radius:50%}
+.item{border-bottom:1px solid var(--line);padding:11px 0}.item:last-child{border:0}.itemtitle{font-size:14px;margin-bottom:5px}.check{width:19px;height:19px;accent-color:#83b8d5;flex:none}
+.taskdone .itemtitle{text-decoration:line-through;color:var(--muted)}
+.photo{width:100%;max-height:300px;object-fit:cover;border-radius:13px;margin:10px 0}
+.thumbrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.thumbrow img{width:66px;height:66px;object-fit:cover;border-radius:9px}
+.empty{text-align:center;padding:22px 10px;color:var(--muted);font-size:12px}
+.entrycat{font-size:10px;letter-spacing:1px;color:#7299ae;text-transform:uppercase}
+.modal{display:none;position:fixed;z-index:20;inset:0;background:#0008;padding:18px;overflow:auto}.modalbox{max-width:620px;margin:30px auto;background:var(--card);border-radius:18px;padding:17px}
+.close{float:right;border:0;background:var(--blue2);border-radius:18px;padding:8px 12px}
+.toast{position:fixed;z-index:30;bottom:85px;left:50%;transform:translateX(-50%);background:#25272b;color:white;padding:11px 16px;border-radius:20px;font-size:12px;display:none;max-width:90%;text-align:center}
+@media(min-width:650px){main{padding-left:22px;padding-right:22px}.grid2{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header><h1>MY SPACE</h1><div class="subtitle">MY PERSONAL SPACE</div></header>
+<main>
+<section id="home" class="tab active">
+ <div class="row"><div><div class="eyebrow" id="todayLabel">袦袨袡 袛袝袧鞋</div><h2 id="homeDate">小械谐芯写薪褟</h2></div><button class="btn primary" onclick="openTaskForm()">锛� 袟邪写邪褔邪</button></div>
+ <div class="grid2" id="stats"></div>
+ <div class="card"><div class="row"><h3>袩谢邪薪 薪邪 褋械谐芯写薪褟</h3><span class="small" id="todayCount"></span></div><div id="todayTasks"></div></div>
+ <div class="card"><h3>袘谢懈卸邪泄褕懈械 褋芯斜褘褌懈褟</h3><div id="upcoming"></div></div>
+ <div class="card"><h3>袘褘褋褌褉褘械 写械泄褋褌胁懈褟</h3><div class="btnrow"><button class="btn" onclick="openTaskForm()">锛� 袛芯斜邪胁懈褌褜 蟹邪写邪褔褍</button><button class="btn" onclick="go('diary')">锛� 袟邪锌懈褋褜 胁 写薪械胁薪懈泻</button><button class="btn" onclick="go('calendar')">袨褌泻褉褘褌褜 泻邪谢械薪写邪褉褜</button></div></div>
+</section>
+
+<section id="calendar" class="tab">
+ <h2>袣邪谢械薪写邪褉褜</h2>
+ <div class="calendar"><div class="calhead"><button onclick="moveMonth(-1)">鈥�</button><strong id="monthName"></strong><button onclick="moveMonth(1)">鈥�</button></div><div class="week"><span>袩薪</span><span>袙褌</span><span>小褉</span><span>效褌</span><span>袩褌</span><span>小斜</span><span>袙褋</span></div><div class="days" id="calendarGrid"></div></div>
+ <div class="row"><h3 id="calendarSelectedLabel">袙褘斜褉邪薪薪褘泄 写械薪褜</h3><button class="btn primary" onclick="openTaskForm(selectedDay)">锛� 袛芯斜邪胁懈褌褜</button></div>
+ <div class="card"><div id="calendarItems"></div></div>
+</section>
+
+<section id="tasks" class="tab">
+ <div class="row"><h2>袦芯懈 写械谢邪</h2><button class="btn primary" onclick="openTaskForm()">锛� 袟邪写邪褔邪</button></div>
+ <input id="taskSearch" placeholder="袩芯懈褋泻 锌芯 蟹邪写邪褔邪屑..." oninput="renderTasks()">
+ <div class="pills" style="margin:12px 0"><button class="pill on" data-filter="all" onclick="setFilter('all',this)">袙褋械</button><button class="pill" data-filter="active" onclick="setFilter('active',this)">袗泻褌懈胁薪褘械</button><button class="pill" data-filter="done" onclick="setFilter('done',this)">袙褘锌芯谢薪械薪薪褘械</button></div>
+ <div class="pills" id="categoryFilters" style="margin-bottom:12px"><button class="pill on" onclick="setCategory('袙褋械',this)">袙褋械 泻邪褌械谐芯褉懈懈</button><button class="pill" onclick="setCategory('袪邪斜芯褌邪',this)">袪邪斜芯褌邪</button><button class="pill" onclick="setCategory('小锌芯褉褌',this)">小锌芯褉褌</button><button class="pill" onclick="setCategory('袥懈褔薪芯械',this)">袥懈褔薪芯械</button><button class="pill" onclick="setCategory('袨褌写褘褏',this)">袨褌写褘褏</button></div>
+ <div id="taskList"></div>
+</section>
+
+<section id="diary" class="tab">
+ <div class="row"><h2>袛薪械胁薪懈泻</h2><button class="btn primary" onclick="openDiaryForm()">锛� 袟邪锌懈褋褜</button></div>
+ <div class="form hidden" id="diaryForm"><h3 id="diaryFormTitle">袧芯胁邪褟 蟹邪锌懈褋褜</h3>
+  <label>袛邪褌邪</label><input type="date" id="dDate">
+  <label>袣邪褌械谐芯褉懈褟</label><select id="dCategory"><option>袦芯懈 屑褘褋谢懈</option><option>小芯斜褘褌懈褟</option><option>小锌芯褉褌</option><option>袩褍褌械褕械褋褌胁懈褟</option><option>袣褉邪褋芯褌邪</option><option>袛褉褍谐芯械</option></select>
+  <label>袧邪褋褌褉芯械薪懈械</label><div class="pills" id="moods"><button class="pill" onclick="pickMood(this,'馃槉')">馃槉</button><button class="pill" onclick="pickMood(this,'馃グ')">馃グ</button><button class="pill" onclick="pickMood(this,'馃槍')">馃槍</button><button class="pill" onclick="pickMood(this,'馃槓')">馃槓</button><button class="pill" onclick="pickMood(this,'馃様')">馃様</button><button class="pill" onclick="pickMood(this,'馃槨')">馃槨</button></div>
+  <label>孝械泻褋褌</label><textarea id="dText" placeholder="效褌芯 褏芯褔械褌褋褟 褋芯褏褉邪薪懈褌褜?"></textarea>
+  <label>肖芯褌芯谐褉邪褎懈懈</label><input type="file" id="dPhotos" accept="image/*" multiple><div class="thumbrow" id="dPreview"></div>
+  <div class="btnrow"><button class="btn primary" onclick="saveDiary()">小芯褏褉邪薪懈褌褜</button><button class="btn" onclick="closeDiaryForm()">袨褌屑械薪邪</button></div>
+ </div>
+ <input id="diarySearch" placeholder="袧邪泄褌懈 蟹邪锌懈褋褜..." oninput="renderDiary()" style="margin-bottom:12px">
+ <div id="diaryList"></div>
+</section>
+
+<section id="inspiration" class="tab">
+ <div class="row"><h2>袙写芯褏薪芯胁械薪懈械</h2><button class="btn primary" onclick="toggle('boardForm')">锛� 袛芯斜邪胁懈褌褜</button></div>
+ <div class="form hidden" id="boardForm"><label>袣芯谢谢械泻褑懈褟</label><select id="bCategory"><option>袠薪褌械褉褜械褉褘</option><option>袨斜褉邪蟹褘</option><option>小褗褢屑泻懈</option><option>袦邪泻懈褟卸</option><option>袦械褋褌邪</option><option>袠写械懈</option></select><label>袧邪蟹胁邪薪懈械 / 蟹邪屑械褌泻邪</label><input id="bTitle" placeholder="袠写械褟, 泻芯褌芯褉褍褞 褏芯褔械褌褋褟 褋芯褏褉邪薪懈褌褜"><label>肖芯褌芯</label><input type="file" id="bPhoto" accept="image/*"><button class="btn primary" onclick="addBoard()">小芯褏褉邪薪懈褌褜 薪邪 写芯褋泻褍</button></div>
+ <div class="pills" id="boardFilters" style="margin-bottom:12px"><button class="pill on" onclick="filterBoard('袙褋械',this)">袙褋械</button><button class="pill" onclick="filterBoard('袠薪褌械褉褜械褉褘',this)">袠薪褌械褉褜械褉褘</button><button class="pill" onclick="filterBoard('袨斜褉邪蟹褘',this)">袨斜褉邪蟹褘</button><button class="pill" onclick="filterBoard('小褗褢屑泻懈',this)">小褗褢屑泻懈</button><button class="pill" onclick="filterBoard('袦邪泻懈褟卸',this)">袦邪泻懈褟卸</button><button class="pill" onclick="filterBoard('袦械褋褌邪',this)">袦械褋褌邪</button><button class="pill" onclick="filterBoard('袠写械懈',this)">袠写械懈</button></div><div id="boardList"></div>
+</section>
+
+<section id="analytics" class="tab">
+ <h2>袦芯褟 褋褌邪褌懈褋褌懈泻邪</h2><div class="grid2" id="analyticsStats"></div>
+ <div class="card"><h3>袟邪写邪褔懈 蟹邪 锌芯褋谢械写薪懈械 7 写薪械泄</h3><div id="weekStats"></div></div>
+ <div class="card"><h3>袪邪褋锌褉械写械谢械薪懈械 锌芯 褋褎械褉邪屑</h3><div id="categoryStats"></div></div>
+ <div class="small">小褌邪褌懈褋褌懈泻邪 褋褔懈褌邪械褌褋褟 锌芯 蟹邪写邪褔邪屑, 泻芯褌芯褉褘械 褌褘 写芯斜邪胁谢褟械褕褜 胁 MY SPACE.</div>
+</section>
+
+<section id="settings" class="tab">
+ <h2>袧邪褋褌褉芯泄泻懈 懈 写邪薪薪褘械</h2>
+ <div class="card"><h3>袪械蟹械褉胁薪邪褟 泻芯锌懈褟</h3><p class="small">小芯褏褉邪薪懈 褎邪泄谢 褋 蟹邪写邪褔邪屑懈, 写薪械胁薪懈泻芯屑 懈 写芯褋泻芯泄 胁写芯褏薪芯胁械薪懈褟. 协褌芯 芯褋芯斜械薪薪芯 胁邪卸薪芯, 锌芯泻邪 写邪薪薪褘械 褏褉邪薪褟褌褋褟 胁 斜褉邪褍蟹械褉械 褌械谢械褎芯薪邪.</p><div class="btnrow"><button class="btn primary" onclick="backup()">小泻邪褔邪褌褜 褉械蟹械褉胁薪褍褞 泻芯锌懈褞</button><button class="btn" onclick="document.getElementById('restoreFile').click()">袙芯褋褋褌邪薪芯胁懈褌褜 懈蟹 褎邪泄谢邪</button><input id="restoreFile" type="file" accept="application/json" class="hidden"></div></div>
+ <div class="card"><h3>袧邪锌芯屑懈薪邪薪懈褟</h3><p class="small">袦芯卸薪芯 褉邪蟹褉械褕懈褌褜 褍胁械写芯屑谢械薪懈褟 斜褉邪褍蟹械褉邪. 袠褏 褉邪斜芯褌邪 蟹邪胁懈褋懈褌 芯褌 斜褉邪褍蟹械褉邪, 褉邪蟹褉械褕械薪懈泄 懈 褌芯谐芯, 芯褌泻褉褘褌芯 谢懈 锌褉懈谢芯卸械薪懈械.</p><button class="btn" onclick="enableNotifications()">袪邪蟹褉械褕懈褌褜 褍胁械写芯屑谢械薪懈褟</button><div class="small" id="notifyStatus" style="margin-top:8px"></div></div>
+ <div class="card"><h3>袨 锌褉懈谢芯卸械薪懈懈</h3><p class="small">MY SPACE 褋械泄褔邪褋 褋芯褏褉邪薪褟械褌 写邪薪薪褘械 谢芯泻邪谢褜薪芯 胁 斜褉邪褍蟹械褉械 褝褌芯谐芯 褍褋褌褉芯泄褋褌胁邪. 袛谢褟 芯斜谢邪褔薪芯泄 褋懈薪褏褉芯薪懈蟹邪褑懈懈, 蟹邪褖懈褖褢薪薪芯谐芯 胁褏芯写邪 懈 懈薪褌械谐褉邪褑懈泄 褋 DIKIDI / Google Calendar 锌芯薪邪写芯斜懈褌褋褟 芯褌写械谢褜薪芯 锌芯写泻谢褞褔懈褌褜 褋械褉胁械褉薪褍褞 斜邪蟹褍 懈 API. 协褌懈 懈薪褌械谐褉邪褑懈懈 锌芯泻邪 薪械 邪泻褌懈胁薪褘.</p><p class="small">袧械 芯褔懈褖邪泄 写邪薪薪褘械 褋邪泄褌邪 懈 泻褝褕 斜褉邪褍蟹械褉邪 斜械蟹 褉械蟹械褉胁薪芯泄 泻芯锌懈懈.</p></div>
+</section>
+</main>
+
+<nav>
+ <button class="active" onclick="go('home',this)"><span>鈱�</span>袚谢邪胁薪邪褟</button>
+ <button onclick="go('calendar',this)"><span>鈻�</span>袣邪谢械薪写邪褉褜</button>
+ <button onclick="go('tasks',this)"><span>鉁�</span>袟邪写邪褔懈</button>
+ <button onclick="go('diary',this)"><span>鈾�</span>袛薪械胁薪懈泻</button>
+ <button onclick="go('inspiration',this)"><span>鉁�</span>袠写械懈</button>
+ <button onclick="go('analytics',this)"><span>鈻�</span>袠褌芯谐懈</button>
+ <button onclick="go('settings',this)"><span>鈿�</span>袝褖褢</button>
+</nav>
+<div class="modal" id="taskModal"><div class="modalbox"><button class="close" onclick="closeTaskForm()">袟邪泻褉褘褌褜</button><h2 id="taskFormTitle">袧芯胁邪褟 蟹邪写邪褔邪</h2>
+ <label>袧邪蟹胁邪薪懈械</label><input id="tTitle" placeholder="袧邪锌褉懈屑械褉, 褌褉械薪懈褉芯胁泻邪">
+ <label>袛邪褌邪</label><input type="date" id="tDate">
+ <label>袙褉械屑褟</label><input type="time" id="tTime">
+ <label>袣邪褌械谐芯褉懈褟</label><select id="tCategory"><option>袥懈褔薪芯械</option><option>袪邪斜芯褌邪</option><option>小锌芯褉褌</option><option>袨褌写褘褏</option><option>袟写芯褉芯胁褜械</option><option>袛褉褍谐芯械</option></select>
+ <label>袩褉懈芯褉懈褌械褌</label><select id="tPriority"><option>袨斜褘褔薪褘泄</option><option>袙邪卸薪褘泄</option><option>小褉芯褔薪褘泄</option></select>
+ <label>袟邪屑械褌泻邪</label><textarea id="tNote" placeholder="袩芯写褉芯斜薪芯褋褌懈, 邪写褉械褋, 褔褌芯 胁蟹褟褌褜 褋 褋芯斜芯泄..."></textarea>
+ <label><input type="checkbox" id="tReminder" style="width:auto"> 袧邪锌芯屑薪懈褌褜 胁 胁褘斜褉邪薪薪芯械 胁褉械屑褟 (械褋谢懈 锌芯写写械褉卸懈胁邪械褌褋褟 斜褉邪褍蟹械褉芯屑)</label>
+ <div class="btnrow"><button class="btn primary" onclick="saveTask()">小芯褏褉邪薪懈褌褜 蟹邪写邪褔褍</button><button class="btn" onclick="closeTaskForm()">袨褌屑械薪邪</button></div>
+ </div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEYS={entries:'myspace_entries',mood:'myspace_mood',board:'myspace_board',tasks:'myspace_tasks'};
+let entries=read(KEYS.entries,[]),board=read(KEYS.board,[]),tasks=read(KEYS.tasks,[]);
+let selectedDay=iso(new Date()),monthCursor=new Date(),taskEdit=null,diaryEdit=null,diaryMood='',diaryPhotos=[],taskFilter='all',taskCategory='袙褋械',boardCategory='袙褋械';
+function read(k,d){try{return JSON.parse(localStorage.getItem(k)||'null')??d}catch(e){return d}}
+function persist(){localStorage.setItem(KEYS.entries,JSON.stringify(entries));localStorage.setItem(KEYS.board,JSON.stringify(board));localStorage.setItem(KEYS.tasks,JSON.stringify(tasks))}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function parseDate(s){return new Date(s+'T12:00:00')}
+function fmt(s){if(!s)return '';return parseDate(s).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}
+function safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toast(s){let x=document.getElementById('toast');x.textContent=s;x.style.display='block';setTimeout(()=>x.style.display='none',2400)}
+function go(id,btn){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');else{let b=[...document.querySelectorAll('nav button')].find(x=>x.getAttribute('onclick')?.includes("'"+id+"'"));if(b)b.classList.add('active')}renderAll()}
+function toggle(id){document.getElementById(id).classList.toggle('hidden')}
+function renderAll(){renderHome();renderCalendar();renderTasks();renderDiary();renderBoard();renderAnalytics()}
+function openTaskForm(date){taskEdit=null;document.getElementById('taskFormTitle').textContent='袧芯胁邪褟 蟹邪写邪褔邪';['tTitle','tTime','tNote'].forEach(id=>document.getElementById(id).value='');document.getElementById('tDate').value=date||selectedDay||iso(new Date());document.getElementById('tCategory').value='袥懈褔薪芯械';document.getElementById('tPriority').value='袨斜褘褔薪褘泄';document.getElementById('tReminder').checked=false;document.getElementById('taskModal').style.display='block'}
+function closeTaskForm(){document.getElementById('taskModal').style.display='none'}
+function saveTask(){let title=document.getElementById('tTitle').value.trim(),date=document.getElementById('tDate').value;if(!title||!date){toast('校泻邪卸懈 薪邪蟹胁邪薪懈械 懈 写邪褌褍');return}let item={id:taskEdit||Date.now(),title,date,time:document.getElementById('tTime').value,category:document.getElementById('tCategory').value,priority:document.getElementById('tPriority').value,note:document.getElementById('tNote').value.trim(),reminder:document.getElementById('tReminder').checked,done:taskEdit?(tasks.find(x=>x.id===taskEdit)?.done||false):false,created:taskEdit?(tasks.find(x=>x.id===taskEdit)?.created||Date.now()):Date.now()};if(taskEdit){let i=tasks.findIndex(x=>x.id===taskEdit);if(i>=0)tasks[i]=item}else tasks.push(item);persist();closeTaskForm();selectedDay=date;renderAll();toast('袟邪写邪褔邪 褋芯褏褉邪薪械薪邪')}
+function editTask(id){let t=tasks.find(x=>x.id===id);if(!t)return;taskEdit=id;document.getElementById('taskFormTitle').textContent='袠蟹屑械薪懈褌褜 蟹邪写邪褔褍';document.getElementById('tTitle').value=t.title;document.getElementById('tDate').value=t.date;document.getElementById('tTime').value=t.time||'';document.getElementById('tCategory').value=t.category;document.getElementById('tPriority').value=t.priority;document.getElementById('tNote').value=t.note||'';document.getElementById('tReminder').checked=!!t.reminder;document.getElementById('taskModal').style.display='block'}
+function toggleTask(id){let t=tasks.find(x=>x.id===id);if(t){t.done=!t.done;persist();renderAll()}}
+function deleteTask(id){if(!confirm('校写邪谢懈褌褜 蟹邪写邪褔褍?'))return;tasks=tasks.filter(x=>x.id!==id);persist();renderAll()}
+function taskHtml(t){return `<div class="item ${t.done?'taskdone':''}"><div class="row" style="align-items:flex-start"><input class="check" type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><div style="flex:1"><div class="itemtitle">${safe(t.title)}</div><div class="small">${safe(t.date?fmt(t.date):'')} ${t.time?'路 '+safe(t.time):''} 路 ${safe(t.category)} 路 ${safe(t.priority)}</div>${t.note?`<div class="small" style="margin-top:5px">${safe(t.note)}</div>`:''}</div></div><div class="btnrow"><button class="btn" onclick="editTask(${t.id})">袠蟹屑械薪懈褌褜</button><button class="btn danger" onclick="deleteTask(${t.id})">校写邪谢懈褌褜</button></div></div>`}
+function renderHome(){let today=iso(new Date()),tod=tasks.filter(t=>t.date===today),active=tasks.filter(t=>!t.done),done=tasks.filter(t=>t.done);document.getElementById('homeDate').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});document.getElementById('stats').innerHTML=`<div class="stat"><strong>${tod.length}</strong><span class="small">写械谢 褋械谐芯写薪褟</span></div><div class="stat"><strong>${tod.filter(t=>t.done).length}</strong><span class="small">胁褘锌芯谢薪械薪芯</span></div><div class="stat"><strong>${active.length}</strong><span class="small">邪泻褌懈胁薪褘褏 蟹邪写邪褔</span></div><div class="stat"><strong>${entries.length}</strong><span class="small">蟹邪锌懈褋械泄 胁 写薪械胁薪懈泻械</span></div>`;document.getElementById('todayCount').textContent=tod.length+' 胁褋械谐芯';document.getElementById('todayTasks').innerHTML=tod.length?tod.sort(sortTask).map(taskHtml).join(''):'<div class="empty">袧邪 褋械谐芯写薪褟 锌芯泻邪 薪懈褔械谐芯 薪械 蟹邪锌谢邪薪懈褉芯胁邪薪芯.</div>';let future=tasks.filter(t=>!t.done&&t.date>=today).sort(sortTask).slice(0,5);document.getElementById('upcoming').innerHTML=future.length?future.map(t=>`<div class="item"><div class="itemtitle">${safe(t.title)}</div><div class="small">${fmt(t.date)} ${t.time?'路 '+safe(t.time):''} 路 ${safe(t.category)}</div></div>`).join(''):'<div class="empty">袘谢懈卸邪泄褕懈褏 蟹邪写邪褔 锌芯泻邪 薪械褌.</div>'}
+function sortTask(a,b){return a.date.localeCompare(b.date)||(a.time||'').localeCompare(b.time||'')}
+function setFilter(f,b){taskFilter=f;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('on',x===b));renderTasks()}
+function setCategory(c,b){taskCategory=c;document.querySelectorAll('#categoryFilters .pill').forEach(x=>x.classList.toggle('on',x===b));renderTasks()}
+function renderTasks(){let q=(document.getElementById('taskSearch')?.value||'').toLowerCase();let a=tasks.filter(t=>(taskFilter==='all'||(taskFilter==='active'?!t.done:t.done))&&(taskCategory==='袙褋械'||t.category===taskCategory)&&(`${t.title} ${t.note||''} ${t.category}`.toLowerCase().includes(q))).sort((a,b)=>sortTask(a,b));document.getElementById('taskList').innerHTML=a.length?a.map(taskHtml).join(''):'<div class="card empty">袟邪写邪褔 薪械 薪邪泄写械薪芯.</div>'}
+function moveMonth(n){monthCursor.setMonth(monthCursor.getMonth()+n);renderCalendar()}
+function renderCalendar(){let y=monthCursor.getFullYear(),m=monthCursor.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,count=new Date(y,m+1,0).getDate();document.getElementById('monthName').textContent=new Date(y,m,1).toLocaleDateString('ru-RU',{month:'long',year:'numeric'});let marks=new Set([...tasks.map(t=>t.date),...entries.map(e=>e.date)]);let html='';for(let i=0;i<first;i++)html+='<span></span>';for(let d=1;d<=count;d++){let key=iso(new Date(y,m,d));html+=`<button class="day ${key===selectedDay?'selected':''} ${key===iso(new Date())?'today':''} ${marks.has(key)?'marked':''}" onclick="selectDate('${key}')">${d}</button>`}document.getElementById('calendarGrid').innerHTML=html;document.getElementById('calendarSelectedLabel').textContent=fmt(selectedDay);let ts=tasks.filter(t=>t.date===selectedDay).sort(sortTask),es=entries.filter(e=>e.date===selectedDay);document.getElementById('calendarItems').innerHTML=(ts.length?ts.map(taskHtml).join(''):'')+(es.length?es.map(entryCard).join(''):'')||'<div class="empty">袧邪 褝褌褍 写邪褌褍 锌芯泻邪 薪懈褔械谐芯 薪械褌.</div>'}
+function selectDate(d){selectedDay=d;renderCalendar()}
+function openDiaryForm(id){diaryEdit=id||null;diaryMood='';diaryPhotos=[];let e=id?entries.find(x=>x.id===id):null;document.getElementById('diaryForm').classList.remove('hidden');document.getElementById('diaryFormTitle').textContent=e?'袠蟹屑械薪懈褌褜 蟹邪锌懈褋褜':'袧芯胁邪褟 蟹邪锌懈褋褜';document.getElementById('dDate').value=e?.date||selectedDay||iso(new Date());document.getElementById('dCategory').value=e?.category||'袦芯懈 屑褘褋谢懈';document.getElementById('dText').value=e?.text||'';diaryMood=e?.mood||'';diaryPhotos=e?(e.photos|| (e.photo?[e.photo]:[])).slice():[];document.querySelectorAll('#moods .pill').forEach(b=>b.classList.toggle('on',b.textContent===diaryMood));renderDiaryPreview();document.getElementById('diaryForm').scrollIntoView({behavior:'smooth'})}
+function closeDiaryForm(){document.getElementById('diaryForm').classList.add('hidden');diaryEdit=null}
+function pickMood(b,m){diaryMood=m;document.querySelectorAll('#moods .pill').forEach(x=>x.classList.toggle('on',x===b))}
+document.getElementById('dPhotos').addEventListener('change',async e=>{for(let f of [...e.target.files])diaryPhotos.push(await compress(f));e.target.value='';renderDiaryPreview()});
+function renderDiaryPreview(){document.getElementById('dPreview').innerHTML=diaryPhotos.map((p,i)=>`<img src="${p}" onclick="removeDiaryPhoto(${i})">`).join('')}
+function removeDiaryPhoto(i){diaryPhotos.splice(i,1);renderDiaryPreview()}
+function saveDiary(){let date=document.getElementById('dDate').value,text=document.getElementById('dText').value.trim();if(!date||(!text&&!diaryPhotos.length)){toast('袛芯斜邪胁褜 写邪褌褍 懈 褌械泻褋褌 懈谢懈 褎芯褌芯');return}let e={id:diaryEdit||Date.now(),date,category:document.getElementById('dCategory').value,mood:diaryMood,text,photos:diaryPhotos};if(diaryEdit){let i=entries.findIndex(x=>x.id===diaryEdit);if(i>=0)entries[i]=e}else entries.push(e);localStorage.setItem(KEYS.entries,JSON.stringify(entries));selectedDay=date;closeDiaryForm();renderAll();toast('袟邪锌懈褋褜 褋芯褏褉邪薪械薪邪')}
+function entryCard(e){let ps=e.photos||(e.photo?[e.photo]:[]);return `<div class="card">${ps.length?`<img class="photo" src="${ps[0]}">`:''}<div class="small">${fmt(e.date)} ${e.mood||''}</div><div class="entrycat">${safe(e.category||'袦芯懈 屑褘褋谢懈')}</div><p>${safe(e.text||'')}</p><div class="btnrow"><button class="btn" onclick="openDiaryForm(${e.id})">袠蟹屑械薪懈褌褜</button><button class="btn danger" onclick="deleteDiary(${e.id})">校写邪谢懈褌褜</button></div></div>`}
+function renderDiary(){let q=(document.getElementById('diarySearch')?.value||'').toLowerCase();let a=entries.filter(e=>(e.text||'').toLowerCase().includes(q)||(e.category||'').toLowerCase().includes(q)).sort((a,b)=>b.date.localeCompare(a.date));document.getElementById('diaryList').innerHTML=a.length?a.map(entryCard).join(''):'<div class="card empty">袟邪锌懈褋械泄 锌芯泻邪 薪械褌.</div>'}
+function deleteDiary(id){if(!confirm('校写邪谢懈褌褜 蟹邪锌懈褋褜?'))return;entries=entries.filter(e=>e.id!==id);localStorage.setItem(KEYS.entries,JSON.stringify(entries));renderAll()}
+function compress(file){return new Promise(resolve=>{let r=new FileReader();r.onload=()=>{let im=new Image();im.onload=()=>{let c=document.createElement('canvas'),s=Math.min(1400/im.width,1400/im.height,1);c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',.78))};im.src=r.result};r.readAsDataURL(file)})}
+async function addBoard(){let f=document.getElementById('bPhoto').files[0],title=document.getElementById('bTitle').value.trim();if(!f&&!title){toast('袛芯斜邪胁褜 褌械泻褋褌 懈谢懈 褎芯褌芯');return}board.push({id:Date.now(),category:document.getElementById('bCategory').value,title,photo:f?await compress(f):''});localStorage.setItem(KEYS.board,JSON.stringify(board));document.getElementById('bTitle').value='';document.getElementById('bPhoto').value='';document.getElementById('boardForm').classList.add('hidden');renderBoard();toast('袛芯斜邪胁谢械薪芯')}
+function filterBoard(c,b){boardCategory=c;document.querySelectorAll('#boardFilters .pill').forEach(x=>x.classList.toggle('on',x===b));renderBoard()}
+function renderBoard(){let a=board.filter(x=>boardCategory==='袙褋械'||x.category===boardCategory).slice().reverse();document.getElementById('boardList').innerHTML=a.length?a.map(x=>`<div class="card">${x.photo?`<img class="photo" src="${x.photo}">`:''}<div class="entrycat">${safe(x.category)}</div><p>${safe(x.title||'')}</p><button class="btn danger" onclick="deleteBoard(${x.id})">校写邪谢懈褌褜</button></div>`).join(''):'<div class="card empty">袟写械褋褜 斜褍写褍褌 褌胁芯懈 懈写械懈 懈 胁写芯褏薪芯胁械薪懈械.</div>'}
+function deleteBoard(id){if(!confirm('校写邪谢懈褌褜 泻邪褉褌芯褔泻褍?'))return;board=board.filter(x=>x.id!==id);localStorage.setItem(KEYS.board,JSON.stringify(board));renderBoard()}
+function renderAnalytics(){let done=tasks.filter(t=>t.done).length,active=tasks.filter(t=>!t.done).length,rate=tasks.length?Math.round(done/tasks.length*100):0;document.getElementById('analyticsStats').innerHTML=`<div class="stat"><strong>${tasks.length}</strong><span class="small">胁褋械谐芯 蟹邪写邪褔</span></div><div class="stat"><strong>${done}</strong><span class="small">胁褘锌芯谢薪械薪芯</span></div><div class="stat"><strong>${active}</strong><span class="small">胁 锌褉芯褑械褋褋械</span></div><div class="stat"><strong>${rate}%</strong><span class="small">胁褘锌芯谢薪械薪懈械</span></div>`;let now=new Date(),days=[];for(let i=6;i>=0;i--){let d=new Date();d.setDate(now.getDate()-i);let k=iso(d),a=tasks.filter(t=>t.date===k),dn=a.filter(t=>t.done).length;days.push(`<div class="item"><div class="row"><span>${d.toLocaleDateString('ru-RU',{weekday:'short',day:'numeric'})}</span><span class="small">${dn}/${a.length} 胁褘锌芯谢薪械薪芯</span></div><div style="height:6px;background:var(--blue2);border-radius:8px;margin-top:7px;overflow:hidden"><div style="height:100%;width:${a.length?dn/a.length*100:0}%;background:#8dbbd4"></div></div></div>`)}document.getElementById('weekStats').innerHTML=days.join('');let cats=['袪邪斜芯褌邪','小锌芯褉褌','袥懈褔薪芯械','袨褌写褘褏','袟写芯褉芯胁褜械','袛褉褍谐芯械'];document.getElementById('categoryStats').innerHTML=cats.map(c=>{let n=tasks.filter(t=>t.category===c).length;return `<div class="item row"><span>${c}</span><strong>${n}</strong></div>`}).join('')}
+function backup(){let data={app:'MY SPACE',version:1,exportedAt:new Date().toISOString(),entries,board,tasks};let blob=new Blob([JSON.stringify(data)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='my-space-backup-'+iso(new Date())+'.json';a.click();URL.revokeObjectURL(url);toast('袪械蟹械褉胁薪邪褟 泻芯锌懈褟 锌芯写谐芯褌芯胁谢械薪邪')}
+document.getElementById('restoreFile').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!confirm('袠屑锌芯褉褌懈褉芯胁邪褌褜 写邪薪薪褘械? 孝械泻褍褖懈械 蟹邪锌懈褋懈 斜褍写褍褌 芯斜褗械写懈薪械薪褘 褋 泻芯锌懈械泄.'))return;entries=[...entries,...(d.entries||[])];board=[...board,...(d.board||[])];tasks=[...tasks,...(d.tasks||[])];persist();localStorage.setItem(KEYS.entries,JSON.stringify(entries));toast('袛邪薪薪褘械 胁芯褋褋褌邪薪芯胁谢械薪褘');renderAll()}catch(err){toast('袧械 褍写邪谢芯褋褜 锌褉芯褔懈褌邪褌褜 褎邪泄谢 泻芯锌懈懈')}};r.readAsText(f);e.target.value=''});
+async function enableNotifications(){if(!('Notification'in window)){document.getElementById('notifyStatus').textContent='协褌芯褌 斜褉邪褍蟹械褉 薪械 锌芯写写械褉卸懈胁邪械褌 褍胁械写芯屑谢械薪懈褟.';return}let p=await Notification.requestPermission();document.getElementById('notifyStatus').textContent=p==='granted'?'袪邪蟹褉械褕械薪懈械 锌芯谢褍褔械薪芯. 校胁械写芯屑谢械薪懈褟 蟹邪胁懈褋褟褌 芯褌 褉邪斜芯褌褘 斜褉邪褍蟹械褉邪.':'袪邪蟹褉械褕械薪懈械 薪械 锌褉械写芯褋褌邪胁谢械薪芯.'}
+function init(){let today=iso(new Date());selectedDay=today;monthCursor=new Date();document.getElementById('dDate').value=today;renderAll();if('Notification'in window)document.getElementById('notifyStatus').textContent=Notification.permission==='granted'?'校胁械写芯屑谢械薪懈褟 褉邪蟹褉械褕械薪褘.':'校胁械写芯屑谢械薪懈褟 薪械 胁泻谢褞褔械薪褘.'}
+init();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+</script>
+ <style>
+body.dark {
+  --bg:#171a1f;
+  --card:#222831;
+  --text:#edf0f3;
+  --muted:#a5adb8;
+  --blue:#38566b;
+  --blue2:#293b49;
+  --line:#39414b;
+  --gold:#b69a62;
+}
+body.dark nav,
+body.dark .btn,
+body.dark input,
+body.dark textarea,
+body.dark select,
+body.dark .pill {
+  background:#222831;
+  color:#edf0f3;
+  border-color:#39414b;
+}
+body.dark nav {background:#20252c}
+body.dark .btn.primary,
+body.dark .pill.on {background:#38566b}
+body.dark .modalbox {background:#222831}
+.theme-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.theme-switch {
+  border:0;
+  border-radius:22px;
+  padding:10px 16px;
+  background:var(--blue);
+  color:var(--text);
+}
 </style>
 
 <script>
 (function(){
-'use strict';
 
-if(window.mySpaceFinanceLoaded)return;
-window.mySpaceFinanceLoaded=true;
+const savedTheme = localStorage.getItem('myspace_theme') || 'light';
 
-const $=id=>document.getElementById(id);
-const KEY='myspace_payments';
+function applyTheme(theme) {
+  document.body.classList.toggle('dark', theme === 'dark');
+  localStorage.setItem('myspace_theme', theme);
 
-let payments=[];
-try{
- payments=JSON.parse(localStorage.getItem(KEY)||'[]');
- if(!Array.isArray(payments))payments=[];
-}catch(e){payments=[]}
-
-let financeMonth=new Date();
-let editingPayment=null;
-
-const dateKey=d=>d.getFullYear()+'-'+
- String(d.getMonth()+1).padStart(2,'0')+'-'+
- String(d.getDate()).padStart(2,'0');
-
-const monthKey=d=>dateKey(d).slice(0,7);
-
-const monthName=d=>d.toLocaleDateString('ru-RU',{
- month:'long',year:'numeric'
-});
-
-const money=n=>Number(n||0).toLocaleString('ru-RU',{
- minimumFractionDigits:2,
- maximumFractionDigits:2
-})+' Br';
-
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({
- '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-}[c]));
-
-function save(){
- localStorage.setItem(KEY,JSON.stringify(payments));
+  const button = document.getElementById('themeButton');
+  if (button) {
+    button.textContent = theme === 'dark'
+      ? '袙泻谢褞褔懈褌褜 褋胁械褌谢褍褞 褌械屑褍'
+      : '袙泻谢褞褔懈褌褜 褌褢屑薪褍褞 褌械屑褍';
+  }
 }
 
-function notify(message){
- if(typeof toast==='function')toast(message);
- else alert(message);
-}
+function addThemeSettings() {
+  const settings = document.getElementById('settings');
+  if (!settings || document.getElementById('themeCard')) return;
 
-function currentMonthPayments(){
- return payments.filter(p=>p.date?.startsWith(monthKey(financeMonth)));
-}
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.id = 'themeCard';
 
-function status(p){
- if(p.paid)return {text:'Оплачено',cls:'paid'};
- const today=dateKey(new Date());
- const diff=Math.round(
-  (new Date(p.date+'T12:00:00')-new Date(today+'T12:00:00'))/86400000
- );
- if(diff<0)return {text:'Просрочено',cls:'late'};
- if(diff<=3)return {text:'Скоро срок',cls:'soon'};
- return {text:'Ожидает оплаты',cls:''};
-}
-
-function totals(list){
- return {
-  all:list.reduce((s,p)=>s+Number(p.amount||0),0),
-  paid:list.filter(p=>p.paid).reduce((s,p)=>s+Number(p.amount||0),0),
-  late:list.filter(p=>!p.paid&&p.date<dateKey(new Date()))
-   .reduce((s,p)=>s+Number(p.amount||0),0)
- };
-}
-
-function openFinance(){
- document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
- $('finance').classList.add('active');
- document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
- $('finNav').classList.add('active');
- render();
- window.scrollTo(0,0);
-}
-
-function addInterface(){
-
- let section=$('finance');
-
- if(!section){
-  section=document.createElement('section');
-  section.id='finance';
-  section.className='tab';
-  section.innerHTML=`
-   <h2>Финансы</h2>
-
-   <div class="finance-month">
-    <button type="button" id="finPrev">‹</button>
-    <strong id="finMonthTitle"></strong>
-    <button type="button" id="finNext">›</button>
-   </div>
-
-   <div class="finance-summary" id="finSummary"></div>
-
-   <div class="card">
-    <div class="row">
-     <h3>Обязательные платежи</h3>
-     <button class="btn primary" id="finAdd">＋ Добавить</button>
+  card.innerHTML = `
+    <h3>袨褎芯褉屑谢械薪懈械</h3>
+    <div class="theme-row">
+      <span class="small">孝械屑邪 锌褉懈谢芯卸械薪懈褟</span>
+      <button class="theme-switch" id="themeButton"></button>
     </div>
-    <div id="finList"></div>
-   </div>
-
-   <div class="card">
-    <h3>История и повторение</h3>
-    <p class="small">Перенос платежей прошлого месяца в текущий. Оплаченные платежи при копировании станут неоплаченными.</p>
-    <button class="btn" id="finCopy">Скопировать прошлый месяц</button>
-   </div>
-
-   <div class="form hidden" id="financeForm">
-    <h3 id="finFormTitle">Новый платёж</h3>
-
-    <label>Название платежа</label>
-    <input id="finName" maxlength="100" placeholder="Например, аренда">
-
-    <label>Сумма (Br)</label>
-    <input id="finAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00">
-
-    <label>Дата оплаты</label>
-    <input id="finDate" type="date">
-
-    <label>Категория</label>
-    <select id="finCategory">
-     <option>Жильё</option>
-     <option>Коммунальные услуги</option>
-     <option>Связь и интернет</option>
-     <option>Кредиты и долги</option>
-     <option>Подписки</option>
-     <option>Здоровье</option>
-     <option>Транспорт</option>
-     <option>Другое</option>
-    </select>
-
-    <label>Комментарий</label>
-    <textarea id="finNote" placeholder="Дополнительная информация"></textarea>
-
-    <div class="btnrow">
-     <button class="btn primary" id="finSave">Сохранить</button>
-     <button class="btn" id="finCancel">Отмена</button>
-    </div>
-   </div>
   `;
-  $('main').appendChild(section);
- }
 
- let navButton=$('finNav');
+  settings.insertBefore(card, settings.firstChild.nextSibling);
 
- if(!navButton){
-  navButton=document.createElement('button');
-  navButton.id='finNav';
-  navButton.innerHTML='<span>$</span>';
-  const nav=document.querySelector('nav');
-  nav.insertBefore(navButton,nav.children[2]||null);
- }
+  document.getElementById('themeButton').onclick = function() {
+    const next = document.body.classList.contains('dark')
+      ? 'light'
+      : 'dark';
+    applyTheme(next);
+  };
 
- navButton.onclick=openFinance;
-
- if(!$('financeHome')){
-  const card=document.createElement('div');
-  card.className='card';
-  card.id='financeHome';
-  card.innerHTML=`
-   <div class="row">
-    <h3>Обязательные платежи</h3>
-    <button class="btn" id="finHomeOpen">Открыть</button>
-   </div>
-   <div id="finHomeContent" class="finance-widget"></div>
-  `;
-  const home=$('home');
-  const firstCard=home.querySelector('.card');
-  home.insertBefore(card,firstCard);
- }
-
- $('finHomeOpen').onclick=openFinance;
- $('finPrev').onclick=()=>{
-  financeMonth.setMonth(financeMonth.getMonth()-1);
-  render();
- };
- $('finNext').onclick=()=>{
-  financeMonth.setMonth(financeMonth.getMonth()+1);
-  render();
- };
- $('finAdd').onclick=()=>openForm();
- $('finCancel').onclick=closeForm;
- $('finSave').onclick=saveForm;
- $('finCopy').onclick=copyPrevious;
-
- render();
+  applyTheme(localStorage.getItem('myspace_theme') || 'light');
 }
 
-function openForm(id){
- editingPayment=id||null;
- const p=payments.find(x=>x.id===id);
+applyTheme(savedTheme);
 
- $('finFormTitle').textContent=p?'Изменить платёж':'Новый платёж';
- $('finName').value=p?.name||'';
- $('finAmount').value=p?.amount??'';
- $('finDate').value=p?.date||dateKey(financeMonth);
- $('finCategory').value=p?.category||'Жильё';
- $('finNote').value=p?.note||'';
-
- $('financeForm').classList.remove('hidden');
- $('financeForm').scrollIntoView({behavior:'smooth',block:'start'});
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', addThemeSettings);
+} else {
+  addThemeSettings();
 }
-
-function closeForm(){
- $('financeForm').classList.add('hidden');
- editingPayment=null;
-}
-
-function saveForm(){
- const name=$('finName').value.trim();
- const amount=Number($('finAmount').value);
- const date=$('finDate').value;
-
- if(!name||!date||!Number.isFinite(amount)||amount<=0){
-  notify('Проверь название, сумму и дату платежа');
-  return;
- }
-
- const old=payments.find(x=>x.id===editingPayment);
-
- const p={
-  id:editingPayment||('pay_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)),
-  name,
-  amount:Math.round(amount*100)/100,
-  date,
-  category:$('finCategory').value,
-  note:$('finNote').value.trim(),
-  paid:old?old.paid:false,
-  created:old?old.created:Date.now()
- };
-
- if(editingPayment){
-  const i=payments.findIndex(x=>x.id===editingPayment);
-  if(i>=0)payments[i]=p;
- }else{
-  payments.push(p);
- }
-
- financeMonth=new Date(date+'T12:00:00');
- save();
- closeForm();
- render();
- notify('Платёж сохранён');
-}
-
-function togglePaid(id){
- const p=payments.find(x=>x.id===id);
- if(!p)return;
- p.paid=!p.paid;
- save();
- render();
-}
-
-function editPayment(id){
- openForm(id);
-}
-
-function deletePayment(id){
- if(!confirm('Удалить этот платёж?'))return;
- payments=payments.filter(p=>p.id!==id);
- save();
- render();
-}
-
-function render(){
- const list=currentMonthPayments().slice().sort((a,b)=>
-  a.date.localeCompare(b.date)||a.name.localeCompare(b.name)
- );
-
- const t=totals(list);
- const remaining=t.all-t.paid;
-
- $('finMonthTitle').textContent=monthName(financeMonth);
-
- $('finSummary').innerHTML=`
-  <div class="stat"><strong>${money(t.all)}</strong><span class="small">Всего</span></div>
-  <div class="stat"><strong>${money(t.paid)}</strong><span class="small">Оплачено</span></div>
-  <div class="stat"><strong>${money(remaining)}</strong><span class="small">Осталось</span></div>
-  <div class="stat"><strong>${money(t.late)}</strong><span class="small">Просрочено</span></div>
- `;
-
- $('finList').innerHTML=list.length?list.map(p=>{
-  const s=status(p);
-  return `
-   <div class="finance-payment">
-    <div class="row" style="align-items:flex-start">
-     <div style="flex:1;min-width:0">
-      <strong>${esc(p.name)}</strong>
-      <div class="small">${esc(p.date)} · ${esc(p.category)}</div>
-      ${p.note?`<div class="small">${esc(p.note)}</div>`:''}
-      <span class="finance-status ${s.cls}">${s.text}</span>
-     </div>
-     <div class="amount">${money(p.amount)}</div>
-    </div>
-    <div class="finance-actions">
-     <label style="display:flex;align-items:center;gap:6px;margin:0">
-      <input class="finance-check" type="checkbox" ${p.paid?'checked':''}
-       onchange="mySpaceFinancePaid('${p.id}')">
-      <span class="small">Оплачено</span>
-     </label>
-     <button class="btn" onclick="mySpaceFinanceEdit('${p.id}')">Изменить</button>
-     <button class="btn danger" onclick="mySpaceFinanceDelete('${p.id}')">Удалить</button>
-    </div>
-   </div>
-  `;
- }).join(''):'<div class="empty">В этом месяце платежей пока нет.</div>';
-
- renderHomeWidget();
-}
-
-function renderHomeWidget(){
- const list=payments.filter(p=>p.date?.startsWith(monthKey(new Date())));
- const t=totals(list);
- const remaining=t.all-t.paid;
-
- const next=list.filter(p=>!p.paid&&p.date>=dateKey(new Date()))
-  .sort((a,b)=>a.date.localeCompare(b.date))[0];
-
- $('finHomeContent').innerHTML=`
-  <div class="finance-summary">
-   <div><strong>${money(t.all)}</strong><div class="small">Всего</div></div>
-   <div><strong>${money(t.paid)}</strong><div class="small">Оплачено</div></div>
-   <div><strong>${money(remaining)}</strong><div class="small">Осталось</div></div>
-  </div>
-  <div class="small">${next?
-   'Ближайший платёж: '+esc(next.name)+' — '+money(next.amount)+' · '+esc(next.date):
-   'Нет предстоящих платежей'}
-  </div>
- `;
-}
-
-function copyPrevious(){
- const target=new Date(financeMonth.getFullYear(),financeMonth.getMonth()-1,1);
- const source=payments.filter(p=>p.date?.startsWith(monthKey(target)));
-
- if(!source.length){
-  notify('В прошлом месяце нет платежей для копирования');
-  return;
- }
-
- const exists=payments.filter(p=>p.date?.startsWith(monthKey(financeMonth)));
- const names=new Set(exists.map(p=>p.name.toLowerCase()+'_'+p.date.slice(8)));
-
- const fresh=source.filter(p=>{
-  const day=Math.min(
-   Number(p.date.slice(8)),
-   new Date(financeMonth.getFullYear(),financeMonth.getMonth()+1,0).getDate()
-  );
-  return !names.has(p.name.toLowerCase()+'_'+String(day).padStart(2,'0'));
- });
-
- if(!fresh.length){
-  notify('Похожие платежи уже есть в этом месяце');
-  return;
- }
-
- if(!confirm('Скопировать '+fresh.length+' платеж(ей) в '+monthName(financeMonth)+'?'))return;
-
- fresh.forEach(p=>{
-  const day=Math.min(
-   Number(p.date.slice(8)),
-   new Date(financeMonth.getFullYear(),financeMonth.getMonth()+1,0).getDate()
-  );
-  payments.push({
-   ...p,
-   id:'pay_'+Date.now()+'_'+Math.random().toString(36).slice(2,8),
-   date:monthKey(financeMonth)+'-'+String(day).padStart(2,'0'),
-   paid:false,
-   created:Date.now()
-  });
- });
-
- save();
- render();
- notify('Платежи скопированы');
-}
-
-window.mySpaceFinancePaid=togglePaid;
-window.mySpaceFinanceEdit=editPayment;
-window.mySpaceFinanceDelete=deletePayment;
-
-addInterface();
 
 })();
 </script>
+ <style>
+/* MY SPACE 2.0 */
+.ms-tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.ms-tools input,.ms-tools select{flex:1;min-width:130px}
+.ms-lightbox{position:fixed;inset:0;background:#111e;z-index:1000;
+display:none;align-items:center;justify-content:center;padding:15px}
+.ms-lightbox img{max-width:100%;max-height:80vh;object-fit:contain;border-radius:12px}
+.ms-lightbox button{background:#fff;border:0;border-radius:20px;padding:10px 15px}
+.ms-gallery-controls{display:flex;justify-content:center;gap:12px;margin-top:12px}
+.ms-badge{display:inline-block;padding:4px 8px;border-radius:12px;
+background:var(--blue2);font-size:10px;margin:3px}
+.ms-progress{height:7px;background:var(--blue2);border-radius:8px;overflow:hidden}
+.ms-progress div{height:100%;background:#83b8d5}
+</style>
+
+<script>
+(function(){
+
+const $ = id => document.getElementById(id);
+const today = () => {
+  const d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+};
+
+/* 1. 小袨袪孝袠袪袨袙袣袗 袟袗袛袗效 */
+
+const taskSearch = $('taskSearch');
+
+if(taskSearch && ! $('taskSort')){
+  const sort = document.createElement('select');
+  sort.id='taskSort';
+  sort.innerHTML=`
+    <option value="date">小薪邪褔邪谢邪 斜谢懈卸邪泄褕懈械</option>
+    <option value="priority">袩芯 锌褉懈芯褉懈褌械褌褍</option>
+    <option value="new">小薪邪褔邪谢邪 薪芯胁褘械</option>
+    <option value="old">小薪邪褔邪谢邪 褋褌邪褉褘械</option>
+  `;
+  sort.style.margin='10px 0';
+  taskSearch.after(sort);
+  sort.onchange=renderTasks;
+}
+
+const originalRenderTasks=renderTasks;
+
+renderTasks=function(){
+  const q=(taskSearch?.value||'').toLowerCase();
+  const mode=$('taskSort')?.value||'date';
+
+  let a=tasks.filter(t=>
+    (taskFilter==='all'||(taskFilter==='active'?!t.done:t.done)) &&
+    (taskCategory==='袙褋械'||t.category===taskCategory) &&
+    (`${t.title} ${t.note||''} ${t.category}`.toLowerCase().includes(q))
+  );
+
+  const rank={'小褉芯褔薪褘泄':0,'袙邪卸薪褘泄':1,'袨斜褘褔薪褘泄':2};
+
+  a.sort((x,y)=>{
+    if(mode==='priority') return (rank[x.priority]??2)-(rank[y.priority]??2);
+    if(mode==='new') return (y.created||y.id)-(x.created||x.id);
+    if(mode==='old') return (x.created||x.id)-(y.created||y.id);
+    return sortTask(x,y);
+  });
+
+  $('taskList').innerHTML=a.length
+    ?a.map(taskHtml).join('')
+    :'<div class="card empty">袟邪写邪褔 薪械 薪邪泄写械薪芯.</div>';
+};
+
+/* 2. 袣袗袥袝袧袛袗袪鞋 */
+
+const calhead=document.querySelector('.calhead');
+
+if(calhead && !$('msToday')){
+  const tools=document.createElement('div');
+  tools.className='ms-tools';
+  tools.innerHTML=`
+    <button class="btn" id="msToday">小械谐芯写薪褟</button>
+    <input type="date" id="msDateJump">
+  `;
+  calhead.after(tools);
+
+  $('msToday').onclick=()=>{
+    selectedDay=today();
+    monthCursor=new Date();
+    renderCalendar();
+  };
+
+  $('msDateJump').onchange=e=>{
+    if(!e.target.value)return;
+    selectedDay=e.target.value;
+    monthCursor=parseDate(selectedDay);
+    renderCalendar();
+  };
+}
+
+/* 3. 肖袨孝袨袚袗袥袝袪袝携 */
+
+const lightbox=document.createElement('div');
+lightbox.className='ms-lightbox';
+lightbox.id='msLightbox';
+lightbox.innerHTML=`
+  <div style="width:100%;max-width:700px;text-align:center">
+    <img id="msBigPhoto">
+    <div class="ms-gallery-controls">
+      <button id="msPrev">鈫�</button>
+      <button id="msClose">袟邪泻褉褘褌褜</button>
+      <button id="msNext">鈫�</button>
+    </div>
+    <div id="msPhotoCount" style="color:white;margin-top:10px"></div>
+  </div>
+`;
+document.body.appendChild(lightbox);
+
+let gallery=[],galleryIndex=0;
+
+function showPhoto(){
+  if(!gallery.length)return;
+  $('msBigPhoto').src=gallery[galleryIndex];
+  $('msPhotoCount').textContent=(galleryIndex+1)+' / '+gallery.length;
+}
+
+function openGallery(arr,index){
+  gallery=arr;
+  galleryIndex=index;
+  showPhoto();
+  lightbox.style.display='flex';
+}
+
+$('msClose').onclick=()=>lightbox.style.display='none';
+$('msPrev').onclick=()=>{
+  galleryIndex=(galleryIndex-1+gallery.length)%gallery.length;
+  showPhoto();
+};
+$('msNext').onclick=()=>{
+  galleryIndex=(galleryIndex+1)%gallery.length;
+  showPhoto();
+};
+
+lightbox.onclick=e=>{
+  if(e.target===lightbox)lightbox.style.display='none';
+};
+
+const originalEntryCard=entryCard;
+
+entryCard=function(e){
+  const ps=e.photos||(e.photo?[e.photo]:[]);
+  const html=originalEntryCard(e);
+  const temp=document.createElement('div');
+  temp.innerHTML=html;
+
+  const img=temp.querySelector('.photo');
+
+  if(img){
+    img.style.cursor='zoom-in';
+    img.onclick=()=>openGallery(ps,0);
+  }
+
+  if(ps.length>1){
+    const row=document.createElement('div');
+    row.className='thumbrow';
+
+    ps.forEach((p,i)=>{
+      const im=document.createElement('img');
+      im.src=p;
+      im.style.cursor='pointer';
+      im.onclick=()=>openGallery(ps,i);
+      row.appendChild(im);
+    });
+
+    temp.querySelector('.card').appendChild(row);
+  }
+
+  return temp.innerHTML;
+};
+
+/* 4. 袪袗小楔袠袪袝袧袧袗携 小孝袗孝袠小孝袠袣袗 */
+
+const originalAnalytics=renderAnalytics;
+
+renderAnalytics=function(){
+  originalAnalytics();
+
+  const month=today().slice(0,7);
+  const monthTasks=tasks.filter(t=>t.date?.startsWith(month));
+  const monthDone=monthTasks.filter(t=>t.done).length;
+  const monthEntries=entries.filter(e=>e.date?.startsWith(month)).length;
+  const photoCount=entries.reduce((n,e)=>
+    n+(e.photos?.length||(e.photo?1:0)),0
+  );
+
+  const extra=document.getElementById('msExtraStats');
+
+  if(extra)extra.remove();
+
+  const box=document.createElement('div');
+  box.id='msExtraStats';
+  box.className='card';
+  box.innerHTML=`
+    <h3>协褌芯褌 屑械褋褟褑</h3>
+    <div class="grid2">
+      <div class="stat"><strong>${monthTasks.length}</strong><span class="small">蟹邪写邪褔</span></div>
+      <div class="stat"><strong>${monthDone}</strong><span class="small">胁褘锌芯谢薪械薪芯</span></div>
+      <div class="stat"><strong>${monthEntries}</strong><span class="small">蟹邪锌懈褋械泄</span></div>
+      <div class="stat"><strong>${photoCount}</strong><span class="small">褎芯褌芯谐褉邪褎懈泄</span></div>
+    </div>
+  `;
+
+  $('analyticsStats').after(box);
+};
+
+/* 5. 袧袗袩袨袦袠袧袗袧袠携 */
+
+const notifiedKey='myspace_notified_v2';
+
+function checkReminders(){
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+
+  const now=new Date();
+  const date=today();
+  const time=String(now.getHours()).padStart(2,'0')+':'+
+             String(now.getMinutes()).padStart(2,'0');
+
+  let notified={};
+
+  try{
+    notified=JSON.parse(localStorage.getItem(notifiedKey)||'{}');
+  }catch(e){}
+
+  tasks.forEach(t=>{
+    if(!t.reminder||t.done||t.date!==date||t.time!==time)return;
+
+    const key=t.id+'_'+date+'_'+time;
+    if(notified[key])return;
+
+    try{
+      new Notification('MY SPACE',{
+        body:'袧邪锌芯屑懈薪邪薪懈械: '+t.title
+      });
+
+      notified[key]=true;
+      localStorage.setItem(notifiedKey,JSON.stringify(notified));
+    }catch(e){}
+  });
+}
+
+setInterval(checkReminders,15000);
+
+/* 6. 袟袗些袠孝袗 袠袦袩袨袪孝袗 */
+
+const restore=$('restoreFile');
+
+if(restore){
+  restore.onchange=e=>{
+    const file=e.target.files[0];
+    if(!file)return;
+
+    const reader=new FileReader();
+
+    reader.onload=()=>{
+      try{
+        const data=JSON.parse(reader.result);
+
+        if(!data||typeof data!=='object'||
+          !Array.isArray(data.entries)||
+          !Array.isArray(data.tasks)||
+          !Array.isArray(data.board)){
+          toast('肖邪泄谢 懈屑械械褌 薪械锌芯写褏芯写褟褖懈泄 褎芯褉屑邪褌');
+          return;
+        }
+
+        if(!confirm('袨斜褗械写懈薪懈褌褜 写邪薪薪褘械 褋 褌械泻褍褖懈屑懈?'))return;
+
+        const merge=(oldData,newData)=>{
+          const map=new Map(oldData.map(x=>[String(x.id),x]));
+          newData.forEach(x=>{
+            if(x&&x.id!==undefined&&!map.has(String(x.id))){
+              map.set(String(x.id),x);
+            }
+          });
+          return [...map.values()];
+        };
+
+        entries=merge(entries,data.entries);
+        tasks=merge(tasks,data.tasks);
+        board=merge(board,data.board);
+
+        persist();
+        renderAll();
+        toast('袛邪薪薪褘械 芯斜褗械写懈薪械薪褘');
+      }catch(err){
+        toast('袧械 褍写邪谢芯褋褜 锌褉芯褔懈褌邪褌褜 褎邪泄谢');
+      }
+    };
+
+    reader.readAsText(file);
+    e.target.value='';
+  };
+}
+
+/* 7. 袩袨袛袚袨孝袨袙袣袗 袣 袠袧孝袝袚袪袗笑袠携袦 */
+
+if(!$('msIntegrationInfo')){
+  const card=document.createElement('div');
+  card.className='card';
+  card.id='msIntegrationInfo';
+  card.innerHTML=`
+    <h3>袘褍写褍褖懈械 懈薪褌械谐褉邪褑懈懈</h3>
+    <div class="item">
+      <strong>DIKIDI</strong>
+      <div class="small">袩芯写谐芯褌芯胁泻邪 锌芯写泻谢褞褔械薪懈褟 褉邪褋锌懈褋邪薪懈褟 懈 蟹邪锌懈褋械泄 泻谢懈械薪褌芯胁.</div>
+      <span class="ms-badge">袨卸懈写邪械褌 锌芯写泻谢褞褔械薪懈褟</span>
+    </div>
+    <div class="item">
+      <strong>Google Calendar</strong>
+      <div class="small">袩芯写谐芯褌芯胁泻邪 褋懈薪褏褉芯薪懈蟹邪褑懈懈 褋芯斜褘褌懈泄 懈 泻邪谢械薪写邪褉褟.</div>
+      <span class="ms-badge">袨卸懈写邪械褌 锌芯写泻谢褞褔械薪懈褟</span>
+    </div>
+    <p class="small">
+      袛谢褟 懈薪褌械谐褉邪褑懈泄 锌芯褌褉械斜褍械褌褋褟 芯褌写械谢褜薪邪褟 邪胁褌芯褉懈蟹邪褑懈褟,
+      API 懈 褋械褉胁械褉薪邪褟 褔邪褋褌褜.
+    </p>
+  `;
+
+  $('settings').appendChild(card);
+}
+
+/* 8. 袨袘袧袨袙袥袝袧袠袝 袠袧孝袝袪肖袝袡小袗 */
+
+renderAll();
+
+})();
+</script>
+ <!-- MY SPACE FINANCE MODULE -->
+<style>
+.finance-month{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0}
+.finance-month button{border:1px solid var(--line);background:var(--blue2);border-radius:12px;padding:9px 14px}
+.finance-summary{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.finance-summary .stat{min-width:0}.finance-summary strong{font-size:20px;overflow-wrap:anywhere}
+.finance-status{display:inline-block;padding:5px 9px;border-radius:14px;background:var(--blue2);font-size:10px;margin-top:7px}
+.finance-status.paid{background:#dceee4;color:#326348}.finance-status.late{background:#f5dfdf;color:#984747}.finance-status.soon{background:#f5ecd8;color:#8c6a2d}
+.finance-payment{padding:13px 0;border-bottom:1px solid var(--line)}.finance-payment:last-child{border-bottom:0}
+.finance-payment .amount{font-size:17px;font-weight:600;white-space:nowrap}
+.finance-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.finance-actions button{font-size:11px}
+.finance-check{width:19px;height:19px;accent-color:#83b8d5}.finance-widget{border-left:3px solid var(--blue);padding-left:12px}
+#financeForm input,#financeForm select,#financeForm textarea{margin-bottom:4px}
+@media(min-width:600px){.finance-summary{grid-template-columns:repeat(4,1fr)}}
+</style>
+<script>
+(function(){
+'use strict';
+if(window.mySpaceFinanceLoaded)return;
+window.mySpaceFinanceLoaded=true;
+const byId=id=>document.getElementById(id);
+const STORAGE_KEY='myspace_payments';
+let payments=[];
+try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');payments=Array.isArray(saved)?saved:[]}catch(e){payments=[]}
+let viewedMonth=new Date();let editingId=null;
+const isoDate=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const monthId=d=>isoDate(d).slice(0,7);
+const monthLabel=d=>d.toLocaleDateString('ru-RU',{month:'long',year:'numeric'});
+const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>Number(n||0).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+' Br';
+function persistPayments(){localStorage.setItem(STORAGE_KEY,JSON.stringify(payments));}
+function tell(s){if(typeof window.toast==='function')window.toast(s);else alert(s);}
+function forMonth(d){return payments.filter(p=>p.date&&p.date.slice(0,7)===monthId(d));}
+function paymentStatus(p){if(p.paid)return{text:'袨锌谢邪褔械薪芯',cls:'paid'};const delta=Math.round((new Date(p.date+'T12:00:00')-new Date(isoDate(new Date())+'T12:00:00'))/86400000);if(delta<0)return{text:'袩褉芯褋褉芯褔械薪芯',cls:'late'};if(delta<=3)return{text:'小泻芯褉芯 褋褉芯泻',cls:'soon'};return{text:'袨卸懈写邪械褌 芯锌谢邪褌褘',cls:''};}
+function totals(list){return{all:list.reduce((a,p)=>a+Number(p.amount||0),0),paid:list.filter(p=>p.paid).reduce((a,p)=>a+Number(p.amount||0),0),late:list.filter(p=>!p.paid&&p.date<isoDate(new Date())).reduce((a,p)=>a+Number(p.amount||0),0)}}
+function showFinance(){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));byId('finance').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));byId('finNav').classList.add('active');draw();window.scrollTo(0,0);}
+function build(){
+ let section=byId('finance');
+ if(!section){section=document.createElement('section');section.id='finance';section.className='tab';section.innerHTML=`
+ <h2>肖懈薪邪薪褋褘</h2>
+ <div class="finance-month"><button type="button" id="finPrev">鈥�</button><strong id="finMonthTitle"></strong><button type="button" id="finNext">鈥�</button></div>
+ <div class="finance-summary" id="finSummary"></div>
+ <div class="card"><div class="row"><h3>袨斜褟蟹邪褌械谢褜薪褘械 锌谢邪褌械卸懈</h3><button class="btn primary" id="finAdd">锛� 袛芯斜邪胁懈褌褜</button></div><div id="finList"></div></div>
+ <div class="card"><h3>袠褋褌芯褉懈褟 懈 锌芯胁褌芯褉械薪懈械</h3><p class="small">小泻芯锌懈褉褍泄 锌谢邪褌械卸懈 锌褉芯褕谢芯谐芯 屑械褋褟褑邪. 袨褌屑械褌泻懈 芯斜 芯锌谢邪褌械 锌褉懈 泻芯锌懈褉芯胁邪薪懈懈 褋斜褉邪褋褘胁邪褞褌褋褟.</p><button class="btn" id="finCopy">小泻芯锌懈褉芯胁邪褌褜 锌褉芯褕谢褘泄 屑械褋褟褑</button></div>
+ <div class="form hidden" id="financeForm"><h3 id="finFormTitle">袧芯胁褘泄 锌谢邪褌褢卸</h3>
+ <label>袧邪蟹胁邪薪懈械 锌谢邪褌械卸邪</label><input id="finName" maxlength="100" placeholder="袧邪锌褉懈屑械褉, 邪褉械薪写邪">
+ <label>小褍屑屑邪 (Br)</label><input id="finAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00">
+ <label>袛邪褌邪 芯锌谢邪褌褘</label><input id="finDate" type="date">
+ <label>袣邪褌械谐芯褉懈褟</label><select id="finCategory"><option>袞懈谢褜褢</option><option>袣芯屑屑褍薪邪谢褜薪褘械 褍褋谢褍谐懈</option><option>小胁褟蟹褜 懈 懈薪褌械褉薪械褌</option><option>袣褉械写懈褌褘 懈 写芯谢谐懈</option><option>袩芯写锌懈褋泻懈</option><option>袟写芯褉芯胁褜械</option><option>孝褉邪薪褋锌芯褉褌</option><option>袛褉褍谐芯械</option></select>
+ <label>袣芯屑屑械薪褌邪褉懈泄</label><textarea id="finNote" placeholder="袛芯锌芯谢薪懈褌械谢褜薪邪褟 懈薪褎芯褉屑邪褑懈褟"></textarea>
+ <div class="btnrow"><button class="btn primary" id="finSave">小芯褏褉邪薪懈褌褜</button><button class="btn" id="finCancel">袨褌屑械薪邪</button></div></div>`;byId('main').appendChild(section);}
+ let nav=byId('finNav');if(!nav){nav=document.createElement('button');nav.id='finNav';nav.type='button';nav.setAttribute('aria-label','肖懈薪邪薪褋褘');nav.innerHTML='<span>$</span>';const n=document.querySelector('nav');n.insertBefore(nav,n.children[2]||null);}nav.onclick=showFinance;
+ if(!byId('financeHome')){const card=document.createElement('div');card.className='card';card.id='financeHome';card.innerHTML='<div class="row"><h3>袨斜褟蟹邪褌械谢褜薪褘械 锌谢邪褌械卸懈</h3><button class="btn" id="finHomeOpen">袨褌泻褉褘褌褜</button></div><div id="finHomeContent" class="finance-widget"></div>';const home=byId('home');home.insertBefore(card,home.querySelector('.card'));byId('finHomeOpen').onclick=showFinance;}
+ byId('finPrev').onclick=()=>{viewedMonth=new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()-1,1);draw();};
+ byId('finNext').onclick=()=>{viewedMonth=new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()+1,1);draw();};
+ byId('finAdd').onclick=()=>openForm();byId('finSave').onclick=saveForm;byId('finCancel').onclick=closeForm;byId('finCopy').onclick=copyPrevious;
+ draw();
+}
+function openForm(id){editingId=id||null;const p=payments.find(x=>x.id===id);byId('finFormTitle').textContent=p?'袠蟹屑械薪懈褌褜 锌谢邪褌褢卸':'袧芯胁褘泄 锌谢邪褌褢卸';byId('finName').value=p?.name||'';byId('finAmount').value=p?.amount??'';byId('finDate').value=p?.date||isoDate(viewedMonth);byId('finCategory').value=p?.category||'袞懈谢褜褢';byId('finNote').value=p?.note||'';byId('financeForm').classList.remove('hidden');byId('financeForm').scrollIntoView({behavior:'smooth',block:'start'});}
+function closeForm(){byId('financeForm').classList.add('hidden');editingId=null;}
+function saveForm(){const name=byId('finName').value.trim(),amount=Number(byId('finAmount').value),date=byId('finDate').value;if(!name||!date||!Number.isFinite(amount)||amount<=0){tell('袩褉芯胁械褉褜 薪邪蟹胁邪薪懈械, 褋褍屑屑褍 懈 写邪褌褍 锌谢邪褌械卸邪.');return;}const old=payments.find(x=>x.id===editingId);const item={id:editingId||('pay_'+Date.now()+'_'+Math.random().toString(36).slice(2,8)),name,amount:Math.round(amount*100)/100,date,category:byId('finCategory').value,note:byId('finNote').value.trim(),paid:old?!!old.paid:false,created:old?.created||Date.now()};if(old){const i=payments.findIndex(x=>x.id===editingId);payments[i]=item;}else payments.push(item);viewedMonth=new Date(date+'T12:00:00');persistPayments();closeForm();draw();tell('袩谢邪褌褢卸 褋芯褏褉邪薪褢薪.');}
+function togglePaid(id){const p=payments.find(x=>x.id===id);if(!p)return;p.paid=!p.paid;persistPayments();draw();}
+function edit(id){openForm(id);}
+function remove(id){if(!confirm('校写邪谢懈褌褜 褝褌芯褌 锌谢邪褌褢卸?'))return;payments=payments.filter(p=>p.id!==id);persistPayments();draw();}
+function draw(){const list=forMonth(viewedMonth).slice().sort((a,b)=>a.date.localeCompare(b.date)||a.name.localeCompare(b.name));const t=totals(list);byId('finMonthTitle').textContent=monthLabel(viewedMonth);byId('finSummary').innerHTML=`<div class="stat"><strong>${money(t.all)}</strong><span class="small">袙褋械谐芯</span></div><div class="stat"><strong>${money(t.paid)}</strong><span class="small">袨锌谢邪褔械薪芯</span></div><div class="stat"><strong>${money(t.all-t.paid)}</strong><span class="small">袨褋褌邪谢芯褋褜</span></div><div class="stat"><strong>${money(t.late)}</strong><span class="small">袩褉芯褋褉芯褔械薪芯</span></div>`;
+ byId('finList').innerHTML=list.length?list.map(p=>{const s=paymentStatus(p);return `<div class="finance-payment"><div class="row" style="align-items:flex-start"><div style="flex:1;min-width:0"><strong>${escapeHtml(p.name)}</strong><div class="small">${escapeHtml(p.date)} 路 ${escapeHtml(p.category||'袛褉褍谐芯械')}</div>${p.note?`<div class="small">${escapeHtml(p.note)}</div>`:''}<span class="finance-status ${s.cls}">${s.text}</span></div><div class="amount">${money(p.amount)}</div></div><div class="finance-actions"><label style="display:flex;align-items:center;gap:6px;margin:0"><input class="finance-check" type="checkbox" ${p.paid?'checked':''} onchange="window.mySpaceFinancePaid('${p.id}')"><span class="small">袨锌谢邪褔械薪芯</span></label><button class="btn" onclick="window.mySpaceFinanceEdit('${p.id}')">袠蟹屑械薪懈褌褜</button><button class="btn danger" onclick="window.mySpaceFinanceDelete('${p.id}')">校写邪谢懈褌褜</button></div></div>`;}).join(''):'<div class="empty">袙 褝褌芯屑 屑械褋褟褑械 锌谢邪褌械卸械泄 锌芯泻邪 薪械褌.</div>';
+ renderHome();}
+function renderHome(){const list=forMonth(new Date()),t=totals(list),next=list.filter(p=>!p.paid&&p.date>=isoDate(new Date())).sort((a,b)=>a.date.localeCompare(b.date))[0];const target=byId('finHomeContent');if(!target)return;target.innerHTML=`<div class="finance-summary"><div><strong>${money(t.all)}</strong><div class="small">袙褋械谐芯</div></div><div><strong>${money(t.paid)}</strong><div class="small">袨锌谢邪褔械薪芯</div></div><div><strong>${money(t.all-t.paid)}</strong><div class="small">袨褋褌邪谢芯褋褜</div></div></div><div class="small">${next?'袘谢懈卸邪泄褕懈泄 锌谢邪褌褢卸: '+escapeHtml(next.name)+' 鈥� '+money(next.amount)+' 路 '+escapeHtml(next.date):'袧械褌 锌褉械写褋褌芯褟褖懈褏 锌谢邪褌械卸械泄'}</div>`;}
+function copyPrevious(){const prev=new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()-1,1),source=forMonth(prev);if(!source.length){tell('袙 锌褉芯褕谢芯屑 屑械褋褟褑械 薪械褌 锌谢邪褌械卸械泄 写谢褟 泻芯锌懈褉芯胁邪薪懈褟.');return;}const targetMonth=monthId(viewedMonth),existing=new Set(forMonth(viewedMonth).map(p=>p.name.toLowerCase()+'_'+p.date.slice(8)));const fresh=source.filter(p=>{const day=Math.min(Number(p.date.slice(8)),new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()+1,0).getDate());return !existing.has(p.name.toLowerCase()+'_'+String(day).padStart(2,'0'));});if(!fresh.length){tell('孝邪泻懈械 锌谢邪褌械卸懈 褍卸械 械褋褌褜 胁 胁褘斜褉邪薪薪芯屑 屑械褋褟褑械.');return;}if(!confirm('小泻芯锌懈褉芯胁邪褌褜 '+fresh.length+' 锌谢邪褌械卸(械泄) 胁 '+monthLabel(viewedMonth)+'?'))return;fresh.forEach(p=>{const day=Math.min(Number(p.date.slice(8)),new Date(viewedMonth.getFullYear(),viewedMonth.getMonth()+1,0).getDate());payments.push({...p,id:'pay_'+Date.now()+'_'+Math.random().toString(36).slice(2,8),date:targetMonth+'-'+String(day).padStart(2,'0'),paid:false,created:Date.now()});});persistPayments();draw();tell('袩谢邪褌械卸懈 褋泻芯锌懈褉芯胁邪薪褘.');}
+window.mySpaceFinancePaid=togglePaid;window.mySpaceFinanceEdit=edit;window.mySpaceFinanceDelete=remove;
+// Include payments in the existing JSON backup without changing other app data.
+const previousBackup=window.backup;
+window.backup=function(){const data={app:'MY SPACE',version:3,exportedAt:new Date().toISOString(),entries:typeof entries!=='undefined'?entries:[],board:typeof board!=='undefined'?board:[],tasks:typeof tasks!=='undefined'?tasks:[],payments};const blob=new Blob([JSON.stringify(data)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='my-space-backup-'+isoDate(new Date())+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);tell('袪械蟹械褉胁薪邪褟 泻芯锌懈褟 锌芯写谐芯褌芯胁谢械薪邪.');};
+// Preserve existing restore behaviour and additionally restore payment records.
+const restoreInput=byId('restoreFile');if(restoreInput){restoreInput.addEventListener('change',e=>{const file=e.target.files&&e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);if(Array.isArray(data.payments)){if(!confirm('袛芯斜邪胁懈褌褜 锌谢邪褌械卸懈 懈蟹 褉械蟹械褉胁薪芯泄 泻芯锌懈懈?'))return;const known=new Set(payments.map(p=>String(p.id)));data.payments.forEach(p=>{if(p&&p.id!==undefined&&!known.has(String(p.id)))payments.push(p);});persistPayments();draw();tell('袩谢邪褌械卸懈 胁芯褋褋褌邪薪芯胁谢械薪褘.');}}catch(err){} };reader.readAsText(file);});}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build,{once:true});else build();
+})();
+</script>
 <!-- END MY SPACE FINANCE MODULE -->
+
+</body></html>
